@@ -2,7 +2,6 @@ package com.calc3d.geometry3d;
 
 import java.awt.Color;
 
-import com.calc3d.app.elements.Element3D;
 import com.calc3d.math.AffineTransform3D;
 import com.calc3d.math.MathUtils;
 import com.calc3d.math.Vector3D;
@@ -55,7 +54,8 @@ public abstract class Element implements Comparable<Element>{
     	backColor=Color.gray;
     }
     
-    public int compareTo(Element e) {
+    @Override
+	public int compareTo(Element e) {
     	if ((e==null)||(this==null))return 0;
     	if (!MathUtils.isValidNumber(depth)||!MathUtils.isValidNumber(e.depth))return 0;
         if (depth>e.depth) return -1;

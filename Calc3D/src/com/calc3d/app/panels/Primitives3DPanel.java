@@ -2,24 +2,19 @@ package com.calc3d.app.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Panel;
 import java.awt.Window;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DObject;
 import com.calc3d.app.resources.Icons;
@@ -55,12 +50,12 @@ public class Primitives3DPanel extends Object3DCreatePanel implements ItemListen
 	public Primitives3DPanel(Element3DObject object3D){
 		surface3D=object3D;
 		objectCode=surface3D.getObjectCode();
-		lblExpression=new JLabel("PremitiveType", Icons.ABOUT, JLabel.LEFT);
-		lblparam_a=new JLabel(object3D.getParamNames()[0], Icons.ABOUT, JLabel.LEFT);
-		lblparam_b=new JLabel(object3D.getParamNames()[1], Icons.ABOUT, JLabel.LEFT);
-		lblparam_c=new JLabel(object3D.getParamNames()[2], Icons.ABOUT, JLabel.LEFT);
+		lblExpression=new JLabel("PremitiveType", Icons.ABOUT, SwingConstants.LEFT);
+		lblparam_a=new JLabel(object3D.getParamNames()[0], Icons.ABOUT, SwingConstants.LEFT);
+		lblparam_b=new JLabel(object3D.getParamNames()[1], Icons.ABOUT, SwingConstants.LEFT);
+		lblparam_c=new JLabel(object3D.getParamNames()[2], Icons.ABOUT, SwingConstants.LEFT);
 		
-		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, JLabel.LEFT);
+		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, SwingConstants.LEFT);
 
 		comboPrimitiveType = new JComboBox();
 		comboPrimitiveType.setModel(new DefaultComboBoxModel(new String[] { "Regular Polygon", "Right Regular Pyramid", 

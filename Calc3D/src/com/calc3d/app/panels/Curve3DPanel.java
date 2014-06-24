@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCurve;
 import com.calc3d.app.elements.Element3DSurface;
@@ -43,12 +45,12 @@ public class Curve3DPanel extends Object3DCreatePanel  {
 	
 	public Curve3DPanel(Element3DCurve object3D){
 		curve3D=object3D;
-		lblExpressionX=new JLabel("X(t)", Icons.ABOUT, JLabel.LEFT);
-		lblExpressionY=new JLabel("Y(t)", Icons.ABOUT, JLabel.LEFT);
-		lblExpressionZ=new JLabel("Z(t)", Icons.ABOUT, JLabel.LEFT);
-		lblMin_t=new JLabel("Min. value of  t", Icons.ABOUT, JLabel.LEFT);
-		lblMax_t=new JLabel("Max. value of  t", Icons.ABOUT, JLabel.LEFT);
-		lblSegments=new JLabel("Segments", Icons.ABOUT, JLabel.LEFT);
+		lblExpressionX=new JLabel("X(t)", Icons.ABOUT, SwingConstants.LEFT);
+		lblExpressionY=new JLabel("Y(t)", Icons.ABOUT, SwingConstants.LEFT);
+		lblExpressionZ=new JLabel("Z(t)", Icons.ABOUT, SwingConstants.LEFT);
+		lblMin_t=new JLabel("Min. value of  t", Icons.ABOUT, SwingConstants.LEFT);
+		lblMax_t=new JLabel("Max. value of  t", Icons.ABOUT, SwingConstants.LEFT);
+		lblSegments=new JLabel("Segments", Icons.ABOUT, SwingConstants.LEFT);
 		
 		
 		spinSegments=new JSpinner();

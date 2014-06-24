@@ -757,7 +757,7 @@ public final class Renderer implements BSPTreeTraverseListener{
         
 		for (int i=0; i<div;i++){
 			//Draw values on scale
-			Vector3D v=ProjectToScreen(v1.add((v2.subtract(v1)).scale((float)i/div)));
+			Vector3D v=ProjectToScreen(v1.add((v2.subtract(v1)).scale(i/div)));
 			float value=(float) (min+i*delta);
 		    if (i>0 && Globalsettings.labelsVisible)outFloat(iRasterSettings.iGraphics,(int)v.getX(),(int)v.getY(),value,xalign,yalign);
 		   
@@ -1217,7 +1217,7 @@ public final class Renderer implements BSPTreeTraverseListener{
         	int y=(int) (v1.getY()+(i*subDiv)*deltay);
         	if ((element.getParent()==null)||((v1.getY()-y)*(v2.getY()-y)<0))
             if (i>0)outFloat(iRasterSettings.iGraphics,(int)v1.getX()+4*cross,y,
-            		       (float) (element.getMinValue()+(float)i/subDiv*(element.getMaxValue()-element.getMinValue())),-cross+1,1);
+            		       (float) (element.getMinValue()+i/subDiv*(element.getMaxValue()-element.getMinValue())),-cross+1,1);
 
         }
         
@@ -1330,7 +1330,7 @@ public final class Renderer implements BSPTreeTraverseListener{
         	int y=(int) (v1.getY()+(i*subDiv)*deltay);
         	if ((element.getParent()==null)||((v1.getY()-y)*(v2.getY()-y)<0))
             if (i>0)outFloat(iRasterSettings.iGraphics,(int)v1.getX()+4*cross,y,
-            		       (float) (element.getMinValue()+(float)i/subDiv*(element.getMaxValue()-element.getMinValue())),-cross+1,1);
+            		       (float) (element.getMinValue()+i/subDiv*(element.getMaxValue()-element.getMinValue())),-cross+1,1);
 
         }
         

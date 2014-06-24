@@ -3,7 +3,7 @@ package com.calc3d.app.panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
-import javax.swing.BorderFactory;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
@@ -13,8 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DSurface;
 import com.calc3d.app.elements.Element3Dfunction;
@@ -41,10 +40,10 @@ public class Function3DPanel extends Object3DCreatePanel  {
 	
 	public Function3DPanel(Element3Dfunction object3D){
 		surface3D=object3D;
-		lblExpression=new JLabel("Function Script", Icons.ABOUT, JLabel.LEFT);
-		lblGridX=new JLabel("u steps", Icons.ABOUT, JLabel.LEFT);
-		lblGridY=new JLabel("v steps", Icons.ABOUT, JLabel.LEFT);
-		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, JLabel.LEFT);
+		lblExpression=new JLabel("Function Script", Icons.ABOUT, SwingConstants.LEFT);
+		lblGridX=new JLabel("u steps", Icons.ABOUT, SwingConstants.LEFT);
+		lblGridY=new JLabel("v steps", Icons.ABOUT, SwingConstants.LEFT);
+		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, SwingConstants.LEFT);
 		
 		spinGridX=new JSpinner();
 		spinGridX.setModel(new javax.swing.SpinnerNumberModel(15, 1, 100, 1));

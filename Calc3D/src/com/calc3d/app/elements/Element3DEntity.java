@@ -1,14 +1,11 @@
 package com.calc3d.app.elements;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import com.calc3d.app.Globalsettings;
-import com.calc3d.app.panels.Point3DPanel;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
-import com.calc3d.geometry3d.ElementEntity;
 import com.calc3d.geometry3d.ElementPoint;
 import com.calc3d.math.Vector3D;
 
@@ -77,7 +74,7 @@ public class Element3DEntity extends Element3D {
 		double maxX, maxY, maxZ;
 		maxX = maxY = maxZ = 0;
 		for(int i=0; i<_points.size(); i++){
-			Vector3D point = ((Element3DPoint) _points.get(i)).getPoint();
+			Vector3D point = _points.get(i).getPoint();
 			maxX = maxX < point.getX() ? point.getX() : maxX;
 			maxY = maxY < point.getY() ? point.getY() : maxY;
 			maxZ = maxZ < point.getZ() ? point.getZ() : maxZ;
@@ -90,7 +87,7 @@ public class Element3DEntity extends Element3D {
 		double minX, minY, minZ;
 		minX = minY = minZ = 0;
 		for(int i=0; i<_points.size(); i++){
-			Vector3D point = ((Element3DPoint) _points.get(i)).getPoint();
+			Vector3D point = _points.get(i).getPoint();
 			minX = minX > point.getX() ? point.getX() : minX;
 			minY = minY > point.getY() ? point.getY() : minY;
 			minZ = minZ > point.getZ() ? point.getZ() : minZ;

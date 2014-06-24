@@ -52,7 +52,8 @@ public class AboutDialog extends JDialog {
 		}
        btnOk.setText("ok");
        btnOk.addActionListener(new java.awt.event.ActionListener() {
-           public void actionPerformed(java.awt.event.ActionEvent evt) {
+           @Override
+		public void actionPerformed(java.awt.event.ActionEvent evt) {
                btnOkActionPerformed(evt);
            }
        });
@@ -126,7 +127,8 @@ public class AboutDialog extends JDialog {
         */
        java.awt.EventQueue.invokeLater(new Runnable() {
 
-           public void run() {
+           @Override
+		public void run() {
                new AboutDialog(null).setVisible(true);
            }
        });

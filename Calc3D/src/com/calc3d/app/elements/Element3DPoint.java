@@ -81,7 +81,7 @@ public class Element3DPoint extends Element3D {
 		element.setFillColor(getFillColor());
 	    element.setLineColor(getLineColor());
 	    element.setCurveWidth(getCurveWidth());
-	    if (radius>=1) ((ElementPoint)element).setRadius((int)radius);
+	    if (radius>=1) ((ElementPoint)element).setRadius(radius);
 	    element.setDashed(isDashed());
 	    isCreated=true;
 		return element;
@@ -99,7 +99,7 @@ public class Element3DPoint extends Element3D {
 	    element.setLineColor(getLineColor());
 	    element.setCurveWidth(getCurveWidth());
 	    element.setDashed(isDashed());
-	    if (radius>=1) ((ElementPoint)element).setRadius((int)radius);
+	    if (radius>=1) ((ElementPoint)element).setRadius(radius);
 	    isCreated=true;
 		return element;
 	}

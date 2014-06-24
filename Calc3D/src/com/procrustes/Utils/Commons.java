@@ -11,7 +11,6 @@ import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DEntity;
 import com.calc3d.app.elements.Element3DPoint;
 import com.calc3d.geometry3d.Box3D;
-import com.calc3d.geometry3d.ElementEntity;
 import com.calc3d.math.Vector3D;
 import com.example.loaders.Landmark;
 import com.example.loaders.PCEntity;

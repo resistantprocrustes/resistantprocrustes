@@ -1,7 +1,6 @@
 package com.calc3d.geometry3d;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 

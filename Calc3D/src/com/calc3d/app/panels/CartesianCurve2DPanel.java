@@ -17,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3Dcartesian2D;
 import com.calc3d.app.resources.Icons;
@@ -48,11 +50,11 @@ public class CartesianCurve2DPanel extends Object3DCreatePanel implements ItemLi
 	
 	public CartesianCurve2DPanel(Element3Dcartesian2D object3D){
 		curve2D=object3D;
-		lblFuncType=new JLabel("Type", Icons.ABOUT, JLabel.LEFT);
-		lblExpression=new JLabel("y(x)", Icons.ABOUT, JLabel.LEFT);
-		lblMinX=new JLabel("Min. value of  x", Icons.ABOUT, JLabel.LEFT);
-		lblMaxX=new JLabel("Max. value of  x", Icons.ABOUT, JLabel.LEFT);
-		lblSegments=new JLabel("Segments", Icons.ABOUT, JLabel.LEFT);
+		lblFuncType=new JLabel("Type", Icons.ABOUT, SwingConstants.LEFT);
+		lblExpression=new JLabel("y(x)", Icons.ABOUT, SwingConstants.LEFT);
+		lblMinX=new JLabel("Min. value of  x", Icons.ABOUT, SwingConstants.LEFT);
+		lblMaxX=new JLabel("Max. value of  x", Icons.ABOUT, SwingConstants.LEFT);
+		lblSegments=new JLabel("Segments", Icons.ABOUT, SwingConstants.LEFT);
 		
 		spinSegments=new JSpinner();
 		spinSegments.setModel(new javax.swing.SpinnerNumberModel(40, 1, 200, 1));

@@ -1,29 +1,19 @@
 package com.calc3d.app.panels;
 
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.DecimalFormat;
-
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
-import com.calc3d.app.elements.Element3DCurve;
-import com.calc3d.app.elements.Element3DSurface;
-import com.calc3d.app.elements.Element3Dcartesian2D;
 import com.calc3d.app.elements.Element3Dimplicit2D;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
@@ -50,10 +40,10 @@ public class ImplicitCurve2DPanel extends Object3DCreatePanel implements ItemLis
 
 	public ImplicitCurve2DPanel(Element3Dimplicit2D object3D){
 		curve2D=object3D;
-		lblFuncType=new JLabel("Type", Icons.ABOUT, JLabel.LEFT);
-		lblExpression=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, JLabel.LEFT);
-		lblGridX=new JLabel(Messages.getString("panel.body.gridx"), Icons.ABOUT, JLabel.LEFT);
-		lblGridY=new JLabel(Messages.getString("panel.body.gridx"), Icons.ABOUT, JLabel.LEFT);
+		lblFuncType=new JLabel("Type", Icons.ABOUT, SwingConstants.LEFT);
+		lblExpression=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, SwingConstants.LEFT);
+		lblGridX=new JLabel(Messages.getString("panel.body.gridx"), Icons.ABOUT, SwingConstants.LEFT);
+		lblGridY=new JLabel(Messages.getString("panel.body.gridx"), Icons.ABOUT, SwingConstants.LEFT);
 	
 		spinGridX=new JSpinner();
 		spinGridX.setModel(new javax.swing.SpinnerNumberModel(15, 1, 100, 1));

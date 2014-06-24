@@ -2,34 +2,19 @@ package com.calc3d.app.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DLineSegment;
-import com.calc3d.app.elements.Element3DPlane;
-import com.calc3d.app.elements.Element3DPoint;
-import com.calc3d.app.elements.Element3DSurface;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
-import com.calc3d.geometry3d.Plane3D;
 import com.calc3d.math.Vector3D;
-import com.calc3d.mathparser.Calculable;
-import com.calc3d.mathparser.ExpressionBuilder;
 
 public class LineSegment3DPanel extends Object3DCreatePanel  {
 
@@ -58,12 +43,12 @@ public class LineSegment3DPanel extends Object3DCreatePanel  {
 		point1=lineSegment3D.getPoint1();
 		point2=lineSegment3D.getPoint2();
 		
-		lblXcoord1=new JLabel("x coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblYcoord1=new JLabel("y coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblZcoord1=new JLabel("z coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblXcoord2=new JLabel("x coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
-		lblYcoord2=new JLabel("y coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
-		lblZcoord2=new JLabel("z coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
+		lblXcoord1=new JLabel("x coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblYcoord1=new JLabel("y coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblZcoord1=new JLabel("z coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblXcoord2=new JLabel("x coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
+		lblYcoord2=new JLabel("y coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
+		lblZcoord2=new JLabel("z coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
 		
 				
 		this.txtXcoord1 = new JFormattedTextField(new DecimalFormat());

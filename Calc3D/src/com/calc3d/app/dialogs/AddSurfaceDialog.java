@@ -1,7 +1,6 @@
 package com.calc3d.app.dialogs;
 
 import java.awt.Window;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

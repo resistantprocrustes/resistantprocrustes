@@ -12,6 +12,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -69,7 +70,7 @@ public class JSliderWithTextField extends JPanel implements PropertyChangeListen
 		this.max = max;
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
-		this.slider = new JSlider(JSlider.HORIZONTAL, min, max, initialValue);
+		this.slider = new JSlider(SwingConstants.HORIZONTAL, min, max, initialValue);
 		this.slider.addChangeListener(this);
 		if (scale == 1.0) {
 			this.textField = new JFormattedTextField(NumberFormat.getIntegerInstance());
@@ -133,7 +134,7 @@ public class JSliderWithTextField extends JPanel implements PropertyChangeListen
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		JSlider slider = (JSlider)event.getSource();
-		double value = (double)slider.getValue() * this.scale;
+		double value = slider.getValue() * this.scale;
 		// update the text box
 		if (!slider.getValueIsAdjusting()) {
 			this.textField.setValue(value);

@@ -1,18 +1,13 @@
 package com.calc3d.app.dialogs;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import com.calc3d.app.resources.Icons;
 
-import java.applet.Applet;
 import java.awt.*;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,7 +29,7 @@ public class HelpDialog extends JDialog {
     private void setURL(URL url) {
         try {
             ep.setPage(url);
-            if (historyIndex<0 || !url.equals((URL)urlHistory.get(historyIndex))) {
+            if (historyIndex<0 || !url.equals(urlHistory.get(historyIndex))) {
                 urlHistory.add(url);
                 historyIndex++;
                 while(urlHistory.size()>historyIndex+1)
@@ -58,14 +53,16 @@ public class HelpDialog extends JDialog {
         ep=new JEditorPane();
         ep.setEditable(false);
         ep.addHyperlinkListener(new HyperlinkListener() {
-            public void hyperlinkUpdate(HyperlinkEvent e) {
+            @Override
+			public void hyperlinkUpdate(HyperlinkEvent e) {
                 if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     setURL(e.getURL());
                 }
             }
         });
         ActionListener buttonsListener=new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            @Override
+			public void actionPerformed(ActionEvent e) {
                 String cmd=e.getActionCommand();
                 if (cmd.equals("Contents")) setURL(contents);
                 else if (cmd.equals("Back")) goBack();

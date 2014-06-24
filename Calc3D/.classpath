@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/ProcrustesAlgorithms"/>
 	<classpathentry kind="lib" path="/ProcrustesAlgorithms/resurces/ejml-0.24.jar"/>
 	<classpathentry kind="lib" path="swingx-1.6.jar"/>
+	<classpathentry kind="lib" path="jply-0.2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

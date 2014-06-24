@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import javax.swing.UIManager;
 
-import com.calc3d.engine3d.Camera3D;
 import com.calc3d.geometry3d.Box3D;
 
 public class Preferences implements Serializable{

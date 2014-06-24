@@ -4,15 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DPoint;
 import com.calc3d.app.resources.Icons;
@@ -43,11 +40,11 @@ public class Point3DPanel extends Object3DCreatePanel  {
 	public Point3DPanel(Element3DPoint object3D){
 		point3D=object3D;
 		point=point3D.getPoint();
-		lblXcoord=new JLabel("x coordinate", Icons.ABOUT, JLabel.LEFT);
-		lblYcoord=new JLabel("y coordinate", Icons.ABOUT, JLabel.LEFT);
-		lblZcoord=new JLabel("z coordinate", Icons.ABOUT, JLabel.LEFT);
-		lblRadius=new JLabel("DrawRadius", Icons.ABOUT, JLabel.LEFT);
-		lblText=new JLabel("Display Text", Icons.ABOUT, JLabel.LEFT);
+		lblXcoord=new JLabel("x coordinate", Icons.ABOUT, SwingConstants.LEFT);
+		lblYcoord=new JLabel("y coordinate", Icons.ABOUT, SwingConstants.LEFT);
+		lblZcoord=new JLabel("z coordinate", Icons.ABOUT, SwingConstants.LEFT);
+		lblRadius=new JLabel("DrawRadius", Icons.ABOUT, SwingConstants.LEFT);
+		lblText=new JLabel("Display Text", Icons.ABOUT, SwingConstants.LEFT);
 		
 			
 		this.txtXcoord = new JFormattedTextField(new DecimalFormat());

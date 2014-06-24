@@ -2,37 +2,22 @@ package com.calc3d.app.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DLine;
-import com.calc3d.app.elements.Element3DLineSegment;
-import com.calc3d.app.elements.Element3DPlane;
-import com.calc3d.app.elements.Element3DPoint;
-import com.calc3d.app.elements.Element3DSurface;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
-import com.calc3d.geometry3d.Line3D;
-import com.calc3d.geometry3d.Plane3D;
 import com.calc3d.math.Vector3D;
-import com.calc3d.mathparser.Calculable;
-import com.calc3d.mathparser.ExpressionBuilder;
 
 public class Line3DPanel extends Object3DCreatePanel  {
 
@@ -71,17 +56,17 @@ public class Line3DPanel extends Object3DCreatePanel  {
 		line3D=object3D;
 		point1=line3D.getPt1();
 		point2=line3D.getPt2();		
-		lblEqn=new JLabel("Equation", Icons.ABOUT, JLabel.LEFT);
-		lblXcoord1=new JLabel("x  ", null, JLabel.LEFT);
-		lblYcoord1=new JLabel("y  ", null, JLabel.LEFT);
-		lblZcoord1=new JLabel("z", null, JLabel.LEFT);
-		lblXcoord2=new JLabel("x  ", null, JLabel.LEFT);
-		lblYcoord2=new JLabel("y  ", null, JLabel.LEFT);
-		lblZcoord2=new JLabel("z", null, JLabel.LEFT);
-		lblPoint1=new JLabel("Point1", Icons.ABOUT, JLabel.LEFT);
-		lblPoint2=new JLabel("Point2", Icons.ABOUT, JLabel.LEFT);
-		lblsegment=new JLabel("Line Segment", Icons.ABOUT, JLabel.LEFT);
-		lbldrawPoints=new JLabel("Draw Points", Icons.ABOUT, JLabel.LEFT);
+		lblEqn=new JLabel("Equation", Icons.ABOUT, SwingConstants.LEFT);
+		lblXcoord1=new JLabel("x  ", null, SwingConstants.LEFT);
+		lblYcoord1=new JLabel("y  ", null, SwingConstants.LEFT);
+		lblZcoord1=new JLabel("z", null, SwingConstants.LEFT);
+		lblXcoord2=new JLabel("x  ", null, SwingConstants.LEFT);
+		lblYcoord2=new JLabel("y  ", null, SwingConstants.LEFT);
+		lblZcoord2=new JLabel("z", null, SwingConstants.LEFT);
+		lblPoint1=new JLabel("Point1", Icons.ABOUT, SwingConstants.LEFT);
+		lblPoint2=new JLabel("Point2", Icons.ABOUT, SwingConstants.LEFT);
+		lblsegment=new JLabel("Line Segment", Icons.ABOUT, SwingConstants.LEFT);
+		lbldrawPoints=new JLabel("Draw Points", Icons.ABOUT, SwingConstants.LEFT);
 		chkdrawPoints=new JCheckBox();
 		chkSegment=new JCheckBox();
 		chkdrawPoints.setSelected(line3D.isDrawPoints());

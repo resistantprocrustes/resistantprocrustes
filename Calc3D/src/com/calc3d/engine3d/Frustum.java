@@ -92,7 +92,7 @@ public final class Frustum
 		/*
 		 * tan (theta / 2) = (total frustum height / 2) / viewplane
 		 */
-		return (top-bottom) * 0.5f / (double)Math.tan(verticalFOV*Math.PI/360);
+		return (top-bottom) * 0.5f / Math.tan(verticalFOV*Math.PI/360);
 		
 	}
 	

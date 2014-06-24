@@ -9,6 +9,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DPlane;
 import com.calc3d.app.resources.Icons;
@@ -35,12 +37,12 @@ public class Plane3DPanel extends Object3DCreatePanel  {
 	
 	public Plane3DPanel(Element3DPlane object3D){
 		plane3D=object3D;
-		lblInfo=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, JLabel.LEFT);
-		lblCoeffX=new JLabel("Coefficent of x", Icons.ABOUT, JLabel.LEFT);
-		lblCoeffY=new JLabel("Coefficent of y", Icons.ABOUT, JLabel.LEFT);
-		lblCoeffZ=new JLabel("Coefficent of z", Icons.ABOUT, JLabel.LEFT);
+		lblInfo=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, SwingConstants.LEFT);
+		lblCoeffX=new JLabel("Coefficent of x", Icons.ABOUT, SwingConstants.LEFT);
+		lblCoeffY=new JLabel("Coefficent of y", Icons.ABOUT, SwingConstants.LEFT);
+		lblCoeffZ=new JLabel("Coefficent of z", Icons.ABOUT, SwingConstants.LEFT);
 		
-		lblConstant=new JLabel("Constant term", Icons.ABOUT, JLabel.LEFT);
+		lblConstant=new JLabel("Constant term", Icons.ABOUT, SwingConstants.LEFT);
 		
 		plane=plane3D.getPlane3D();
 		

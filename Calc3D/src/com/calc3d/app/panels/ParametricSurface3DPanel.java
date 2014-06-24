@@ -5,13 +5,9 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DParametricSurface;
 import com.calc3d.app.resources.Messages;
@@ -103,13 +99,15 @@ public class ParametricSurface3DPanel extends Object3DCreatePanel {
     	comboFillMode.setMaximumSize(new Dimension(10000,0));
     	      
         txtExpressionZ.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtExpressionZActionPerformed(evt);
             }
         });
 
         txtExpressionY.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtExpressionYActionPerformed(evt);
             }
         });

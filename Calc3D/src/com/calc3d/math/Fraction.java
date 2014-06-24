@@ -45,14 +45,16 @@ protected final long numerator_;
     denominator_ = f.denominator();
   }
 
-  public String toString() { 
+  @Override
+public String toString() { 
     if (denominator() == 1) 
       return "" + numerator();
     else
       return numerator() + "/" + denominator(); 
   }
 
-  public Object clone() { return new Fraction(this); }
+  @Override
+public Object clone() { return new Fraction(this); }
 
   /** Return the value of the Fraction as a double **/
   public double asDouble() { 
@@ -174,7 +176,8 @@ protected final long numerator_;
    * reflecting whether this Fraction is less, equal or greater than 
    * the value of Fraction other.
    **/
-  public int compareTo(Object other) {
+  @Override
+public int compareTo(Object other) {
     Fraction b = (Fraction)(other);
     long an = numerator();
     long ad = denominator();
@@ -199,15 +202,17 @@ protected final long numerator_;
     return (l < r)? -1 : ((l == r)? 0: 1);
   }
 
-  public boolean equals(Object other) {
-    return compareTo((Fraction)other) == 0;
+  @Override
+public boolean equals(Object other) {
+    return compareTo(other) == 0;
   }
 
   public boolean equals(long n) {
     return compareTo(n) == 0;
   }
 
-  public int hashCode() {
+  @Override
+public int hashCode() {
     return (int) (numerator_ ^ denominator_);
   }
 

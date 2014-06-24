@@ -4,14 +4,11 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,12 +18,12 @@ import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
 
 
+import javax.swing.SwingConstants;
+
 import com.calc3d.app.elements.Element3D;
-import com.calc3d.app.elements.Element3DPlane;
 import com.calc3d.app.elements.Element3DPolygon;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
-import com.calc3d.geometry3d.ElementPoly;
 import com.calc3d.geometry3d.Geometry;
 import com.calc3d.geometry3d.Plane3D;
 import com.calc3d.math.Vector3D;
@@ -62,7 +59,7 @@ public class Polygon3DPanel extends Object3DCreatePanel implements  ActionListen
 	
 	public Polygon3DPanel(Element3DPolygon element){
 		polygon3D=element;
-		lblInfo=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, JLabel.LEFT);
+		lblInfo=new JLabel(Messages.getString("panel.body.expression"), Icons.ABOUT, SwingConstants.LEFT);
         this.pnlPanel = new JPanel();
 		
 		this.lblText = new JTextPane();

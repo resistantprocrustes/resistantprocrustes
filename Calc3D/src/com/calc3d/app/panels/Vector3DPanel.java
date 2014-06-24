@@ -4,15 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Window;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
-
+import javax.swing.SwingConstants;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DVector;
 import com.calc3d.app.resources.Icons;
@@ -46,12 +44,12 @@ public class Vector3DPanel extends Object3DCreatePanel  {
 		point1=vector3D.getPoint1();
 		point2=vector3D.getPoint2();
 		
-		lblXcoord1=new JLabel("x coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblYcoord1=new JLabel("y coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblZcoord1=new JLabel("z coordinate (p1)", Icons.ABOUT, JLabel.LEFT);
-		lblXcoord2=new JLabel("x coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
-		lblYcoord2=new JLabel("y coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
-		lblZcoord2=new JLabel("z coordinate (p2)", Icons.ABOUT, JLabel.LEFT);
+		lblXcoord1=new JLabel("x coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblYcoord1=new JLabel("y coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblZcoord1=new JLabel("z coordinate (p1)", Icons.ABOUT, SwingConstants.LEFT);
+		lblXcoord2=new JLabel("x coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
+		lblYcoord2=new JLabel("y coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
+		lblZcoord2=new JLabel("z coordinate (p2)", Icons.ABOUT, SwingConstants.LEFT);
 		
 				
 		this.txtXcoord1 = new JFormattedTextField(new DecimalFormat());

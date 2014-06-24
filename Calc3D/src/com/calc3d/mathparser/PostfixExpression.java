@@ -87,6 +87,7 @@ public final class PostfixExpression extends AbstractExpression implements Calcu
 	 * 
 	 * @return the result
 	 */
+	@Override
 	public double calculate() {
 		return calculate(null);
 	}
@@ -122,6 +123,7 @@ public final class PostfixExpression extends AbstractExpression implements Calcu
 		return stack.pop();
 	}
 
+	@Override
 	public void setVariable(String name, double value) {
 		variableValues.put(name, value);
 	}

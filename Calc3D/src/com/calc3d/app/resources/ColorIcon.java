@@ -13,15 +13,18 @@ import javax.swing.Icon;
 	  this.color=color;
   }
 
-  public int getIconHeight() {
+  @Override
+public int getIconHeight() {
     return 20;
   }
 
-  public int getIconWidth() {
+  @Override
+public int getIconWidth() {
     return 20;
   }
 
-  public void paintIcon(Component c, Graphics g, int x, int y) {
+  @Override
+public void paintIcon(Component c, Graphics g, int x, int y) {
     g.setColor(color);
     g.fillRect(2, 2, 16, 16);
     g.setColor(Color.black);

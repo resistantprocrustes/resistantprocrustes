@@ -1,7 +1,5 @@
 package com.calc3d.app.elements;
 
-import java.awt.Color;
-
 import com.calc3d.app.Globalsettings;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;

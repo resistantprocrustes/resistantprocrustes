@@ -55,13 +55,15 @@ public class ExpressionBuilder {
 
 		try {
 			CustomFunction maxFunc = new CustomFunction("max",2) {
-			    public double applyFunction(double[] values) {
+			    @Override
+				public double applyFunction(double[] values) {
 			              return Math.max(values[0],values[1]);
 			        }
 			};
 			customFunctions.add(maxFunc);
 			CustomFunction minFunc = new CustomFunction("min",2) {
-			    public double applyFunction(double[] values) {
+			    @Override
+				public double applyFunction(double[] values) {
 			    	      return Math.min(values[0],values[1]);
 			        }
 			};

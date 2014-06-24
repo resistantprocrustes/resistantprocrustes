@@ -3,6 +3,7 @@ package com.calc3d.app.panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JComboBox;
@@ -11,6 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.resources.Icons;
@@ -39,12 +42,12 @@ public class Implicit3DPanel extends Object3DCreatePanel  {
 	
 	public Implicit3DPanel(Element3DImplicit object3D){
 		surface3D=object3D;
-		lblExpression=new JLabel("Expression", Icons.ABOUT, JLabel.LEFT);
-		lblGridX=new JLabel("xCubes", Icons.ABOUT, JLabel.LEFT);
-		lblGridY=new JLabel("ycubes", Icons.ABOUT, JLabel.LEFT);
-		lblGridZ=new JLabel("zcubes", Icons.ABOUT, JLabel.LEFT);
+		lblExpression=new JLabel("Expression", Icons.ABOUT, SwingConstants.LEFT);
+		lblGridX=new JLabel("xCubes", Icons.ABOUT, SwingConstants.LEFT);
+		lblGridY=new JLabel("ycubes", Icons.ABOUT, SwingConstants.LEFT);
+		lblGridZ=new JLabel("zcubes", Icons.ABOUT, SwingConstants.LEFT);
 		
-		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, JLabel.LEFT);
+		lblDrawMode=new JLabel(Messages.getString("panel.body.drawmode"), Icons.ABOUT, SwingConstants.LEFT);
 		
 		spinGridX=new JSpinner();
 		spinGridX.setModel(new javax.swing.SpinnerNumberModel(15, 1, 100, 1));

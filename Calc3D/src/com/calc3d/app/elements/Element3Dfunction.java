@@ -239,7 +239,7 @@ public class Element3Dfunction extends Element3D {
 		
 		//Iterate through each line/statement
 		for (int i = 0; i < lines.size(); i++) {
-			str = (String) lines.get(i);
+			str = lines.get(i);
 			//Each line is of form <variable=expression>
 			//Split variable and expression
 			String s[] = str.split("=");

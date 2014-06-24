@@ -2,7 +2,6 @@ package com.calc3d.app.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -91,7 +90,7 @@ public class Object3DgeneralPanel extends JPanel implements InputPanel,ActionLis
 
 		String name = object3d.getName();
 		body=object3d;
-		this.lblName = new JLabel(Messages.getString("panel.body.name"), Icons.ABOUT, JLabel.LEFT);
+		this.lblName = new JLabel(Messages.getString("panel.body.name"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblName.setToolTipText(Messages.getString("panel.body.name.tooltip"));
 		this.txtName = new JTextField(name);
 		this.txtName.addFocusListener(new SelectTextFocusListener(this.txtName));
@@ -109,9 +108,9 @@ public class Object3DgeneralPanel extends JPanel implements InputPanel,ActionLis
 		});
 		
 		isCurve=commonUtils.isCurve(object3d);
-		this.lblCurveWidth= new JLabel(Messages.getString("panel.body.curvewidth"), Icons.ABOUT, JLabel.LEFT);
-		this.lblDashed= new JLabel(Messages.getString("panel.body.dashed"), Icons.ABOUT, JLabel.LEFT);
-		this.lblSplittable= new JLabel("Splittable", Icons.ABOUT, JLabel.LEFT);
+		this.lblCurveWidth= new JLabel(Messages.getString("panel.body.curvewidth"), Icons.ABOUT, SwingConstants.LEFT);
+		this.lblDashed= new JLabel(Messages.getString("panel.body.dashed"), Icons.ABOUT, SwingConstants.LEFT);
+		this.lblSplittable= new JLabel("Splittable", Icons.ABOUT, SwingConstants.LEFT);
 		
 		this.spinCurveWidth=new JSpinner();
 		this.spinCurveWidth.setBorder(null);
@@ -130,7 +129,7 @@ public class Object3DgeneralPanel extends JPanel implements InputPanel,ActionLis
 		// the color panel
 		this.lblSample = new JLabel(Messages.getString("panel.body.color.sample"));
 		this.lblSample.setForeground(ColorUtils.getForegroundColorFromBackgroundColor((body.getFillColor())));
-		this.lblSample.setHorizontalAlignment(JLabel.CENTER);
+		this.lblSample.setHorizontalAlignment(SwingConstants.CENTER);
 		this.pnlColor = new JPanel();
 		this.pnlColor.setBackground(object3d.getFillColor());
 		this.pnlColor.setBorder(BorderFactory.createLineBorder(body.getLineColor(), 3));
@@ -139,21 +138,21 @@ public class Object3DgeneralPanel extends JPanel implements InputPanel,ActionLis
 		this.pnlColor.add(this.lblSample, BorderLayout.CENTER);
 		
 		// outline color
-		this.lblLineColor = new JLabel(Messages.getString("panel.body.color.outline"), Icons.ABOUT, JLabel.LEFT);
+		this.lblLineColor = new JLabel(Messages.getString("panel.body.color.outline"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblLineColor.setToolTipText(Messages.getString("panel.body.color.outline.tooltip"));
 		this.btnOutlineColor = new JButton(Messages.getString("button.select"));
 		this.btnOutlineColor.setActionCommand("outlineColor");
 		this.btnOutlineColor.addActionListener(this);
 		
 		// fill color1
-		this.lblFillColor = new JLabel(Messages.getString("panel.body.color.fill"), Icons.ABOUT, JLabel.LEFT);
+		this.lblFillColor = new JLabel(Messages.getString("panel.body.color.fill"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblFillColor.setToolTipText(Messages.getString("panel.body.color.fill.tooltip"));
 		this.btnFillColor = new JButton(Messages.getString("button.select"));
 		this.btnFillColor.setActionCommand("fillColor");
 		this.btnFillColor.addActionListener(this);
 		
 		// fill color2
-		this.lblBackColor = new JLabel(Messages.getString("panel.body.color.fill"), Icons.ABOUT, JLabel.LEFT);
+		this.lblBackColor = new JLabel(Messages.getString("panel.body.color.fill"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblBackColor.setToolTipText(Messages.getString("panel.body.color.fill.tooltip"));
 		this.btnBackColor = new JButton(Messages.getString("button.select"));
 		this.btnBackColor.setActionCommand("backColor");

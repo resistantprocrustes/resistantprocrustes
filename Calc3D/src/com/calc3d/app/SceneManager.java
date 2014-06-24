@@ -1,12 +1,19 @@
 package com.calc3d.app;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.smurn.jply.ElementReader;
+import org.smurn.jply.PlyReader;
+import org.smurn.jply.PlyReaderFile;
+
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCurve;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.elements.Element3DLine;
 import com.calc3d.app.elements.Element3DLineSegment;
+import com.calc3d.app.elements.Element3DMesh;
 import com.calc3d.app.elements.Element3DParametricSurface;
 import com.calc3d.app.elements.Element3DPlane;
 import com.calc3d.app.elements.Element3DPolygon;
@@ -87,7 +94,7 @@ public class SceneManager  {
 		ec.setBackColor(Color.orange);
 		ec.setCurveWidth(2);
 		ec.setName("Helix");
-		element3Ds.add(ec);
+		//element3Ds.add(ec);
 		//addElement(ec);
 		
 		//addElement(new Element3DObject(4,3,1,9));
@@ -97,10 +104,64 @@ public class SceneManager  {
 		
 		//addElement(ec);
 		//Add Demo Plane
-		Element3DPlane ep=new Element3DPlane(1,0,1,0);
-		ep.setFillColor(Color.pink);
-		//ep.setName("saas");
-		initialiseElement3D(ep);
+		
+		/**
+		 * Levantamiento de superficie dada por un ply
+		 */
+		PlyReader ply;
+		try {
+			String file = getClass().getResource("/com/calc3d/app/resources/mono4.ply").getPath();
+			ply = new PlyReaderFile(file);
+//			ply = new NormalizingPlyReader(ply,
+//		            TesselationMode.PASS_THROUGH,
+//		            NormalMode.ADD_NORMALS_CCW,
+//		            TextureMode.XY
+//		        );
+			//getAllPoints
+			boolean exit = false;
+			Vector3D[] points = new Vector3D[ply.getElementCount("vertex")];
+			ElementReader elementReader = ply.nextElementReader();
+			int[][] indices = new int[ply.getElementCount("face")][3];
+			while(elementReader != null){
+				
+				if(elementReader.getElementType().getName().equalsIgnoreCase("vertex")){
+					org.smurn.jply.Element element = elementReader.readElement();
+					int i = 0;
+					while(element != null){
+						points[i] = new Vector3D(element.getDouble("x"),element.getDouble("y"), element.getDouble("z")).scale(0.02);
+						i++;
+						element = elementReader.readElement();
+					}
+					
+
+				}
+				
+				
+				if(elementReader.getElementType().getName().equals("face")){
+					org.smurn.jply.Element element = elementReader.readElement();
+					
+					int i = 0;
+					while(element != null){
+						indices[i] = element.getIntList("vertex_indices");
+						i++;
+						element = elementReader.readElement();
+					}
+				}
+				elementReader.close();
+				elementReader = ply.nextElementReader();
+				
+			}
+			ply.close();
+
+			Element3DMesh mesh = new Element3DMesh(points, indices);
+			mesh.setFillColor(Color.gray);
+			addElement(mesh);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		//addElement(ep);
 		//Add Demo Vector
 		Element3DVector ev=new Element3DVector(1,0.3,0.8);
@@ -143,7 +204,7 @@ public class SceneManager  {
 		ef1.setName("Open pot");
 		ef1.setLineColor(new Color(109,95,163));
 		ef1.setFillmode(0);
-		element3Ds.add(ef1);
+		//element3Ds.add(ef1);
 			//Element3Dfunction ef1=new Element3Dfunction("u=-2+4*u; v=-2+4*v\n\nx=u-(u*u*u/3)+u*v*v\ny=v-(v*v*v/3)+u*u*v\nz=u*u-v*v\n\nn=10; x=x/n; y=y/n; z=z/n");
 		Element3Dfunction ef2=new Element3Dfunction("u=u*6.28;v=v*6.28;x=(3 + sin(v) + cos(u)) * sin(2 * v);y=(3 + sin(v) + cos(u)) * cos(2 * v);z=sin(u) + 2 * cos(v);x=x/1.3;y=y/1.3;z=z/1.3;");
 		ef2.setName("Closed loop");

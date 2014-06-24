@@ -10,14 +10,13 @@ import java.text.MessageFormat;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
-import com.calc3d.math.AffineTransform3D;
 import com.calc3d.math.Angles3D;
 import com.calc3d.math.Vector3D;
 
@@ -101,14 +100,14 @@ public class TransformPanel extends JPanel implements InputPanel {
 		this.setLayout(layout);
 		
 			
-		this.lblT = new JLabel(Messages.getString("panel.transform.translation"), Icons.ABOUT, JLabel.LEFT);
+		this.lblT = new JLabel(Messages.getString("panel.transform.translation"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblT.setToolTipText(MessageFormat.format(Messages.getString("panel.transform.translation.tooltip"), Messages.getString("unit.length")));
 		this.lblX = new JLabel(Messages.getString("x"));
 		this.lblY = new JLabel(Messages.getString("y"));
 		this.lblZ = new JLabel("z");
 		
 	
-		this.lblR = new JLabel(Messages.getString("panel.transform.rotation"), Icons.ABOUT, JLabel.LEFT);
+		this.lblR = new JLabel(Messages.getString("panel.transform.rotation"), Icons.ABOUT, SwingConstants.LEFT);
 		this.lblR.setToolTipText(MessageFormat.format(Messages.getString("panel.transform.rotation.tooltip") +"(about Coordinate axis)", Messages.getString("unit.rotation")));
 		
 		this.lblRX = new JLabel(Messages.getString("x"));

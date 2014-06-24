@@ -1,6 +1,5 @@
 package com.calc3d.app.panels;
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 

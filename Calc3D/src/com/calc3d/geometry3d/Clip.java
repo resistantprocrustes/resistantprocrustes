@@ -1,7 +1,5 @@
 package com.calc3d.geometry3d;
 
-import java.awt.Color;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.calc3d.engine3d.Camera3D;

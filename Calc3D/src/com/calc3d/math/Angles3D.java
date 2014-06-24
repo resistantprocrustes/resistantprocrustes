@@ -139,6 +139,7 @@ public final class Angles3D implements Serializable
 	
 	
 	
+	@Override
 	public String toString()
 	{
 		StringBuilder buf = new StringBuilder(24);

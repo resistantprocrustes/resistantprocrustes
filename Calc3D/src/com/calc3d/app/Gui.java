@@ -3,10 +3,7 @@ package com.calc3d.app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -15,26 +12,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,30 +39,25 @@ import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.LookAndFeel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.event.TreeModelListener;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.TreePath;
 
 import org.ejml.simple.SimpleMatrix;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
-import org.jdesktop.swingx.treetable.TreeTableModel;
-
-import sun.reflect.generics.tree.Tree;
-
 import com.calc3d.app.dialogs.AboutDialog;
 import com.calc3d.app.dialogs.AddObjectDialog;
 import com.calc3d.app.dialogs.HelpDialog;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCurve;
-import com.calc3d.app.elements.Element3DEntity;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.elements.Element3DLine;
 import com.calc3d.app.elements.Element3DObject;
@@ -726,7 +709,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		
 		this.setJMenuBar(this.barMenu);
 				
-		this.fileToolbar = new JToolBar(Messages.getString("toolbar.file"), JToolBar.HORIZONTAL);
+		this.fileToolbar = new JToolBar(Messages.getString("toolbar.file"), SwingConstants.HORIZONTAL);
 		//this.fileToolbar.setFloatable(false);
 		
 		this.btnNew = new JButton(Icons.NEW);
@@ -815,7 +798,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		fileToolbar.add(this.tglBox);
 		fileToolbar.add(this.tglGridXY);
 		
-		this.editToolbar = new JToolBar(Messages.getString("toolbar.edit"), JToolBar.HORIZONTAL);
+		this.editToolbar = new JToolBar(Messages.getString("toolbar.edit"), SwingConstants.HORIZONTAL);
 		this.editToolbar.setFloatable(true);
 		this.btnAddPoint = new JButton(Icons.ADDPOINT);
 		this.btnAddPoint.addActionListener(this);
@@ -1001,7 +984,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
         editorPane.setBorder(BorderFactory.createEmptyBorder(3, 5, 5, 0));
          JScrollPane editorScrollPane = new JScrollPane(editorPane);
         editorScrollPane.setVerticalScrollBarPolicy(
-                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         editorScrollPane.setPreferredSize(new Dimension(250, 145));
         editorScrollPane.setMinimumSize(new Dimension(10, 10));
         editorScrollPane.setEnabled(false);
@@ -1031,7 +1014,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 //        
         JScrollPane paneScrollPane = new JScrollPane(treeTable);
         paneScrollPane.setVerticalScrollBarPolicy(
-                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         paneScrollPane.setPreferredSize(new Dimension(250, 155));
         paneScrollPane.setMinimumSize(new Dimension(10, 10));
@@ -1105,7 +1088,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		// let the methods in this class handle closing the window
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
-	            public void windowClosing(WindowEvent e){ 
+	            @Override
+				public void windowClosing(WindowEvent e){ 
 	                close();
 	            }
 	    });
@@ -1152,7 +1136,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 					UIManager.setLookAndFeel(className);
 					Globalsettings.lookandFeel=UIManager.getLookAndFeel().getName();
 					// get the current windows open by this application
-					Window windows[] = Frame.getWindows();
+					Window windows[] = Window.getWindows();
 					// update the ui
 			        for(Window window : windows){ 
 			            SwingUtilities.updateComponentTreeUI(window);
@@ -1773,7 +1757,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 								mnuLookAndFeel.getItem(i).setIcon(Icons.CHECK);
 								// get the current windows open by this
 								// application
-								Window windows[] = Frame.getWindows();
+								Window windows[] = Window.getWindows();
 								// update the ui
 								for (Window window : windows) {
 									SwingUtilities
@@ -1940,7 +1924,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			if(col == 2 && node instanceof Element3D){
 				Element3D elem = (Element3D) node;
 				boolean val  = Boolean.getBoolean(value.toString());
-				elem.setVisible((Boolean)val);
+				elem.setVisible(val);
         	    sceneManager.createScene(false);
         	    canvas3D.setScene(sceneManager.createScene(false));
      	        canvas3D.refresh();
@@ -1970,19 +1954,23 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	        	this.data = data ;
 	        }
 	        
-	        public int getColumnCount() {
+	        @Override
+			public int getColumnCount() {
 	            return columnNames.length;
 	        }
 
-	        public int getRowCount() {
+	        @Override
+			public int getRowCount() {
 	            return data.length;
 	        }
 
-	        public String getColumnName(int col){ 
+	        @Override
+			public String getColumnName(int col){ 
 	            return columnNames[col];
 	        }
 
-	        public Object getValueAt(int row, int col){ 
+	        @Override
+			public Object getValueAt(int row, int col){ 
 	            return data[row][col];
 	        }
 
@@ -1992,7 +1980,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	         * then the last column would contain text ("true"/"false"),
 	         * rather than a check box.
 	         */
-	        public Class getColumnClass(int c) {
+	        @Override
+			public Class getColumnClass(int c) {
 	        	Object a = getValueAt(0, c);
 	            return getValueAt(0, c).getClass();
 	        }
@@ -2001,7 +1990,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	         * Don't need to implement this method unless your table's
 	         * editable.
 	         */
-	        public boolean isCellEditable(int row, int col){ 
+	        @Override
+			public boolean isCellEditable(int row, int col){ 
 	            //Note that the data/cell address is constant,
 	            //no matter where the cell appears onscreen.
 	            if (col == 2 || col == 0) {
@@ -2015,7 +2005,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	         * Don't need to implement this method unless your table's
 	         * data can change.
 	         */
-	        public void setValueAt(Object value, int row, int col){ 
+	        @Override
+			public void setValueAt(Object value, int row, int col){ 
 	            if (DEBUG) {
 	                System.out.println("Setting value at " + row + "," + col
 	                                   + " to " + value
@@ -2031,7 +2022,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	            	    sceneManager.createScene(false);
 	            	    canvas3D.setScene(sceneManager.createScene(false));
 	         	        canvas3D.refresh();
-	            	    System.out.println("Visibility of row:" + row +"="+(Boolean)value);
+	            	    System.out.println("Visibility of row:" + row +"="+value);
 	             }
 	             
 	             if (DEBUG){

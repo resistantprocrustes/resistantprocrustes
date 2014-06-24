@@ -8,7 +8,6 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.panels.ColorIcon;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.geometry3d.Box3D;
@@ -374,7 +373,8 @@ public class SettingsDialog extends JDialog {
 
         btnAutoClip.setText("Auto Compute");
         btnAutoClip.addActionListener(new java.awt.event.ActionListener(){ 
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAutoClipActionPerformed(evt);
             }
         });
@@ -542,7 +542,8 @@ public class SettingsDialog extends JDialog {
 
         chkEnableFog.setText("Enable fog");
         chkEnableFog.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkEnableFogActionPerformed(evt);
             }
         });
@@ -829,21 +830,24 @@ public class SettingsDialog extends JDialog {
 
         btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
         btnOk.setText("OK");
         btnOk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt){ 
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt){ 
                 btnOkActionPerformed(evt);
             }
         });
 
         btnApply.setText("Apply");
         btnApply.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnApplyActionPerformed(evt);
             }
         });
@@ -942,7 +946,8 @@ public class SettingsDialog extends JDialog {
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
-            public void run() {
+            @Override
+			public void run() {
                 new SettingsDialog().setVisible(true);
             }
         });

@@ -3,15 +3,10 @@ package com.calc3d.renderer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
 
-import com.calc3d.geometry3d.Element;
-import com.calc3d.geometry3d.ElementCurve;
-import com.calc3d.geometry3d.ElementRect;
-import com.calc3d.geometry3d.ElementString;
 import com.calc3d.log.Logger;
 import com.calc3d.math.Vector3D;
 

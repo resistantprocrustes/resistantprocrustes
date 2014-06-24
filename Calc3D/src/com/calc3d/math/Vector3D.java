@@ -173,7 +173,8 @@ public class Vector3D implements Constants, Serializable{
     /**
      * returns a copy of this vector
      */
-    public Vector3D clone() {
+    @Override
+	public Vector3D clone() {
        return new Vector3D(this);
     }
   

@@ -170,7 +170,7 @@ public class commonUtils {
 		}else if (element instanceof Element3DParametricSurface){
 			return "Paramteric Surface3D";
 		}else if (element instanceof Element3DObject){
-			return ((Element3DObject)element).getObjectName(((Element3DObject)element).getObjectCode());
+			return Element3DObject.getObjectName(((Element3DObject)element).getObjectCode());
 		}else if (element instanceof Element3DPolygon){
 			return "Polygon 3D";
 		}else if (element instanceof Element3DImplicit){

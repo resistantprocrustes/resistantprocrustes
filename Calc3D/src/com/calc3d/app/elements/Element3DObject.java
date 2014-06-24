@@ -10,7 +10,6 @@ import com.calc3d.geometry3d.ElementCollection;
 import com.calc3d.geometry3d.ElementPoly;
 import com.calc3d.log.Logger;
 import com.calc3d.math.Vector3D;
-import com.calc3d.utils.ColorUtils;
 
 /**
  * Class for 3D Premitives

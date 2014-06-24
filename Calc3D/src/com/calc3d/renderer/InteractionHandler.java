@@ -116,7 +116,8 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	        running = false;
 	    }
 	
-	    public void run() /*
+	    @Override
+		public void run() /*
 	     * /* Repeatedly: update, render, sleep so loop takes close to period ms
 	     */ {
 	        running = true;
@@ -189,6 +190,7 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 		}
 	}
 
+	@Override
 	public void keyPressed(KeyEvent e) {
 
 		if (null != iSurface) {
@@ -280,6 +282,7 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 		refreshDisplay();
 	}
 
+	@Override
 	public void keyReleased(KeyEvent e) {
 		//reset Keyboard variables
 		switch (e.getKeyCode()) {
@@ -311,10 +314,12 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	}
 
 	
+	@Override
 	public void keyTyped(KeyEvent arg0) {
 	}
 
 	
+	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (!iSurface.stereoEnabled)
 			return;
@@ -325,12 +330,15 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 		refreshDisplay();
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent arg0) {
 	}
 
+	@Override
 	public void mouseExited(MouseEvent arg0) {
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e) {
 		iSurface.requestFocus();
 		iMouseXY.setLocation(e.getX(), e.getY());
@@ -344,6 +352,7 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	}
 
 	
+	@Override
 	public void mouseReleased(MouseEvent e) {
         //this event is being used for autorotation of Canvas3D
 		//Perform autorotation only when leftMouse button is used
@@ -392,6 +401,7 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	}
 
 	
+	@Override
 	public void mouseDragged(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
@@ -471,10 +481,12 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	}
 
 	
+	@Override
 	public void mouseMoved(MouseEvent arg0) {
 	}
 
 	
+	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		Camera3D camera = iSurface.getCamera();
 		if (null != camera) {
@@ -505,6 +517,7 @@ public final class InteractionHandler implements KeyListener, MouseListener,
 	private class TimerListener implements ActionListener {
 		private long lastTime = 0;
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			camera = iSurface.getCamera();
 			long curTime = System.currentTimeMillis();

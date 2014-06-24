@@ -1,9 +1,6 @@
 package com.calc3d.geometry3d;
 
-import java.util.ArrayList;
-
 import com.calc3d.math.AffineTransform3D;
-import com.calc3d.math.Vector3D;
 
 public class ElementEntity extends Element {
 

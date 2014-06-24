@@ -6,12 +6,14 @@ import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import com.calc3d.app.Globalsettings;
 import com.calc3d.app.commonUtils;
@@ -78,11 +80,11 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		this.pnlObject=new JPanel();
 		pnlObject.setLayout(new BorderLayout());
 		pnlObject.add(pnlObjectCreate);
-		lblInfo=new JLabel(commonUtils.getobject3DIcon(element),JLabel.LEFT);
+		lblInfo=new JLabel(commonUtils.getobject3DIcon(element),SwingConstants.LEFT);
 		lblInfo.setText("<html> <b>"+commonUtils.getobject3DName(element) +"</b><br>" +commonUtils.getobject3DInfo(element)+"</html>");
-		lblInfo.setAlignmentX(JLabel.LEFT);
-		lblInfo.setVerticalAlignment(JLabel.TOP);
-		lblInfo.setHorizontalAlignment(JLabel.LEFT);
+		lblInfo.setAlignmentX(SwingConstants.LEFT);
+		lblInfo.setVerticalAlignment(SwingConstants.TOP);
+		lblInfo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfo.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
 		//lblInfo.setHorizontalTextPosition(JLabel.LEFT);
 		//Set the position of the text, relative to the icon:

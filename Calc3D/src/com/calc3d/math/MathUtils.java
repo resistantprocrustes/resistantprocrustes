@@ -6,8 +6,8 @@ public class MathUtils {
 	public static final double PI = 3.14159265358979;
 	public static final double HALF_PI = Math.PI / 2;
 	public static final double e = 2.71;
-	public static final double RADIANS_PER_DEGREE = (double)(PI / 180.0);
-	public static final double DEGREES_PER_RADIAN = (double)(180.0F / PI);
+	public static final double RADIANS_PER_DEGREE = PI / 180.0;
+	public static final double DEGREES_PER_RADIAN = 180.0F / PI;
 	
 	public static final int UNIQUE_SOLUTION=0;
 	public static final int NO_SOLUTION=1;

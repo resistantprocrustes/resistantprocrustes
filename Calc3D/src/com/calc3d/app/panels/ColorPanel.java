@@ -12,6 +12,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -78,10 +79,10 @@ public class ColorPanel extends JPanel {
 		this.color = initialColor;
 		
 		// setup the labels
-		this.lblRed = new JLabel(Messages.getString("panel.color.red"), Icons.ABOUT, JLabel.LEFT);
-		this.lblGreen = new JLabel(Messages.getString("panel.color.green"), Icons.ABOUT, JLabel.LEFT);
-		this.lblBlue = new JLabel(Messages.getString("panel.color.blue"), Icons.ABOUT, JLabel.LEFT);
-		this.lblAlpha = new JLabel(Messages.getString("panel.color.alpha"), Icons.ABOUT, JLabel.LEFT);
+		this.lblRed = new JLabel(Messages.getString("panel.color.red"), Icons.ABOUT, SwingConstants.LEFT);
+		this.lblGreen = new JLabel(Messages.getString("panel.color.green"), Icons.ABOUT, SwingConstants.LEFT);
+		this.lblBlue = new JLabel(Messages.getString("panel.color.blue"), Icons.ABOUT, SwingConstants.LEFT);
+		this.lblAlpha = new JLabel(Messages.getString("panel.color.alpha"), Icons.ABOUT, SwingConstants.LEFT);
 		
 		this.lblRed.setToolTipText(Messages.getString("panel.color.red.tooltip"));
 		this.lblGreen.setToolTipText(Messages.getString("panel.color.green.tooltip"));
