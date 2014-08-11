@@ -8,6 +8,7 @@ import org.ejml.simple.SimpleMatrix;
 import com.calc3d.app.Globalsettings;
 import com.calc3d.app.Preferences;
 import com.calc3d.app.elements.Element3D;
+import com.calc3d.app.elements.Element3DDataSet;
 import com.calc3d.app.elements.Element3DEntity;
 import com.calc3d.app.elements.Element3DPoint;
 import com.calc3d.geometry3d.Box3D;
@@ -82,15 +83,17 @@ public class Commons {
 		Preferences preferences = Globalsettings.getSettings();
 		double maxX, maxY, maxZ, minX, minY, minZ;
 		maxX = maxY = maxZ = minX = minY = minZ = 0;
-		for(int i=0; i<list.size() -1; i++){
- 			Vector3D maxVal =  list.get(i).getMaxBound();
-			Vector3D minVal = list.get(i).getMinBound();
-			maxX = maxX < maxVal.getX() ? maxVal.getX() : maxX;
-			maxY = maxY < maxVal.getY() ? maxVal.getY() : maxY;
-			maxZ = maxZ < maxVal.getZ() ? maxVal.getZ() : maxZ;
-			minX = minX > minVal.getX() ? minVal.getX() : minX;
-			minY = minY > minVal.getY() ? minVal.getY() : minY;
-			minZ = minZ > minVal.getZ() ? minVal.getZ() : minZ;
+		for(int i=0; i<list.size(); i++){
+			if(list.get(i).isVisible()){
+	 			Vector3D maxVal =  list.get(i).getMaxBound();
+				Vector3D minVal = list.get(i).getMinBound();
+				maxX = maxX < maxVal.getX() ? maxVal.getX() : maxX;
+				maxY = maxY < maxVal.getY() ? maxVal.getY() : maxY;
+				maxZ = maxZ < maxVal.getZ() ? maxVal.getZ() : maxZ;
+				minX = minX > minVal.getX() ? minVal.getX() : minX;
+				minY = minY > minVal.getY() ? minVal.getY() : minY;
+				minZ = minZ > minVal.getZ() ? minVal.getZ() : minZ;
+			}
 		}
 		double min, max;
 		max = Math.max(Math.max(maxX, maxY), maxZ);
@@ -100,5 +103,40 @@ public class Commons {
 		preferences.setClipBox(axesBox);
 		return preferences;
 		
+	}
+
+	public static ArrayList<Element3D> loadDataSet(
+			ArrayList<PCEntity> matrix) {
+		
+		ArrayList<PCEntity> entities = matrix;
+		ArrayList<Element3D> list = new ArrayList<Element3D>();
+		Element3DDataSet dataSet = new Element3DDataSet();
+		for(int i=0; i<entities.size(); i++){
+			Element3DEntity especimen = new Element3DEntity();
+			especimen.setName("Especimen "+ i);
+			ArrayList<Landmark> lms = entities.get(i).getLandmarks();
+			int R = 128 + (int) (Math.random() * 128);
+			int G = 128 + (int) (Math.random() * 128);
+			int B = 128 + (int) (Math.random() * 128);
+			Color entityColor = new Color(R, G, B); 
+			for(int j=0; j<lms.size(); j++){
+				String name = "E" + i + "-LM" + j;
+				double[] coords = lms.get(j).getCoordinates();
+				double zCoord = coords.length == 3 ? coords[2] : 0;
+				Element3DPoint point = new Element3DPoint(coords[0], coords[1], zCoord);
+				point.setFillColor(entityColor);
+				point.setLineColor(entityColor);
+				point.setText("");
+				point.setRadius(3);
+				point.setName(name);
+				especimen.addPoint(point);
+			}
+			especimen.setBackColor(entityColor);
+			especimen.setFillColor(entityColor);
+			especimen.setLineColor(entityColor);
+			dataSet.addEntitie(especimen);
+		}
+		list.add(dataSet);
+		return list;
 	}
 }

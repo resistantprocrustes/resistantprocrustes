@@ -108,59 +108,59 @@ public class SceneManager  {
 		/**
 		 * Levantamiento de superficie dada por un ply
 		 */
-		PlyReader ply;
-		try {
-			String file = getClass().getResource("/com/calc3d/app/resources/mono4.ply").getPath();
-			ply = new PlyReaderFile(file);
-//			ply = new NormalizingPlyReader(ply,
-//		            TesselationMode.PASS_THROUGH,
-//		            NormalMode.ADD_NORMALS_CCW,
-//		            TextureMode.XY
-//		        );
-			//getAllPoints
-			boolean exit = false;
-			Vector3D[] points = new Vector3D[ply.getElementCount("vertex")];
-			ElementReader elementReader = ply.nextElementReader();
-			int[][] indices = new int[ply.getElementCount("face")][3];
-			while(elementReader != null){
-				
-				if(elementReader.getElementType().getName().equalsIgnoreCase("vertex")){
-					org.smurn.jply.Element element = elementReader.readElement();
-					int i = 0;
-					while(element != null){
-						points[i] = new Vector3D(element.getDouble("x"),element.getDouble("y"), element.getDouble("z")).scale(0.02);
-						i++;
-						element = elementReader.readElement();
-					}
-					
-
-				}
-				
-				
-				if(elementReader.getElementType().getName().equals("face")){
-					org.smurn.jply.Element element = elementReader.readElement();
-					
-					int i = 0;
-					while(element != null){
-						indices[i] = element.getIntList("vertex_indices");
-						i++;
-						element = elementReader.readElement();
-					}
-				}
-				elementReader.close();
-				elementReader = ply.nextElementReader();
-				
-			}
-			ply.close();
-
-			Element3DMesh mesh = new Element3DMesh(points, indices);
-			mesh.setFillColor(Color.gray);
-			addElement(mesh);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		PlyReader ply;
+//		try {
+//			String file = getClass().getResource("/com/calc3d/app/resources/mono4.ply").getPath();
+//			ply = new PlyReaderFile(file);
+////			ply = new NormalizingPlyReader(ply,
+////		            TesselationMode.PASS_THROUGH,
+////		            NormalMode.ADD_NORMALS_CCW,
+////		            TextureMode.XY
+////		        );
+//			//getAllPoints
+//			boolean exit = false;
+//			Vector3D[] points = new Vector3D[ply.getElementCount("vertex")];
+//			ElementReader elementReader = ply.nextElementReader();
+//			int[][] indices = new int[ply.getElementCount("face")][3];
+//			while(elementReader != null){
+//				
+//				if(elementReader.getElementType().getName().equalsIgnoreCase("vertex")){
+//					org.smurn.jply.Element element = elementReader.readElement();
+//					int i = 0;
+//					while(element != null){
+//						points[i] = new Vector3D(element.getDouble("x"),element.getDouble("y"), element.getDouble("z")).scale(0.02);
+//						i++;
+//						element = elementReader.readElement();
+//					}
+//					
+//
+//				}
+//				
+//				
+//				if(elementReader.getElementType().getName().equals("face")){
+//					org.smurn.jply.Element element = elementReader.readElement();
+//					
+//					int i = 0;
+//					while(element != null){
+//						indices[i] = element.getIntList("vertex_indices");
+//						i++;
+//						element = elementReader.readElement();
+//					}
+//				}
+//				elementReader.close();
+//				elementReader = ply.nextElementReader();
+//				
+//			}
+//			ply.close();
+//
+//			Element3DMesh mesh = new Element3DMesh(points, indices);
+//			mesh.setFillColor(Color.gray);
+//			addElement(mesh);
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		//addElement(ep);
 		//Add Demo Vector

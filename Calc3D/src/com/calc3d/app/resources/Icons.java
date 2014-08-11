@@ -201,4 +201,8 @@ public class Icons {
 	/**Forward navigation Icon */
 	public static final ImageIcon FORWARD = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/forward-icon.png");
 
+	public static final ImageIcon CM = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/Letter-A-icon.png");
+	
+	public static final ImageIcon ROB = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/Letter-B-icon.png");
+	
 }

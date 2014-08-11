@@ -1,6 +1,7 @@
 package com.calc3d.app;
 
 import java.awt.BorderLayout;
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,9 +20,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,6 +42,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.JTree;
 import javax.swing.LookAndFeel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -47,12 +52,15 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import org.ejml.simple.SimpleMatrix;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
+
 import com.calc3d.app.dialogs.AboutDialog;
 import com.calc3d.app.dialogs.AddObjectDialog;
 import com.calc3d.app.dialogs.HelpDialog;
@@ -83,6 +91,7 @@ import com.calc3d.renderer.InteractionHandler;
 import com.calc3d.renderer.Renderer;
 import com.calc3d.utils.ColorUtils;
 import com.example.Algorithms.CM;
+import com.example.Algorithms.Robusto;
 import com.example.loaders.FileLoader;
 import com.example.loaders.ILoadedDocument;
 import com.example.loaders.PCEntity;
@@ -241,6 +250,13 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	private JXTreeTable treeTable;
 	
 	private JButton btnLoad;
+	
+	private JButton btnCMAnalisys;
+	
+	private JButton btnRobAnalisys;
+	
+	//TODO Cambiar para que sea mas dinamico
+	private ArrayList<PCEntity> entities;
 	
 	/** The Edit_addCurve2d_cartesian toolbar button */
 	private JButton btnAddCurve2d_cartesian;
@@ -722,6 +738,16 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		this.btnLoad.setActionCommand("load");
 		this.btnLoad.setToolTipText(Messages.getString("toolbar.file.load"));
 		
+		this.btnCMAnalisys = new JButton(Icons.CM);
+		this.btnCMAnalisys.addActionListener(this);
+		this.btnCMAnalisys.setActionCommand("CMAnalysis");
+		this.btnLoad.setToolTipText("CM");
+		
+		this.btnRobAnalisys = new JButton(Icons.ROB);
+		this.btnRobAnalisys.addActionListener(this);
+		this.btnRobAnalisys.setActionCommand("RobAnalysis");
+		this.btnRobAnalisys.setToolTipText("Analisis Robusto");
+		
 		this.btnOpen = new JButton(Icons.OPEN);
 		this.btnOpen.addActionListener(this);
 		this.btnOpen.setActionCommand("open");
@@ -787,6 +813,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		fileToolbar.add(this.btnPrint);
 		fileToolbar.add(this.btnExport);
 		fileToolbar.add(this.btnLoad);
+		fileToolbar.add(this.btnCMAnalisys);
+		fileToolbar.add(this.btnRobAnalisys);
 		fileToolbar.addSeparator();
 		fileToolbar.add(btnPreferences);
 		fileToolbar.add(this.btnZoomOut);
@@ -992,8 +1020,17 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
         
         //Create a table pane.
         treeTable = new JXTreeTable(new TreeTableModel(new ArrayList<Element3D>()));
+//        JTree jTree = (JTree) treeTable.getDefaultRenderer(TreeTableModel.class);
+//        jTree.setCellRenderer(new TreeCellRenderer());
+//        treeTable.setTreeCellRenderer(new TreeCellRenderer());
+//        treeTable.getTreeCellRenderer();
+//        TableColumn selCol = treeTable.getColumnModel().getColumn(3);
+//        JCheckBox cb = new JCheckBox();
+//        cb.setHorizontalAlignment(SwingConstants.CENTER); // without this, checkbox move to left during click
+//        selCol.setCellEditor(new DefaultCellEditor(cb));
         TableColumnModel cModel = treeTable.getColumnModel();
         treeTable.setPreferredScrollableViewportSize(new Dimension(120, 120));
+        treeTable.setTreeCellRenderer(new TreeCellRenderer());
         treeTable.setAutoscrolls(true);
         treeTable.addMouseListener(this);
         treeTable.setRootVisible(false);
@@ -1169,6 +1206,53 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			  Globalsettings.steroscopyEnabled=!canvas3D.getRenderer().isStereoscopyEnabled();
 			  canvas3D.getRenderer().setStereoscopyEnabled(!canvas3D.getRenderer().isStereoscopyEnabled());
 			  this.tgl3D.setSelected(Globalsettings.steroscopyEnabled);
+		}else if(command == "CMAnalysis"){
+				//TODO mas dinamico
+				ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
+				for(PCEntity entity : entities){
+	    			SimpleMatrix matAux = new SimpleMatrix(entity.toMatrix());
+	    			matrix.add(matAux);
+	    		}
+				CM cm = new CM();
+	    		ArrayList<SimpleMatrix> res = cm.proc2012cm(matrix); 
+	    		result = new ProcrustesResult(res);
+	    		ArrayList<Element3D> list = Commons.resultToElement3D(result);
+	    		((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
+//	    		sceneManager.getElement3DList().clear();
+	    		sceneManager.getElement3DList().addAll(list);
+	    		  //Preferences preferences=(Preferences) is.readObject();
+	    		Preferences preferences = Globalsettings.getSettings();
+	    		preferences = Commons.setPreferences(sceneManager.getElement3DList());
+	    		  preferences.setLookandFeel(Globalsettings.lookandFeel);
+	    		  applySettings(preferences,true,true);
+	    		  //canvas3D.setScene(sceneManager.createScene(true));
+	 	          //canvas3D.refresh();
+	 	          updateTable();
+//	 	          setLastFileName(fileName);
+	 	          dirty=false;
+		}else if(command=="RobAnalysis"){
+			ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
+			for(PCEntity entity : entities){
+    			SimpleMatrix matAux = new SimpleMatrix(entity.toMatrix());
+    			matrix.add(matAux);
+    		}
+			Robusto cm = new Robusto();
+    		ArrayList<SimpleMatrix> res = cm.execute(matrix); 
+    		result = new ProcrustesResult(res);
+    		ArrayList<Element3D> list = Commons.resultToElement3D(result);
+    		((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
+//    		sceneManager.getElement3DList().clear();
+    		sceneManager.getElement3DList().addAll(list);
+    		  //Preferences preferences=(Preferences) is.readObject();
+    		Preferences preferences = Globalsettings.getSettings();
+    		preferences = Commons.setPreferences(sceneManager.getElement3DList());
+    		  preferences.setLookandFeel(Globalsettings.lookandFeel);
+    		  applySettings(preferences,true,true);
+    		  //canvas3D.setScene(sceneManager.createScene(true));
+ 	          //canvas3D.refresh();
+ 	          updateTable();
+// 	          setLastFileName(fileName);
+ 	          dirty=false;
 		}else if(command=="light"){
 			  canvas3D.getRenderer().setLightsEnabled(!canvas3D.getRenderer().isLightsEnabled());
 			  this.tglLight.setSelected(canvas3D.getRenderer().isLightsEnabled());
@@ -1559,19 +1643,16 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	        	FileLoader loader = new FileLoader(new TpsInterpreter());
 	        	ILoadedDocument doc = loader.Load(fileName);
 	        	ArrayList<PCEntity> entities = doc.getEntitiesList();
-	    		ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
-	    		for(PCEntity entity : entities){
-	    			SimpleMatrix matAux = new SimpleMatrix(entity.toMatrix());
-	    			matrix.add(matAux);
-	    		}
+	        	this.entities = entities;
+//	    		ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
+//	    		
 	    		//TODO separar accion procesar
-	    		CM cm = new CM();
-	    		ArrayList<SimpleMatrix> res = cm.proc2012cm(matrix); 
-	    		result = new ProcrustesResult(res);
+	    		
 	    		  //ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileName));
 	    		  //ArrayList<Element3D> list=(ArrayList<Element3D>) is.readObject();
 	    		
-	    		  ArrayList<Element3D> list = Commons.resultToElement3D(result);
+//	    		  ArrayList<Element3D> list = Commons.resultToElement3D(result);
+	    		ArrayList<Element3D> list = Commons.loadDataSet(entities);
 	    		  ((TreeTableModel) treeTable.getTreeTableModel()).setData(list);
 	    		  sceneManager.getElement3DList().clear();
 	    		  sceneManager.getElement3DList().addAll(list);
@@ -1630,7 +1711,9 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
     		ArrayList<Object> rowData = new ArrayList<Object>();
     		rowData.add(commonUtils.getobject3DIcon(elem));
     		rowData.add(elem.getName());
-    		rowData.add(elem.isVisible());
+    		Checkbox checkbox = new Checkbox();
+    		checkbox.setVisible(elem.isVisible());
+    		rowData.add(checkbox);
 //     	   data[acum][0]  =commonUtils.getobject3DIcon(sceneManager.getElement3D(i));
 //     	   data[acum][1]  =sceneManager.getElement3D(i).getName();
 //     	   data[acum][2]  =sceneManager.getElement3D(i).isVisible();
@@ -1816,7 +1899,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	
 	class TreeTableModel extends AbstractTreeTableModel{
 
-		private String[] columnNames = {"Type",
+		private String[] columnNames = {
                 "Element3D", 
                 "Show"};
 		
@@ -1827,6 +1910,11 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			rootElements = elems;
 		}
 		
+		public void addData(ArrayList<Element3D> list) {
+			rootElements.addAll(list);
+			
+		}
+
 		public void setData(ArrayList<Element3D> elems){
 			rootElements = elems;
 		}
@@ -1853,10 +1941,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			Element3D element = (Element3D)node;
 			switch(col){
 			case 0:
-				return commonUtils.getAddobject3DIcon(element);
-			case 1:
 		     	   return element.getName();
-			case 2: 
+			case 1: 
 				return element.isVisible();
 			}
 			return "b";
@@ -1873,7 +1959,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
         public boolean isCellEditable(Object node, int col){ 
             //Note that the data/cell address is constant,
             //no matter where the cell appears onscreen.
-            if (node instanceof Element3D && col == 2) {
+            if (node instanceof Element3D && col == 1) {
                 return true;
             } else {
                 return false;
@@ -1891,6 +1977,13 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			return false;
 			
 		}
+		
+		 @Override
+		public Class getColumnClass(int c) {
+        	if(c == 1)
+        		return Boolean.class;
+            return getValueAt(0, c).getClass();
+        }
 		
 		@Override
 		public Object getChild(Object parent, int index){ 
@@ -1921,14 +2014,16 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		
 		@Override
 		public void setValueAt(Object value, Object node, int col){
-			if(col == 2 && node instanceof Element3D){
+			if(col == 1 && node instanceof Element3D){
 				Element3D elem = (Element3D) node;
-				boolean val  = Boolean.getBoolean(value.toString());
+				boolean val  = (Boolean)value;
 				elem.setVisible(val);
         	    sceneManager.createScene(false);
         	    canvas3D.setScene(sceneManager.createScene(false));
+        	    Preferences preferences = Globalsettings.getSettings();
+     	        preferences = Commons.setPreferences(sceneManager.getElement3DList());
      	        canvas3D.refresh();
-     	        String name = elem.getName();
+     	        String name = elem.getName(); 
         	    System.out.println("Visibility of:" + elem.getName() +"="+(Boolean)val);
 			}
 		}
@@ -2098,6 +2193,23 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		Element3D node = (Element3D) path.getLastPathComponent();
 		  editorPane.setText(commonUtils.getobject3DInfoHTML(node));
 		  editorPane.updateUI();
+	}
+	
+	class TreeCellRenderer extends DefaultTreeCellRenderer{
+		
+		
+		
+		@Override
+		public Component  getTreeCellRendererComponent(JTree tree, Object value, 
+				boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){
+			
+			if( value instanceof Element3D){
+				this.setIcon(commonUtils.getobject3DIcon((Element3D)value));
+				this.setText(((Element3D)value).getName());
+			}
+			return this;
+			
+		}
 	}
  
 	 
