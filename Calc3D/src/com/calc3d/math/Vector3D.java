@@ -40,6 +40,23 @@ public class Vector3D implements Constants, Serializable{
         z = 0;
     }
     
+    /**
+     * creates vector from double array
+     * 
+     * @param vec array with 2 or 3 dimensions
+     * @return new Vector
+     * @throws Exception 
+     */
+    public Vector3D(double[] vec) throws Exception{
+    	try{
+    		x = vec[0];
+    		y = vec[1];
+    		z = vec.length>2 ? vec[2] : 0;
+    	}catch(Exception e){
+    		throw e;
+    	}
+    }
+    
      /**
      * creating a vector
      *
@@ -562,4 +579,9 @@ public class Vector3D implements Constants, Serializable{
    public String getPointText(){
 	   return "("+ x + "," + y + "," + z + ")";
    }
+
+	public double[] getArray() {
+		
+		return new double[]{x, y, z};
+	}
 }

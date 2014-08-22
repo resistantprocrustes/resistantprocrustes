@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -63,9 +64,11 @@ import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 
 import com.calc3d.app.dialogs.AboutDialog;
 import com.calc3d.app.dialogs.AddObjectDialog;
+import com.calc3d.app.dialogs.AddProjectionDialog;
 import com.calc3d.app.dialogs.HelpDialog;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCurve;
+import com.calc3d.app.elements.Element3DDataSet;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.elements.Element3DLine;
 import com.calc3d.app.elements.Element3DObject;
@@ -73,6 +76,8 @@ import com.calc3d.app.elements.Element3DParametricSurface;
 import com.calc3d.app.elements.Element3DPlane;
 import com.calc3d.app.elements.Element3DPoint;
 import com.calc3d.app.elements.Element3DPolygon;
+import com.calc3d.app.elements.Element3DProcrustesResult;
+import com.calc3d.app.elements.Element3DProjection;
 import com.calc3d.app.elements.Element3DSurface;
 import com.calc3d.app.elements.Element3DVector;
 import com.calc3d.app.elements.Element3Dcartesian2D;
@@ -91,7 +96,12 @@ import com.calc3d.renderer.InteractionHandler;
 import com.calc3d.renderer.Renderer;
 import com.calc3d.utils.ColorUtils;
 import com.example.Algorithms.CM;
+import com.example.Algorithms.IProcrustesCalculator;
 import com.example.Algorithms.Robusto;
+import com.example.Algorithms.distances.MediumRepitedDistances;
+import com.example.Algorithms.projections.EuclideanProjection;
+import com.example.Algorithms.projections.ICalcProjection;
+import com.example.Algorithms.projections.ProjectionFactory;
 import com.example.loaders.FileLoader;
 import com.example.loaders.ILoadedDocument;
 import com.example.loaders.PCEntity;
@@ -768,11 +778,6 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		this.btnExport.setActionCommand("export");
 		this.btnExport.setToolTipText(Messages.getString("toolbar.file.export"));
 		
-		this.btnPreferences = new JButton(Icons.PREFERENCES);
-		this.btnPreferences.addActionListener(this);
-		this.btnPreferences.setActionCommand("preferences");
-		this.btnPreferences.setToolTipText(Messages.getString("toolbar.file.preferences"));
-		
 		this.btnZoomOut = new JButton(Icons.ZOOM_OUT);
 		this.btnZoomOut.setToolTipText(Messages.getString("toolbar.preferences.zoomOut"));
 		this.btnZoomOut.setActionCommand("zoomout");
@@ -815,8 +820,14 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		fileToolbar.add(this.btnLoad);
 		fileToolbar.add(this.btnCMAnalisys);
 		fileToolbar.add(this.btnRobAnalisys);
+		
+		btnP = new JButton("P");
+		btnP.addActionListener(this);
+		btnP.setActionCommand("addProjection");
+		
+		
+		fileToolbar.add(btnP);
 		fileToolbar.addSeparator();
-		fileToolbar.add(btnPreferences);
 		fileToolbar.add(this.btnZoomOut);
 		fileToolbar.add(this.btnZoomIn);
 		
@@ -976,7 +987,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		pnlToolBar.setLayout(new GridLayout(2, 1));
 		pnlToolBar.add(fileToolbar);
 		pnlToolBar.add(editToolbar);
-		this.add(pnlToolBar,BorderLayout.NORTH);
+		getContentPane().add(pnlToolBar,BorderLayout.NORTH);
 		
 		canvas3D=new Canvas3D();
 		canvas3D.setBorder(BorderFactory.createLoweredSoftBevelBorder());
@@ -990,7 +1001,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		//setFocusable(true);
 		//.setf
 		canvas3D.setInteractionHandler(new InteractionHandler());
-		this.add(canvas3D);
+		getContentPane().add(canvas3D);
 		
 		pnlInfo=new JPanel();
 		pnlTransform = new JPanel();
@@ -1020,14 +1031,6 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
         
         //Create a table pane.
         treeTable = new JXTreeTable(new TreeTableModel(new ArrayList<Element3D>()));
-//        JTree jTree = (JTree) treeTable.getDefaultRenderer(TreeTableModel.class);
-//        jTree.setCellRenderer(new TreeCellRenderer());
-//        treeTable.setTreeCellRenderer(new TreeCellRenderer());
-//        treeTable.getTreeCellRenderer();
-//        TableColumn selCol = treeTable.getColumnModel().getColumn(3);
-//        JCheckBox cb = new JCheckBox();
-//        cb.setHorizontalAlignment(SwingConstants.CENTER); // without this, checkbox move to left during click
-//        selCol.setCellEditor(new DefaultCellEditor(cb));
         TableColumnModel cModel = treeTable.getColumnModel();
         treeTable.setPreferredScrollableViewportSize(new Dimension(120, 120));
         treeTable.setTreeCellRenderer(new TreeCellRenderer());
@@ -1035,6 +1038,13 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
         treeTable.addMouseListener(this);
         treeTable.setRootVisible(false);
         treeTable.setVisible(true);
+        treeTable.addTreeSelectionListener(new customSelectionListener(this.btnP));
+        
+        this.btnPreferences = new JButton(Icons.PREFERENCES);
+        this.btnPreferences.addActionListener(this);
+        this.btnPreferences.setActionCommand("preferences");
+        this.btnPreferences.setToolTipText(Messages.getString("toolbar.file.preferences"));
+        fileToolbar.add(btnPreferences);
 //        cModel.getColumn(0).setMinWidth(cModel.getColumn(0).getMinWidth());
 //        cModel.getColumn(2).setMinWidth(cModel.getColumn(2).getMinWidth());
         
@@ -1074,7 +1084,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	   //JSplitPane pneSplit1 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, table, txtInfo);
 	  // pneSplit1.setDividerLocation(200);
 		//this.add(pnlLeft,BorderLayout.WEST);
-	    this.add(leftPane,BorderLayout.WEST);
+	    getContentPane().add(leftPane,BorderLayout.WEST);
 		
 		JSplitPane pneSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, canvas3D);
 		// setup the layout
@@ -1092,11 +1102,11 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 				.addComponent(pnlToolBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 				.addComponent(pneSplit));
 		*/
-		this.setLayout(new BorderLayout());
-		this.add(pnlToolBar,BorderLayout.NORTH);
-		this.add(pneSplit,BorderLayout.CENTER);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(pnlToolBar,BorderLayout.NORTH);
+		getContentPane().add(pneSplit,BorderLayout.CENTER);
 		
-		this.add(statusBar, BorderLayout.SOUTH);
+		getContentPane().add(statusBar, BorderLayout.SOUTH);
 
 		//size everything
 		this.pack();
@@ -1106,6 +1116,9 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		canvas3D.setScene(sceneManager.createScene(true));//ObjectFactory.createDemo());
 		canvas3D.setRequestFocusEnabled(false);
 		canvas3D.setFocusable(true);
+		
+		scrollPane = new JScrollPane();
+		canvas3D.add(scrollPane);
 		canvas3D.requestFocus();
 		
 		canvas3D.getRenderer().setBackgroundColor(Globalsettings.backgroundColor);
@@ -1216,9 +1229,11 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 				CM cm = new CM();
 	    		ArrayList<SimpleMatrix> res = cm.proc2012cm(matrix); 
 	    		result = new ProcrustesResult(res);
-	    		ArrayList<Element3D> list = Commons.resultToElement3D(result);
+	    		ArrayList<Element3D> list = new ArrayList<Element3D>();
+	    		Element3D elementProcrustesResult = new Element3DProcrustesResult(result);
+	    		elementProcrustesResult.setName("Procrustes Clasico");
+	    		list.add(elementProcrustesResult);
 	    		((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
-//	    		sceneManager.getElement3DList().clear();
 	    		sceneManager.getElement3DList().addAll(list);
 	    		  //Preferences preferences=(Preferences) is.readObject();
 	    		Preferences preferences = Globalsettings.getSettings();
@@ -1239,9 +1254,11 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			Robusto cm = new Robusto();
     		ArrayList<SimpleMatrix> res = cm.execute(matrix); 
     		result = new ProcrustesResult(res);
-    		ArrayList<Element3D> list = Commons.resultToElement3D(result);
+    		ArrayList<Element3D> list = new ArrayList<Element3D>();
+    		Element3D elementProcrustesResult = new Element3DProcrustesResult(result);
+    		elementProcrustesResult.setName("ProcrustesRobusto");
+    		list.add(elementProcrustesResult);
     		((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
-//    		sceneManager.getElement3DList().clear();
     		sceneManager.getElement3DList().addAll(list);
     		  //Preferences preferences=(Preferences) is.readObject();
     		Preferences preferences = Globalsettings.getSettings();
@@ -1296,6 +1313,34 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			  sceneManager.addElement(element);
 			  canvas3D.setScene(sceneManager.createScene(false));
     	      canvas3D.refresh();
+		}else if(command=="addProjection"){
+			  int i=this.treeTable.getSelectedRow();
+			  TreePath path = treeTable.getPathForRow(i);
+			  Element3D selected = (Element3DProcrustesResult) path.getLastPathComponent();
+			  Element3D element = new Element3DProjection();
+			  element = AddObjectDialog.show(this, element);
+			  int typeOp = ((Element3DProjection) element).getTypeOp();
+			  ICalcProjection calculator = ProjectionFactory.create(typeOp);
+			  MediumRepitedDistances distCalc = new MediumRepitedDistances();
+			  ArrayList<SimpleMatrix> matrixEntities = ((Element3DProcrustesResult) selected).getEntities();
+			  double[][] d = distCalc.calculate(matrixEntities);
+			  Random r = new Random();
+				double[][] X0 = new double[d[0].length][2];
+				SimpleMatrix rMat = SimpleMatrix.random(d[0].length, 2, 0, 1, r);
+				for(i=0; i<d[0].length;i++){
+					for(int j=0; j<2;j++){
+						X0[i][j] = rMat.get(i,j);
+					}
+				}
+			  ArrayList<org.apache.commons.math3.geometry.euclidean.threed.Vector3D> projections = calculator.execute(new SimpleMatrix(d), new SimpleMatrix(X0));
+			  ((Element3DProjection) element).populateProjections(projections, selected);
+			  if (null==element)return;
+			  ArrayList<Element3D> list = new ArrayList<Element3D>();
+			  list.add(element);
+			  ((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
+			  sceneManager.addElement(element);
+			  canvas3D.setScene(sceneManager.createScene(false));
+   	          canvas3D.refresh();
 		}else if (command=="addpolygon"){
 			  Element3D element=new Element3DPolygon(ElementPoly.createUnitCirclePolygon(3, 4, 0));
 			  element.setName("Polygon3D");
@@ -1505,7 +1550,6 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		if (command.startsWith("add"))updateTable();
 	}
 	
-	
 	private void initialiseElement3D(Element3D element3D){
 	// check if we need to randomize colors
 			sceneManager.setValidName(element3D);
@@ -1557,6 +1601,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	 */
 	private String lastDirectory=null;
 	private String lastFileName=null;
+	private JScrollPane scrollPane;
+	private JButton btnP;
 	
 	  
     // Just in case I decide to put filename on title bar
@@ -2186,9 +2232,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		TreeTableModel model = (TreeTableModel) treeTable.getTreeTableModel();
 		 int i=treeTable.getSelectedRow();
 		 if (i<0)return;
-//		 int j = table.getSelectedColumn();
-//		 Element3D element = sceneManager.getElement3D(i);
-//		 boolean composed = element.isElementContainer();
+		 
 		TreePath path = treeTable.getPathForRow(i);
 		Element3D node = (Element3D) path.getLastPathComponent();
 		  editorPane.setText(commonUtils.getobject3DInfoHTML(node));
@@ -2196,9 +2240,7 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	}
 	
 	class TreeCellRenderer extends DefaultTreeCellRenderer{
-		
-		
-		
+
 		@Override
 		public Component  getTreeCellRendererComponent(JTree tree, Object value, 
 				boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus){

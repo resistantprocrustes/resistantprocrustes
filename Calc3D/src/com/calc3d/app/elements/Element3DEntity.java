@@ -2,14 +2,17 @@ package com.calc3d.app.elements;
 
 import java.util.ArrayList;
 
+import org.ejml.simple.SimpleMatrix;
+
 import com.calc3d.app.Globalsettings;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
 import com.calc3d.geometry3d.ElementPoint;
 import com.calc3d.math.Vector3D;
+import com.calc3d.utils.IMatrixable;
 
-public class Element3DEntity extends Element3D {
+public class Element3DEntity extends Element3D implements IMatrixable<double[][]>{
 
 	private Element _entityElement;
 	private ArrayList<Element3DPoint> _points;
@@ -28,6 +31,17 @@ public class Element3DEntity extends Element3D {
 	
 	
 	
+	public Element3DEntity(SimpleMatrix simpleMatrix) {
+		_points = new ArrayList<Element3DPoint>();
+		for(int i=0; i<simpleMatrix.numRows(); i++){
+			try {
+				_points.add(new Element3DPoint(new Vector3D(simpleMatrix.extractVector(true, i).getMatrix().getData())));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@Override
 	public String getDefinition() {
 		
@@ -111,6 +125,18 @@ public class Element3DEntity extends Element3D {
 			_points.get(i).setVisible(visible);
 		}
 	}
+
+	@Override
+	public double[][] toMatrix() {
+		double[][] aux = new double[_points.size()][3];
+		for(int i=0; i<_points.size(); i++){
+			aux[i] = _points.get(i).getPoint().getArray();
+		}
+		return aux;
+	}
+
+
+
 	
 	
 	

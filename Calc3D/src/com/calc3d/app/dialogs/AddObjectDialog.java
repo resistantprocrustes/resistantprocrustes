@@ -135,7 +135,8 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 			this.canceled = true;
 		} else {
 			// check the body input
-			if (this.pnlObjectCreate.isValidInput()) {
+			boolean validImput = this.pnlObjectCreate.isValidInput(); 
+			if (validImput) {
 				// check the transform input
 				if (this.pnlTransform.isValidInput()) {
 					// if its valid then close the dialog
@@ -160,7 +161,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	public static final Element3D show(Window owner,Element3D object3D) {
 		AddObjectDialog dialog = new AddObjectDialog(owner,object3D);
 		dialog.setLocationRelativeTo(owner);
-		dialog.setIconImage(commonUtils.getAddobject3DIcon(object3D).getImage());//Icons.ADDCURVE3D.getImage());
+		dialog.setIconImage(Icons.ADDCURVE3D.getImage());//Icons.ADDCURVE3D.getImage());
 		dialog.setVisible(true);
 		
 		// control returns to this method when the dialog is closed

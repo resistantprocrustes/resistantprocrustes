@@ -10,6 +10,7 @@ import com.calc3d.app.elements.Element3DLineSegment;
 import com.calc3d.app.elements.Element3DParametricSurface;
 import com.calc3d.app.elements.Element3DPlane;
 import com.calc3d.app.elements.Element3DPoint;
+import com.calc3d.app.elements.Element3DProjection;
 import com.calc3d.app.elements.Element3DSurface;
 import com.calc3d.app.elements.Element3DVector;
 import com.calc3d.app.elements.Element3Dcartesian2D;
@@ -30,6 +31,7 @@ import com.calc3d.app.panels.Point3DPanel;
 import com.calc3d.app.panels.Polygon3DPanel;
 import com.calc3d.app.panels.Primitives3DPanel;
 import com.calc3d.app.panels.Function3DPanel;
+import com.calc3d.app.panels.Projection3DPanel;
 import com.calc3d.app.panels.Surface3DPanel;
 import com.calc3d.app.panels.Vector3DPanel;
 import com.calc3d.app.resources.Icons;
@@ -67,6 +69,8 @@ public class commonUtils {
 			return new Function3DPanel((Element3Dfunction)element);
 		}else if (element instanceof Element3DImplicit){
 			return new Implicit3DPanel((Element3DImplicit)element);
+		}else if(element instanceof Element3DProjection){
+			return new Projection3DPanel((Element3DProjection) element);
 		}else{
 			return null;
 		}

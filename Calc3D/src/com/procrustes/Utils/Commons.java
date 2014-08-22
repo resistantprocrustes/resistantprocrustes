@@ -134,9 +134,13 @@ public class Commons {
 			especimen.setBackColor(entityColor);
 			especimen.setFillColor(entityColor);
 			especimen.setLineColor(entityColor);
-			dataSet.addEntitie(especimen);
+			dataSet.add(especimen);
 		}
 		list.add(dataSet);
 		return list;
 	}
+
+	
+	
+	
 }
