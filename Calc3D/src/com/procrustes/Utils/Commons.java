@@ -11,6 +11,10 @@ import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DDataSet;
 import com.calc3d.app.elements.Element3DEntity;
 import com.calc3d.app.elements.Element3DPoint;
+import com.calc3d.app.elements.dataset.DataSet;
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
+import com.calc3d.app.elements.simpleelements.LandmarkSimpleElement;
+import com.calc3d.app.elements.simpleelements.SampleSimpleElement;
 import com.calc3d.geometry3d.Box3D;
 import com.calc3d.math.Vector3D;
 import com.example.loaders.Landmark;
@@ -110,7 +114,6 @@ public class Commons {
 		
 		ArrayList<PCEntity> entities = matrix;
 		ArrayList<Element3D> list = new ArrayList<Element3D>();
-		Element3DDataSet dataSet = new Element3DDataSet();
 		for(int i=0; i<entities.size(); i++){
 			Element3DEntity especimen = new Element3DEntity();
 			especimen.setName("Especimen "+ i);
@@ -134,10 +137,18 @@ public class Commons {
 			especimen.setBackColor(entityColor);
 			especimen.setFillColor(entityColor);
 			especimen.setLineColor(entityColor);
-			dataSet.add(especimen);
+			list.add(especimen);
 		}
-		list.add(dataSet);
 		return list;
+	}
+
+	public static ComposeSimpleElement toPCEntity(ArrayList<SimpleMatrix> result) {
+		ComposeSimpleElement specimens = new ComposeSimpleElement("specimens");
+		for(int i=0; i<result.size();i++){
+			SimpleMatrix m = result.get(i);
+			specimens.addElement(new SampleSimpleElement("sample-"+i, m));
+		}
+		return specimens;
 	}
 
 	

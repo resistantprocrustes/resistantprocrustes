@@ -782,7 +782,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	 * @param centre centre of box whose edges contain rulers
 	 * @return
 	 */
-	private int getXAlignment(Vector3D v1, Vector3D v2,Vector3D centre){
+	public int getXAlignment(Vector3D v1, Vector3D v2,Vector3D centre){
 		if (v1.getX()>=centre.getX()){
 			if (v2.getX()>=centre.getX())
 				return Label.LEFT;

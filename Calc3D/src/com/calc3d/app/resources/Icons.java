@@ -205,4 +205,8 @@ public class Icons {
 	
 	public static final ImageIcon ROB = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/Letter-B-icon.png");
 	
+	public static final ImageIcon PROJECT = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/project.png");
+	
+	public static final ImageIcon DATASET = ImageUtils.getIconFromClassPathSuppressExceptions("/com/calc3d/app/resources/dataset.png");
+	
 }

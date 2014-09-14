@@ -38,6 +38,7 @@ import com.calc3d.utils.ColorUtils;
 
 public class SceneManager  {
 	private ArrayList<Element3D> element3Ds;
+	private ArrayList<Element3D> element3DsBuffer;
 
 	/**bounding box of scene, all element are clipped against this box*/
 	private Box3D box;
@@ -65,6 +66,7 @@ public class SceneManager  {
 		box=new Box3D(-1,1,-1,1,-1,1);
 		clip=new Clip(box);
 		axesDefinition=new AxesDefinition();
+		element3Ds = new ArrayList<Element3D>(); 
 	}
 	
 	public void createDemo(){
@@ -255,8 +257,7 @@ public class SceneManager  {
 		element3D.createElement(clip);
 	}
 	
-	
-	
+		
 	/**Removes element if found in list*/
 	public void removeElement(Element3D element3D){
 		element3Ds.remove(element3D);
@@ -356,21 +357,24 @@ public class SceneManager  {
 		if (gridXYVisible)	for (Element e:gridXY.elements)	object3D.addElement(e);
 		
 		//Add plane first so that number of intersection of polygons in bsp may be minimum
-		for(Element3D element3D:element3Ds){
-			if (null==element3D)continue;
-			if ((element3D.isVisible()==false) && (!reCreateEachElement)){
-				continue;}
-			if (element3D instanceof Element3DPlane ||element3D instanceof Element3DPolygon){
-			//Create Element again only when needed
-			Element e= reCreateEachElement?element3D.createElement(clip):element3D.getElement();
-			if ((e==null)&& !reCreateEachElement)e=element3D.createElement(clip);
-			if ((null!=e) && element3D.isVisible())object3D.addElement(e);
-			}
-		}
+//		for(Element3D element3D:element3Ds){
+//			if (null==element3D)continue;
+//			if ((element3D.isVisible()==false) && (!reCreateEachElement)){
+//				continue;}
+//			if (element3D instanceof Element3DPlane ||element3D instanceof Element3DPolygon){
+//			//Create Element again only when needed
+//			Element e= reCreateEachElement?element3D.createElement(clip):element3D.getElement();
+//			if ((e==null)&& !reCreateEachElement)e=element3D.createElement(clip);
+//			if ((null!=e) && element3D.isVisible())object3D.addElement(e);
+//			}
+//		}
 		
 	
 		//Add elements other than Plane
-		for(Element3D element3D:element3Ds){
+		int s = element3Ds.size();
+		ArrayList<Element3D> elems = new ArrayList<Element3D>(element3Ds);
+		for(int i=0;i<s; i++){
+			Element3D element3D = elems.get(i);
 			if (null==element3D)continue;
 			if ((element3D.isVisible()==false) && (!reCreateEachElement)){
 				continue;}
@@ -384,7 +388,58 @@ public class SceneManager  {
 			}else {
 				if (null!=e) object3D.addElement(e);
 			}
+			if(e==null){
+				this.element3Ds.add(element3D);
+			}
 		}
+	
+		//Add all elements to scene
+		scene.addObject3D(object3D);
+		return scene;
+		
+	}
+	
+	/**
+	 * Creates the scene (for 3D Engine) based on Element3Ds of this manager
+	 * @param reCreateEachElement Setting this true forces each Element3D to reCreate its renderable element
+	 * @return
+	 */
+	public Scene3D createScene(boolean reCreateEachElement, ArrayList<Element3D> elems){
+		Scene3D scene=new Scene3D();
+		Object3D<Element> object3D =new Object3D<Element>();
+		//Add axes whichever enable
+		createAxes();
+		//createBox(Color.blue);
+		createXYGrid(Color.green.darker().darker());
+		if (axisVisible)	for (Element e:axis3D.elements)	object3D.addElement(e);
+		
+		//if (boxVisible)		for (Element e:box3D.elements)	object3D.addElement(e);
+		
+		if (gridXYVisible)	for (Element e:gridXY.elements)	object3D.addElement(e);
+
+		
+	
+		//Add elements other than Plane
+		for(Element3D element3D:elems){
+
+			if (null==element3D)continue;
+			if ((element3D.isVisible()==false) && (!reCreateEachElement)){
+				continue;}
+			if (element3D instanceof Element3DPlane)continue;
+			//Create Element again only when needed
+			Element e= reCreateEachElement?element3D.createElement(clip):element3D.getElement();
+			if ((e==null)&& !reCreateEachElement)e=element3D.createElement(clip);
+			if ((e==null) || !element3D.isVisible()) continue;
+			if (e instanceof ElementCollection){
+				for (Element e1: ((ElementCollection)e).elements )if (null!=e1)object3D.addElement(e1);
+			}else {
+				if (null!=e) object3D.addElement(e);
+			}
+			if(e!=null){
+				this.element3Ds.add(element3D);
+			}
+		}
+		element3DsBuffer.clear();
 	
 		//Add all elements to scene
 		scene.addObject3D(object3D);

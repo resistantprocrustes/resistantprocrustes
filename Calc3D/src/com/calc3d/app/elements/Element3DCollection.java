@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
@@ -48,8 +50,8 @@ public class Element3DCollection extends Element3D implements Collection {
 		}
 		this.elementContainer = true;
 		
-		clip.getClippedElement(ec);
-		return ec;
+		Element elem = clip.getClippedElement(ec);
+		return elem;
 	}
 
 	@Override
@@ -129,6 +131,33 @@ public class Element3DCollection extends Element3D implements Collection {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+
+	@Override
+	public ArrayList<Element3D> getContainedElements(){
+		return elements;
+	}
+	
+	@Override 
+	public void setVisible(boolean visible){
+		super.setVisible(visible);
+		for(int i=0; i<elements.size(); i++){
+			elements.get(i).setVisible(visible);
+		}
+	}
+	
+	@Override
+	public Vector2D calculateCentroid(){
+		double[] center = new double[2];
+        for(Element3D elem : elements) {
+        	Vector2D auxCentroid = elem.calculateCentroid();
+        	center[0] += auxCentroid.getX();
+        	center[1] += auxCentroid.getY();
+        }
+        return new Vector2D(center[0] / elements.size(), center[1]/elements.size());
+
+	}
+	
 	
 	
 }

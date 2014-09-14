@@ -86,14 +86,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		lblInfo.setVerticalAlignment(SwingConstants.TOP);
 		lblInfo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblInfo.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
-		//lblInfo.setHorizontalTextPosition(JLabel.LEFT);
-		//Set the position of the text, relative to the icon:
-		//lblInfo.setVerticalTextPosition(JLabel.);
-		//lblInfo.setHorizontalTextPosition(JLabel.LEFT);
 		
-		//	"\n  Mahesh the hero \\\n\\ bahut bada");
-		//lblInfo.
-			
 		pnlObject.add(lblInfo,BorderLayout.NORTH);
 		tabs.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
 		tabs.addTab(Messages.getString("dialog.body.tab.element"), pnlObject);

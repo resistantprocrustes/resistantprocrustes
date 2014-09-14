@@ -1,10 +1,14 @@
 package com.calc3d.app.elements;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.ejml.simple.SimpleMatrix;
 
 import com.calc3d.app.Globalsettings;
+import com.calc3d.app.elements.simpleelements.LandmarkSimpleElement;
+import com.calc3d.app.elements.simpleelements.SampleSimpleElement;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
@@ -16,22 +20,24 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 
 	private Element _entityElement;
 	private ArrayList<Element3DPoint> _points;
- 	
+ 	private SampleSimpleElement sample;
 	public Element3DEntity(){
 		_points = new ArrayList<Element3DPoint>();
 	}
 	
 	public Element3DEntity(ArrayList<Element3DPoint> points){
-		
-//		_entityElement = new ElementEntity(points);
-		_points = points;
-		
-		
+				_points = points;
 	}
 	
 	
 	
 	public Element3DEntity(SimpleMatrix simpleMatrix) {
+		int R = 128 + (int) (Math.random() * 128);
+		int G = 128 + (int) (Math.random() * 128);
+		int B = 128 + (int) (Math.random() * 128);
+		Color entityColor = new Color(R, G, B); 
+		this.setFillColor(entityColor);
+		this.setLineColor(entityColor);
 		_points = new ArrayList<Element3DPoint>();
 		for(int i=0; i<simpleMatrix.numRows(); i++){
 			try {
@@ -40,6 +46,29 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Element3DEntity(SampleSimpleElement sample) {
+		this(new SimpleMatrix(sample.toMatrix()));
+		this.setName(sample.getName());
+		int R = 128 + (int) (Math.random() * 128);
+		int G = 128 + (int) (Math.random() * 128);
+		int B = 128 + (int) (Math.random() * 128);
+		Color entityColor = new Color(R, G, B); 
+		this.setFillColor(entityColor);
+		this.setLineColor(entityColor);
+		_points = new ArrayList<Element3DPoint>();
+		ArrayList<LandmarkSimpleElement> lms =  (ArrayList<LandmarkSimpleElement>) sample.getAllElements();
+		for(int i=0; i<lms.size(); i++){
+			try {
+				Element3DPoint point = new Element3DPoint(new Vector3D(lms.get(i).getCoords()));
+				point.setName(lms.get(i).getName());
+				_points.add(point);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 	@Override
@@ -69,14 +98,12 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 			npoint.setBackColor(this.backColor);
 			npoint.setFillColor(this.fillColor);
 			npoint.setRadius(5);
-//			npoint.setText(p.getPointText());
-//			npoint.setVisible(this.isVisible());
 			ec.addElement(npoint);
 		}
 		this.elementContainer = true;
 		
-		clip.getClippedElement(ec);
-		return ec;
+		Element elem = clip.getClippedElement(ec);
+		return elem;
 	}
 	
 	public void addPoint(Element3DPoint p){
@@ -135,6 +162,15 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 		return aux;
 	}
 
+	@Override
+	public Vector2D calculateCentroid(){
+		double[] center = new double[2];
+        for(Element3DPoint elem : _points) {
+        	center[0] += elem.getPoint().getX();
+        	center[1] += elem.getPoint().getY();
+        }
+        return new Vector2D(center[0] / _points.size(), center[1]/_points.size());
+	}
 
 
 	

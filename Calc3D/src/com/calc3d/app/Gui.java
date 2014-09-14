@@ -83,6 +83,10 @@ import com.calc3d.app.elements.Element3DVector;
 import com.calc3d.app.elements.Element3Dcartesian2D;
 import com.calc3d.app.elements.Element3Dfunction;
 import com.calc3d.app.elements.Element3Dimplicit2D;
+import com.calc3d.app.elements.dataset.DataSet;
+import com.calc3d.app.fileload.FileLoader;
+import com.calc3d.app.fileload.ILoadedFile;
+import com.calc3d.app.fileload.LoaderFactory;
 import com.calc3d.app.panels.ColorIcon;
 import com.calc3d.app.panels.StatusBarPanel;
 import com.calc3d.app.resources.Icons;
@@ -102,7 +106,6 @@ import com.example.Algorithms.distances.MediumRepitedDistances;
 import com.example.Algorithms.projections.EuclideanProjection;
 import com.example.Algorithms.projections.ICalcProjection;
 import com.example.Algorithms.projections.ProjectionFactory;
-import com.example.loaders.FileLoader;
 import com.example.loaders.ILoadedDocument;
 import com.example.loaders.PCEntity;
 import com.example.loaders.TpsInterpreter;
@@ -1220,7 +1223,6 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			  canvas3D.getRenderer().setStereoscopyEnabled(!canvas3D.getRenderer().isStereoscopyEnabled());
 			  this.tgl3D.setSelected(Globalsettings.steroscopyEnabled);
 		}else if(command == "CMAnalysis"){
-				//TODO mas dinamico
 				ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
 				for(PCEntity entity : entities){
 	    			SimpleMatrix matAux = new SimpleMatrix(entity.toMatrix());
@@ -1270,6 +1272,9 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
  	          updateTable();
 // 	          setLastFileName(fileName);
  	          dirty=false;
+		}else if(command=="procrustesanalysis"){
+//			  Element3D element = new Element3DDataSet(); 
+//			  element =  NewProcrustesAnalysisDialog.show(this, element);
 		}else if(command=="light"){
 			  canvas3D.getRenderer().setLightsEnabled(!canvas3D.getRenderer().isLightsEnabled());
 			  this.tglLight.setSelected(canvas3D.getRenderer().isLightsEnabled());
@@ -1487,7 +1492,9 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 			  newFile();
 		}
 		else if(command=="load"){
-			  loadFromFile();
+			  DataSet dataset = (DataSet)loadFromFile();
+			  Element3DDataSet dataSet3D = new Element3DDataSet(dataset);
+			  this.addElement3D(dataSet3D);
 		}else if(command=="save"){
 			  saveToFile(false);
 	    }else if(command=="saveas"){
@@ -1550,6 +1557,25 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 		if (command.startsWith("add"))updateTable();
 	}
 	
+	private void addElement3D(Element3D element) {
+		ArrayList<Element3D> list = new ArrayList<Element3D>();
+		list.add(element);
+		
+		  ((TreeTableModel) treeTable.getTreeTableModel()).addData(list);
+		  //sceneManager.getElement3DList().clear();
+		  sceneManager.getElement3DList().addAll(list);
+		  //Preferences preferences=(Preferences) is.readObject();
+		  Preferences preferences = Globalsettings.getSettings();
+		  preferences = Commons.setPreferences(list);
+		  preferences.setLookandFeel(Globalsettings.lookandFeel);
+		  applySettings(preferences,true,true);
+         updateTable();
+         dirty=false;
+		
+		
+	}
+
+
 	private void initialiseElement3D(Element3D element3D){
 	// check if we need to randomize colors
 			sceneManager.setValidName(element3D);
@@ -1674,8 +1700,8 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	/**
 	 * Shows load dialog and loads file if dialogue is not canceled
 	 */
-	 private void loadFromFile() {
-	        loadFromFile(getFileName(false,"tps","Open new file..."));
+	 private Object loadFromFile() {
+	        return loadFromFile(getFileName(false,"tps","Open new file..."));
 	 }
 	 
 	    
@@ -1683,38 +1709,31 @@ public class Gui extends JFrame implements ActionListener,  MouseListener{
 	  * Loads file if exits and valid
 	  * @param fileName file to be loaded
 	  */
-	 public void loadFromFile(String fileName) {
-	        if (fileName==null) return;
+	 public Object loadFromFile(String fileName) {
+	        if (fileName==null) return null;
 	        try {
-	        	FileLoader loader = new FileLoader(new TpsInterpreter());
-	        	ILoadedDocument doc = loader.Load(fileName);
-	        	ArrayList<PCEntity> entities = doc.getEntitiesList();
-	        	this.entities = entities;
-//	    		ArrayList<SimpleMatrix> matrix = new ArrayList<SimpleMatrix>();
-//	    		
-	    		//TODO separar accion procesar
-	    		
-	    		  //ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileName));
-	    		  //ArrayList<Element3D> list=(ArrayList<Element3D>) is.readObject();
-	    		
-//	    		  ArrayList<Element3D> list = Commons.resultToElement3D(result);
-	    		ArrayList<Element3D> list = Commons.loadDataSet(entities);
-	    		  ((TreeTableModel) treeTable.getTreeTableModel()).setData(list);
-	    		  sceneManager.getElement3DList().clear();
-	    		  sceneManager.getElement3DList().addAll(list);
-	    		  //Preferences preferences=(Preferences) is.readObject();
-	    		  Preferences preferences = Globalsettings.getSettings();
-	    		  preferences = Commons.setPreferences(list);
-	    		  preferences.setLookandFeel(Globalsettings.lookandFeel);
-	    		  applySettings(preferences,true,true);
-	    		  //canvas3D.setScene(sceneManager.createScene(true));
-	 	          //canvas3D.refresh();
-	 	          updateTable();
-	 	          setLastFileName(fileName);
-	 	          dirty=false;
+	        	FileLoader loader = LoaderFactory.create(fileName);
+	        	Object loadedFile = loader.load(fileName);
+	        	
+//	        	ArrayList<PCEntity> entities = doc.getEntitiesList();
+//	        	this.entities = entities;
+//	    		ArrayList<Element3D> list = Commons.loadDataSet(entities);
+//	    		  ((TreeTableModel) treeTable.getTreeTableModel()).setData(list);
+//	    		  sceneManager.getElement3DList().clear();
+//	    		  sceneManager.getElement3DList().addAll(list);
+//	    		  //Preferences preferences=(Preferences) is.readObject();
+//	    		  Preferences preferences = Globalsettings.getSettings();
+//	    		  preferences = Commons.setPreferences(list);
+//	    		  preferences.setLookandFeel(Globalsettings.lookandFeel);
+//	    		  applySettings(preferences,true,true);
+//	 	          updateTable();
+//	 	          setLastFileName(fileName);
+//	 	          dirty=false;
+	        	return loadedFile;
 			 } catch (Exception e) {
 				  JOptionPane.showMessageDialog(this,e.getMessage()+fileName,"Error",JOptionPane.ERROR_MESSAGE);
 			 }
+	        return null;
 	 }
 	 
 	 

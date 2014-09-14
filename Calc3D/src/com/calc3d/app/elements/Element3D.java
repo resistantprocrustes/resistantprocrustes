@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.math.AffineTransform3D;
@@ -253,6 +255,10 @@ import com.calc3d.math.Vector3D;
 	
 	public Vector3D getMaxBound(){
 		return new Vector3D(5,5,5);
+	}
+
+	public Vector2D calculateCentroid() {
+		return new Vector2D(0,0);
 	}
 	
 }

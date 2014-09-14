@@ -15,8 +15,11 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.calc3d.anaglyph.AnaglyphFactory;
+import com.calc3d.app.SceneManager;
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.engine3d.Camera3D;
 import com.calc3d.engine3d.Light3D;
 import com.calc3d.engine3d.Scene3D;
@@ -55,6 +58,8 @@ public final class Canvas3D extends JPanel implements Printable
 	BSPTree currenttree ;
 	BSPTreeTraverser bspTraverser;
 	private boolean isRendering=false;
+
+	private SceneManager sceneManager;
 	/**
 	 * Constructor.
 	 * 
@@ -352,6 +357,17 @@ public final class Canvas3D extends JPanel implements Printable
 		paintComponent(g2d);
 		/* tell the caller that this page is part of the printed document */
 		return PAGE_EXISTS;
+	}
+
+
+	public void addSceneManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
+		
+	}
+
+
+	public SceneManager getSceneManager() {
+		return sceneManager;
 	}
 
 }

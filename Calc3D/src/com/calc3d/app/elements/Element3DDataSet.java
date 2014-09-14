@@ -1,63 +1,49 @@
 package com.calc3d.app.elements;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.ejml.simple.SimpleMatrix;
 
 import com.calc3d.app.Globalsettings;
+import com.calc3d.app.elements.dataset.DataSet;
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
+import com.calc3d.app.elements.simpleelements.SampleSimpleElement;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
 import com.calc3d.geometry3d.ElementPoint;
 import com.calc3d.math.Vector3D;
 import com.calc3d.utils.IMatrixable;
+import com.example.loaders.PCEntity;
+import com.procrustes.Utils.Commons;
 
 public class Element3DDataSet extends Element3DCollection implements IMatrixable<double[][]> {
 
-	ArrayList<Element3D> entities;
-	ArrayList<SimpleMatrix> elems;
-	
-	public Element3DDataSet(ArrayList<SimpleMatrix> list){
-		this.elems = list;
-	}
+	ComposeSimpleElement dataset;
 	
 	public Element3DDataSet(){
-		entities = new ArrayList<Element3D>();
+		super();
 	}
 	
-	@Override
-	public String getDefinition() {
-		// TODO Auto-generated method stub
-		return "Dataset";
+	public Element3DDataSet(ComposeSimpleElement dataset) {
+		this.dataset = dataset;
+		ComposeSimpleElement specimens = ((ComposeSimpleElement) dataset.getElementByKey("specimens"));
+		if(specimens==null) return;
+		ArrayList<SampleSimpleElement> specimensList = (ArrayList<SampleSimpleElement>) specimens.getAllElements();
+		for(int i=0; i<specimens.size(); i++){
+			SampleSimpleElement sample = specimensList.get(i);
+			Element3DEntity specimen3D = new Element3DEntity(sample);
+			this.add(specimen3D);
+		}
+		String name = dataset.getName(); 
+		this.setName(name);
 	}
 
-//	@Override
-//	public Element createElement() {
-//		// TODO Auto-generated method stub
-//		ElementCollection ec = new ElementCollection();
-//		for(int i=0; i<entities.size(); i++){
-//			ec.addElement(entities.get(i).getElement());
-//		}
-//		this.elementContainer = true;
-//		return ec;
-//	}
-//
-//	@Override
-//	public Element createElement(Clip clip) {
-//		ElementCollection ec = new ElementCollection();
-//		if(T!=null)ec.transform(T);
-//		for(int i=0; i<entities.size(); i++){
-//			if(entities.get(i).isVisible())
-//				ec.addElement(entities.get(i).createElement(clip));
-//		}
-//		this.elementContainer = true;
-//		
-//		clip.getClippedElement(ec);
-//		return ec;
-//	}
-	
-	public void addEntitie(Element3DEntity e){
-		entities.add(e);
+	@Override
+	public String getDefinition() {
+		return "Dataset";
 	}
 	
 	@Override
@@ -83,22 +69,14 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 	}
 	
 	@Override
-	public ArrayList<Element3D> getContainedElements(){
-		return elements;
-	}
-	
-	@Override 
-	public void setVisible(boolean visible){
-		super.setVisible(visible);
-		for(int i=0; i<entities.size(); i++){
-			entities.get(i).setVisible(visible);
-		}
-	}
-
-	@Override
 	public double[][] toMatrix() {
 		
 		return null;
+	}
+	
+	
+	public ComposeSimpleElement getDataSet(){
+		return dataset;
 	}
 
 
