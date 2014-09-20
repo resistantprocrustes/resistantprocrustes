@@ -59,13 +59,13 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 	
 	@Override
 	public Vector3D getMinBound(){
-		Vector3D maxbound = new Vector3D(0,0,0);
+		Vector3D minbound = new Vector3D(0,0,0);
 		for(int i=0; i<elements.size(); i++){
-			Vector3D bound = elements.get(i).getMaxBound();
-			if(bound.getLength() < maxbound.getLength())
-				maxbound = bound;
+			Vector3D bound = elements.get(i).getMinBound();
+			minbound = new Vector3D(Math.min(bound.getX(), minbound.getX()),
+					Math.min(bound.getY(), minbound.getY()), Math.min(bound.getZ(), minbound.getZ()));
 		}
-		return maxbound;
+		return minbound;
 	}
 	
 	@Override

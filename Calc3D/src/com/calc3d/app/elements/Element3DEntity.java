@@ -92,6 +92,7 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 		ElementCollection ec = new ElementCollection();
 		if(T!=null)ec.transform(T);
 		for(int i=0; i<_points.size(); i++){
+			if(! _points.get(i).isVisible()) continue;
 			Vector3D p = _points.get(i).getPoint();
 			Vector3D tmpPoint = new Vector3D(Globalsettings.inverseMapX(p.getX()),Globalsettings.inverseMapY(p.getY()),Globalsettings.inverseMapZ(p.getZ()));
 			ElementPoint npoint = new ElementPoint(tmpPoint); 

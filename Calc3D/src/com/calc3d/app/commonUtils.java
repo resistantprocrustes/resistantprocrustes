@@ -21,6 +21,7 @@ import com.calc3d.app.elements.Element3Dfunction;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.panels.CartesianCurve2DPanel;
 import com.calc3d.app.panels.Curve3DPanel;
+import com.calc3d.app.panels.DistancePanel;
 import com.calc3d.app.panels.ImplicitCurve2DPanel;
 import com.calc3d.app.panels.Line3DPanel;
 import com.calc3d.app.panels.LineSegment3DPanel;
@@ -32,6 +33,7 @@ import com.calc3d.app.panels.Polygon3DPanel;
 import com.calc3d.app.panels.Primitives3DPanel;
 import com.calc3d.app.panels.Function3DPanel;
 import com.calc3d.app.panels.Projection3DPanel;
+import com.calc3d.app.panels.SimpleElementCreatePanel;
 import com.calc3d.app.panels.Surface3DPanel;
 import com.calc3d.app.panels.Vector3DPanel;
 import com.calc3d.app.resources.Icons;
@@ -69,11 +71,8 @@ public class commonUtils {
 			return new Function3DPanel((Element3Dfunction)element);
 		}else if (element instanceof Element3DImplicit){
 			return new Implicit3DPanel((Element3DImplicit)element);
-		}else if(element instanceof Element3DProjection){
-			return new Projection3DPanel((Element3DProjection) element);
-		}else{
-			return null;
 		}
+		return null;
 	
 	}
 	/**Return Icon according to the object in constructor*/
@@ -258,5 +257,14 @@ public class commonUtils {
 		if ((e instanceof Element3DLine)||(e instanceof Element3DVector)||(e instanceof Element3DCurve)||
 				(e instanceof Element3Dcartesian2D)||(e instanceof Element3Dimplicit2D)) return true;
 		else return false;
+	}
+	public static SimpleElementCreatePanel getSimpleelementPanel(int type) {
+		if(type==0){
+			return new DistancePanel();
+		}
+		if(type==SimpleElementCreatePanel.PROJECTION_PANEL){
+			return new Projection3DPanel();
+		}
+		return null;
 	}
 }

@@ -16,7 +16,7 @@ import com.example.loaders.PCEntity;
  * @author Lucas
  *
  */
-public class AnalysisConfiguration {
+public class AnalysisConfiguration extends DialogConfiguration{
 	public static int MIN_SQUARES_FIT = 0;
 	public static int ROBUST_FIT = 1;
 	

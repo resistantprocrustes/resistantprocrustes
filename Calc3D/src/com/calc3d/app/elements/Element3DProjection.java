@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.ejml.simple.SimpleMatrix;
 
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
+import com.calc3d.app.elements.simpleelements.LandmarkSimpleElement;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
@@ -21,6 +23,18 @@ public class Element3DProjection extends Element3DCollection {
 		super();
 	}
 	
+	public Element3DProjection(ComposeSimpleElement projection) {
+		ArrayList<LandmarkSimpleElement> elems = (ArrayList<LandmarkSimpleElement>) projection.getAllElements();
+		for(int i=0; i<elems.size(); i++){
+			LandmarkSimpleElement elem = elems.get(i);
+			double[] coords = elem.getCoords();
+			Element3DPoint point = new Element3DPoint(new Vector3D(coords[0]*0.001, coords[1]*0.001, coords[2]*0.001));
+			point.setName(elem.getName()+"_Projection");
+			point.setText("");
+			this.add(point);
+		}
+	}
+
 	public void setTypeOperation(int op){
 		typeOp = op;
 	}
@@ -37,24 +51,28 @@ public class Element3DProjection extends Element3DCollection {
 	
 	@Override
 	public Vector3D getMaxBound(){
-		Vector3D maxbound = new Vector3D(0,0,0);
+		double maxX, maxY, maxZ;
+		maxX = maxY = maxZ = 0;
 		for(int i=0; i<elements.size(); i++){
-			Vector3D bound = elements.get(i).getMaxBound();
-			if(bound.getLength() > maxbound.getLength())
-				maxbound = bound;
+			Vector3D point = elements.get(i).getMaxBound();
+			maxX = maxX < point.getX() ? point.getX() : maxX;
+			maxY = maxY < point.getY() ? point.getY() : maxY;
+			maxZ = maxZ < point.getZ() ? point.getZ() : maxZ;
 		}
-		return maxbound;
+		return new Vector3D(maxX, maxY, maxZ);
 	}
 	
 	@Override
 	public Vector3D getMinBound(){
-		Vector3D maxbound = new Vector3D(0,0,0);
+		double minX, minY, minZ;
+		minX = minY = minZ = 0;
 		for(int i=0; i<elements.size(); i++){
-			Vector3D bound = elements.get(i).getMaxBound();
-			if(bound.getLength() < maxbound.getLength())
-				maxbound = bound;
+			Vector3D point = elements.get(i).getMaxBound();
+			minX = minX > point.getX() ? point.getX() : minX;
+			minY = minY > point.getY() ? point.getY() : minY;
+			minZ = minZ > point.getZ() ? point.getZ() : minZ;
 		}
-		return maxbound;
+		return new Vector3D(minX, minY, minZ);
 	}
 
 	public void populateProjections(

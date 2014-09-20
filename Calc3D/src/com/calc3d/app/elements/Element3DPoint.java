@@ -117,6 +117,14 @@ public class Element3DPoint extends Element3D {
 	public void setText(String text) {
 		this.text = text;
 	}
+	
+	public Vector3D getMaxBound(){
+		return point;
+	}
+	
+	public Vector3D getMinBound(){
+		return point;
+	}
 }
 
 /**

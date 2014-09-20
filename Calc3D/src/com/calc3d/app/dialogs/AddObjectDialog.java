@@ -1,12 +1,14 @@
 package com.calc3d.app.dialogs;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.lang.model.util.SimpleElementVisitor6;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -17,10 +19,13 @@ import javax.swing.SwingConstants;
 
 import com.calc3d.app.Globalsettings;
 import com.calc3d.app.commonUtils;
+import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.elements.Element3D;
+import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.calc3d.app.panels.BottomButtonPanel;
 import com.calc3d.app.panels.Object3DCreatePanel;
 import com.calc3d.app.panels.Object3DgeneralPanel;
+import com.calc3d.app.panels.SimpleElementCreatePanel;
 import com.calc3d.app.panels.TransformPanel;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
@@ -36,7 +41,12 @@ import com.calc3d.math.MathUtils;
 public class AddObjectDialog extends JDialog implements ActionListener {
 	/** The version id */
 	private static final long serialVersionUID = -1809110047704548125L;
+
+	public static int DISTANCE_ELEMENT = 0;
 	
+	public static final int PROJECTION_ELEMENT = 1;
+	 
+	private int type = 0;
 
 	/** The dialog canceled flag */
 	private boolean canceled = true;
@@ -45,7 +55,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	private JLabel lblInfo;
 	
 	/** The body Creation panel */
-	private Object3DCreatePanel pnlObjectCreate;
+	private SimpleElementCreatePanel pnlObjectCreate;
 	
 	/** The body General Panel*/
 	private Object3DgeneralPanel pnlObjectGeneral;
@@ -57,7 +67,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	private TransformPanel pnlTransform;
 	
 	/** The body using in configuration */
-	private  Element3D object3D;
+	private  SimpleElement simpleElement;
 	
 	private JButton btnCancel,btnAdd ;
 	
@@ -65,29 +75,30 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	 * Full constructor.
 	 * @param owner the dialog owner
 	 */
-	private AddObjectDialog(Window owner,Element3D element) {
-		super(owner, "Add new "+commonUtils.getobject3DName(element), ModalityType.APPLICATION_MODAL);
+	private AddObjectDialog(Window owner,SimpleElement element, int elementType) {
+		super(owner, "Add new "+ "elem", ModalityType.APPLICATION_MODAL);
 		
-		this.object3D = element;
-		if (element.getName()=="")this.object3D.setName(commonUtils.getobject3DName(element));
+		this.simpleElement = element;
+		this.type = elementType;
+		//if (element.getName()=="")this.object3D.setName(commonUtils.getobject3DName(element));
 		
 		JTabbedPane tabs = new JTabbedPane();
 		
-		this.pnlObjectCreate= commonUtils.getobject3DPanel(element);
-		this.pnlObjectGeneral=new Object3DgeneralPanel(element);
-		this.pnlTransform = new TransformPanel(element.getTranslation(),element.getRotation());
-	
+		this.pnlObjectCreate= commonUtils.getSimpleelementPanel(this.type);
+//		this.pnlObjectGeneral=new Object3DgeneralPanel(element);
+//		this.pnlTransform = new TransformPanel(element.getTranslation(),element.getRotation());
+//	
 		this.pnlObject=new JPanel();
 		pnlObject.setLayout(new BorderLayout());
-		pnlObject.add(pnlObjectCreate);
-		lblInfo=new JLabel(commonUtils.getobject3DIcon(element),SwingConstants.LEFT);
-		lblInfo.setText("<html> <b>"+commonUtils.getobject3DName(element) +"</b><br>" +commonUtils.getobject3DInfo(element)+"</html>");
-		lblInfo.setAlignmentX(SwingConstants.LEFT);
-		lblInfo.setVerticalAlignment(SwingConstants.TOP);
-		lblInfo.setHorizontalAlignment(SwingConstants.LEFT);
-		lblInfo.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
-		
-		pnlObject.add(lblInfo,BorderLayout.NORTH);
+		pnlObject.add((JPanel) pnlObjectCreate);
+//		lblInfo=new JLabel(commonUtils.getobject3DIcon(element),SwingConstants.LEFT);
+//		lblInfo.setText("<html> <b>"+commonUtils.getobject3DName(element) +"</b><br>" +commonUtils.getobject3DInfo(element)+"</html>");
+//		lblInfo.setAlignmentX(SwingConstants.LEFT);
+//		lblInfo.setVerticalAlignment(SwingConstants.TOP);
+//		lblInfo.setHorizontalAlignment(SwingConstants.LEFT);
+//		lblInfo.setBorder(BorderFactory.createEmptyBorder(6,6,6,6));
+//		
+//		pnlObject.add(lblInfo,BorderLayout.NORTH);
 		tabs.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
 		tabs.addTab(Messages.getString("dialog.body.tab.element"), pnlObject);
 		tabs.addTab(Messages.getString("dialog.body.tab.body"), pnlObjectGeneral);
@@ -131,16 +142,17 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 			boolean validImput = this.pnlObjectCreate.isValidInput(); 
 			if (validImput) {
 				// check the transform input
-				if (this.pnlTransform.isValidInput()) {
+				if (true){//this.pnlTransform.isValidInput()) {
 					// if its valid then close the dialog
 					this.canceled = false;
 					this.setVisible(false);
 				} else {
 					this.pnlTransform.showInvalidInputMessage(this);
 				}
-			} else {
-				this.pnlObjectCreate.showInvalidInputMessage(this);
 			}
+//			else {
+//				this.pnlObjectCreate.showInvalidInputMessage(this);
+//			}
 		}
 	}
 	
@@ -151,8 +163,8 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	 * @param owner the dialog owner
 	 * @return {@link Element3D}
 	 */
-	public static final Element3D show(Window owner,Element3D object3D) {
-		AddObjectDialog dialog = new AddObjectDialog(owner,object3D);
+	public static final DialogConfiguration show(Window owner,SimpleElement simpleElement, int typeElement) {
+		AddObjectDialog dialog = new AddObjectDialog(owner,simpleElement, typeElement);
 		dialog.setLocationRelativeTo(owner);
 		dialog.setIconImage(Icons.ADDCURVE3D.getImage());//Icons.ADDCURVE3D.getImage());
 		dialog.setVisible(true);
@@ -161,29 +173,29 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		// check the canceled flag
 		if (!dialog.canceled) {
 			// get the body and fixture
-			Element3D element3D = dialog.pnlObjectCreate.getObject3D();
-			dialog.pnlObjectGeneral.UpdateElement(element3D);
+			DialogConfiguration configuration = dialog.pnlObjectCreate.getConfiguration();
+//			dialog.pnlObjectGeneral.UpdateElement(element3D);
 			// apply the transform
-			AffineTransform3D T;
-			T=AffineTransform3D.getTranslateInstance(Globalsettings.inverseMapX(dialog.pnlTransform.getTranslation().getX()),
-						Globalsettings.inverseMapY(dialog.pnlTransform.getTranslation().getY()),
-						Globalsettings.inverseMapZ(dialog.pnlTransform.getTranslation().getZ()));
-			T.concatenate(AffineTransform3D.getRotateInstance(MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleX,
-						MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleY,
-						MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleZ));
-			element3D.setTranslation(dialog.pnlTransform.getTranslation());
-			element3D.setRotation(dialog.pnlTransform.getRotation());
-			
+//			AffineTransform3D T;
+//			T=AffineTransform3D.getTranslateInstance(Globalsettings.inverseMapX(dialog.pnlTransform.getTranslation().getX()),
+//						Globalsettings.inverseMapY(dialog.pnlTransform.getTranslation().getY()),
+//						Globalsettings.inverseMapZ(dialog.pnlTransform.getTranslation().getZ()));
+//			T.concatenate(AffineTransform3D.getRotateInstance(MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleX,
+//						MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleY,
+//						MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleZ));
+//			element3D.setTranslation(dialog.pnlTransform.getTranslation());
+//			element3D.setRotation(dialog.pnlTransform.getRotation());
+//			
 			//System.out.println(T);
 			//System.out.println(T.isIdentity());
-			if (!T.isIdentity())
-			{
-				element3D.setTransform(T);
-			}
-			if (element3D.getName()=="") element3D.setName(commonUtils.getobject3DName(element3D));
-		
+//			if (!T.isIdentity())
+//			{
+//				element3D.setTransform(T);
+//			}
+//			if (element3D.getName()=="") element3D.setName(commonUtils.getobject3DName(element3D));
+//		
 			// return the body
-			return element3D;
+			return configuration;
 		}
 		
 		// if it was canceled then return null
@@ -197,50 +209,50 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	 * @param owner the dialog owner
 	 * @return {@link Element3D}
 	 */
-	public static final Element3D showEdit(Window owner,Element3D object3D) {
-		AddObjectDialog dialog = new AddObjectDialog(owner,object3D);
-		dialog.setTitle("Edit "+object3D.getName());
-		dialog.btnAdd.setText("Ok");
-		dialog.setIconImage(commonUtils.getobject3DIcon(object3D).getImage());//Icons.ADDCURVE3D.getImage());
-		dialog.setLocationRelativeTo(owner);
-		dialog.setIconImage(Icons.ADDCURVE3D.getImage());
-		dialog.setVisible(true);
-		// control returns to this method when the dialog is closed
-		
-		// check the canceled flag
-		if (!dialog.canceled) {
-			// get the body and fixture
-			Element3D element3D = dialog.pnlObjectCreate.getObject3D();
-			dialog.pnlObjectGeneral.UpdateElement(element3D);
-			
-			// apply the transform
-			AffineTransform3D T;
-			T=AffineTransform3D.getTranslateInstance(Globalsettings.inverseMapX(dialog.pnlTransform.getTranslation().getX()),
-					Globalsettings.inverseMapY(dialog.pnlTransform.getTranslation().getY()),
-					Globalsettings.inverseMapZ(dialog.pnlTransform.getTranslation().getZ()));
-			T.concatenate(AffineTransform3D.getRotateInstance(MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleX,
-					MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleY,
-					MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleZ));
-			//System.out.println(T);
-			//System.out.println(T.isIdentity());
-			element3D.setTranslation(dialog.pnlTransform.getTranslation());
-			element3D.setRotation(dialog.pnlTransform.getRotation());
-			
-			if (!T.isIdentity())
-				{
-				element3D.setTransform(T);
-				}
-			
-			if (element3D.getName().trim()=="") element3D.setName(commonUtils.getobject3DName(element3D));
-		
-			// return the body
-			return element3D;
-		}
-		
-		// if it was canceled then return null
-		return null;
-	}
-
+//	public static final Element3D showEdit(Window owner,Element3D object3D) {
+//		AddObjectDialog dialog = new AddObjectDialog(owner,object3D);
+//		dialog.setTitle("Edit "+object3D.getName());
+//		dialog.btnAdd.setText("Ok");
+//		dialog.setIconImage(commonUtils.getobject3DIcon(object3D).getImage());//Icons.ADDCURVE3D.getImage());
+//		dialog.setLocationRelativeTo(owner);
+//		dialog.setIconImage(Icons.ADDCURVE3D.getImage());
+//		dialog.setVisible(true);
+//		// control returns to this method when the dialog is closed
+//		
+//		// check the canceled flag
+//		if (!dialog.canceled) {
+//			// get the body and fixture
+//			Element3D element3D = dialog.pnlObjectCreate.getObject3D();
+//			dialog.pnlObjectGeneral.UpdateElement(element3D);
+//			
+//			// apply the transform
+//			AffineTransform3D T;
+//			T=AffineTransform3D.getTranslateInstance(Globalsettings.inverseMapX(dialog.pnlTransform.getTranslation().getX()),
+//					Globalsettings.inverseMapY(dialog.pnlTransform.getTranslation().getY()),
+//					Globalsettings.inverseMapZ(dialog.pnlTransform.getTranslation().getZ()));
+//			T.concatenate(AffineTransform3D.getRotateInstance(MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleX,
+//					MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleY,
+//					MathUtils.RADIANS_PER_DEGREE*dialog.pnlTransform.getRotation().iAngleZ));
+//			//System.out.println(T);
+//			//System.out.println(T.isIdentity());
+//			element3D.setTranslation(dialog.pnlTransform.getTranslation());
+//			element3D.setRotation(dialog.pnlTransform.getRotation());
+//			
+//			if (!T.isIdentity())
+//				{
+//				element3D.setTransform(T);
+//				}
+//			
+//			if (element3D.getName().trim()=="") element3D.setName(commonUtils.getobject3DName(element3D));
+//		
+//			// return the body
+//			return element3D;
+//		}
+//		
+//		// if it was canceled then return null
+//		return null;
+//	}
+//
 	
 	
 	

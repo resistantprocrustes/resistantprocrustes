@@ -62,8 +62,11 @@ import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 
 import com.calc3d.app.analysis.AnalysisConfiguration;
+import com.calc3d.app.analysis.DistanceCalculatorAdapter;
 import com.calc3d.app.analysis.DistanceConfiguration;
 import com.calc3d.app.analysis.ProcrustesCalculatorAdapter;
+import com.calc3d.app.analysis.ProjectionCalculatorAdapter;
+import com.calc3d.app.analysis.ProjectionConfiguration;
 import com.calc3d.app.dialogs.AboutDialog;
 import com.calc3d.app.dialogs.AddObjectDialog;
 import com.calc3d.app.dialogs.HelpDialog;
@@ -1031,7 +1034,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         treeTable.addMouseListener(this);
         treeTable.setRootVisible(true);
         treeTable.setVisible(true);
-        treeTable.addTreeSelectionListener(new customSelectionListener(this.btnP));
+        //treeTable.addTreeSelectionListener(new customSelectionListener(this.btnP));
         
         this.btnPreferences = new JButton(Icons.PREFERENCES);
         this.btnPreferences.addActionListener(this);
@@ -1228,14 +1231,23 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
 			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
-			DistanceCalculator calc = new MediumRepitedDistances();
+			DistanceConfiguration configuration = (DistanceConfiguration) AddObjectDialog.show(this, null, AddObjectDialog.DISTANCE_ELEMENT); 			
+			DistanceCalculatorAdapter calc = new DistanceCalculatorAdapter(configuration);
 			ArrayList<SampleSimpleElement> specimens = (ArrayList<SampleSimpleElement>) ((ComposeSimpleElement)selected.getElementByKey("specimens")).getAllElements();
-			ArrayList<SimpleMatrix> matArray = new ArrayList<SimpleMatrix>();
-			for(int j=0; j<specimens.size(); j++){
-				matArray.add(new SimpleMatrix(specimens.get(j).toMatrix()));
-			}
-			double[][] d = calc.calculate(matArray);
+			ComposeSimpleElement distances  = calc.calculate(specimens);
+			selected.addElement(distances);
+			treeTable.updateUI();
 
+		}else if(command=="addProjection"){
+			int i=this.treeTable.getSelectedRow();
+			TreePath path = treeTable.getPathForRow(i);
+			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
+			ProjectionConfiguration configuration = (ProjectionConfiguration) AddObjectDialog.show(this,null, AddObjectDialog.PROJECTION_ELEMENT);
+			ProjectionCalculatorAdapter calculator = new ProjectionCalculatorAdapter(configuration);
+			ComposeSimpleElement projection = calculator.calculate((ComposeSimpleElement) selected.getElementByKey("distances"));
+			selected.addElement(projection);
+			this.addElement3D(new Element3DProjection(projection));
+			
 		}else if(command=="remove"){
 			  if (table.getSelectedRowCount()>0){ 
 				if (JOptionPane.showConfirmDialog(this,"Are you sure you wan to delete the selected elements from list")== 0 ){	
@@ -1910,6 +1922,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			
 			if(parent instanceof SimpleElement){
 				ComposeSimpleElement element = (ComposeSimpleElement) parent;
+				SimpleElement el = element.getAllElements().get(index);
 				return element.getAllElements().get(index);
 			}
 			return ((ProjectSimpleElement)root).getAllElements().get(index);
@@ -1939,17 +1952,17 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 	  if (e.getClickCount()==2){
-		  int i = treeTable.getSelectedRow();
-		  TreePath path = treeTable.getPathForRow(i);
-			Element3D node = (Element3D) path.getLastPathComponent();
-			
-		  if (i!=1)return;
-		  Element3D element=AddObjectDialog.showEdit(this,node);
-		  if (null==element)return;
-		  sceneManager.setElement3D(i,element);
-		  canvas3D.setScene(sceneManager.createScene(false));
-		  canvas3D.refresh();
-		  updateTable();
+//		  int i = treeTable.getSelectedRow();
+//		  TreePath path = treeTable.getPathForRow(i);
+//			Element3D node = (Element3D) path.getLastPathComponent();
+//			
+//		  if (i!=1)return;
+	//	  Element3D element=AddObjectDialog.showEdit(this,node);
+//		  if (null==element)return;
+//		  sceneManager.setElement3D(i,element);
+//		  canvas3D.setScene(sceneManager.createScene(false));
+//		  canvas3D.refresh();
+//		  updateTable();
 	  }
 		  
 	}
