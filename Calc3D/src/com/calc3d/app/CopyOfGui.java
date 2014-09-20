@@ -96,6 +96,7 @@ import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.calc3d.app.fileload.FileLoader;
 import com.calc3d.app.fileload.LoaderFactory;
 import com.calc3d.app.panels.ColorIcon;
+import com.calc3d.app.panels.ReportPnl;
 import com.calc3d.app.panels.StatusBarPanel;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
@@ -120,6 +121,12 @@ import com.procrustes.dataContainer.ProcrustesResult;
 public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	/** The app version */
 	public static final String VERSION = "1.0.0";
+	
+	/** this tabsPanel is the main tabs manager */
+	private JTabbedPane centerTabPnl;
+	
+	/** the report panl*/
+	private JPanel reportPanel;
 	
 	private ProcrustesResult result;
 	
@@ -669,39 +676,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		menuItem.addActionListener(this);
 		menu.add(menuItem);
 		mnuSettings.add(menu);
-		/*
-		mnuSettings.addSeparator();
-		menu = new JMenu(Messages.getString("menu.settings.drawmodesettings"));
-		menu.setIcon(Icons.DRAWMODE);
-		menu.setActionCommand("axissettings");
-		menu.addActionListener(this);
-		
-		menuItem = new JMenuItem(Messages.getString("menu.settings.drawmodesettings.wireframe"));
-		//menuItem.setIcon(Icons.ADDSURFACE);
-		menuItem.setActionCommand("wireframe");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		menuItem = new JMenuItem(Messages.getString("menu.settings.drawmodesettings.solid"));
-		//menuItem.setIcon(Icons.ADDSURFACE);
-		menuItem.setActionCommand("solid");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		menuItem = new JMenuItem(Messages.getString("menu.settings.drawmodesettings.solidflat"));
-		//menuItem.setIcon(Icons.ADDSURFACE);
-		menuItem.setActionCommand("solidflat");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem(Messages.getString("menu.settings.drawmodesettings.grayscale"));
-		//menuItem.setIcon(Icons.ADDSURFACE);
-		menuItem.setActionCommand("grayscale");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		mnuSettings.add(menu);
-		
-		*/
-		// Help menu
-		// help menu
+
 		this.mnuHelp = new JMenu(Messages.getString("menu.help"));
 
 		this.mnuContent = new JMenuItem(	Messages.getString("menu.help.content"));
@@ -1065,7 +1040,15 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	    //tabsCanvas.add(canvas3D);
 	    this.tabsManager = new TabsManager(tabsCanvas);
 	    
-		JSplitPane pneSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, tabsCanvas);
+		reportPanel = new ReportPnl();
+	    
+	    
+		centerTabPnl = new JTabbedPane();
+		centerTabPnl.add("Graphics", tabsCanvas);
+		centerTabPnl.add("Report", reportPanel);
+		
+	    
+		JSplitPane pneSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, centerTabPnl);
 		// setup the layout
 		pneSplit.setOneTouchExpandable(true);
 		/*
