@@ -20,6 +20,7 @@ import java.util.List;
 
 
 import com.calc3d.app.Globalsettings;
+import com.calc3d.app.LocalSettings;
 import com.calc3d.engine3d.Camera3D;
 import com.calc3d.engine3d.Light3D;
 import com.calc3d.engine3d.Scene3D;
@@ -138,6 +139,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	private boolean fogEnabled=true;
 	public Renderer() {
 		// initialise array to hold a transformed triangle's vectors
+		this.settings = new LocalSettings(Globalsettings.getSettings());
 		for (int i = 0; i < 3; ++i) {
 			iTransformedVectors1[i] = new Vector3D();
 			iTransformedVectors2[i] = new Vector3D();
@@ -428,9 +430,9 @@ public final class Renderer implements BSPTreeTraverseListener{
 
 	
 	public void drawBoundingLines() {
-		if (!Globalsettings.boxVisible)return;
+		if (!settings.boxVisible)return;
 		  double minX,maxX,minY,maxY,minZ,maxZ;
-	        Box3D box=Globalsettings.mappedClipBox;
+	        Box3D box=settings.mappedClipBox;
 	        minX=box.getMinX();
 			maxX=box.getMaxX();
 			minY=box.getMinY();
@@ -476,11 +478,11 @@ public final class Renderer implements BSPTreeTraverseListener{
 	
 	
 	public void drawBox() {
-		if (!Globalsettings.boxVisible)return;
-		float div=(float) Globalsettings.divisions;
-		float subdiv=(float) Globalsettings.subdivisions;
+		if (!settings.boxVisible)return;
+		float div=(float) settings.divisions;
+		float subdiv=(float) settings.subdivisions;
         double minX,maxX,minY,maxY,minZ,maxZ;
-        Box3D box=Globalsettings.mappedClipBox;
+        Box3D box=settings.mappedClipBox;
         minX=box.getMinX();
 		maxX=box.getMaxX();
 		minY=box.getMinY();
@@ -507,43 +509,43 @@ public final class Renderer implements BSPTreeTraverseListener{
 		Color color=ColorUtils.blendColors(getBackgroundColor(), ColorUtils.getForegroundColorFromBackgroundColor(getBackgroundColor()),0.5);
 		
 		/* Draw BackPlanes*/
-		Clip clip = new Clip(Globalsettings.mappedClipBox);
+		Clip clip = new Clip(settings.mappedClipBox);
 		ArrayList<Element> planes = new ArrayList<Element>();
 		ElementPoly ex = clip.getClippedPolygonfromPlane(new Plane3D(1, 0, 0,
 				x1));
 		ex.reCalculateNormalandCentre();
 		ex.depth = -(iTransformationMatrix.getTransformedVector(ex.getCentre())
 				.getZ());
-		ex.setFillColor(Globalsettings.planeColor);
-		ex.setBackColor(Globalsettings.planeColor);
+		ex.setFillColor(settings.planeColor);
+		ex.setBackColor(settings.planeColor);
 		
-		ex.setLineColor(Globalsettings.gridsVisible ?Color.gray.darker():color);
-		ex.setFilled(Globalsettings.planesVisible);
-		ex.setCurveWidth(Globalsettings.gridsVisible ? 0 : 1);
+		ex.setLineColor(settings.gridsVisible ?Color.gray.darker():color);
+		ex.setFilled(settings.planesVisible);
+		ex.setCurveWidth(settings.gridsVisible ? 0 : 1);
 		ElementPoly ey = clip.getClippedPolygonfromPlane(new Plane3D(0, 1, 0,
 				y1));
 		ey.reCalculateNormalandCentre();
 		ey.depth = -(iTransformationMatrix.getTransformedVector(ey.getCentre())
 				.getZ());
-		ey.setFillColor(Globalsettings.planeColor);
-		ey.setBackColor(Globalsettings.planeColor);
+		ey.setFillColor(settings.planeColor);
+		ey.setBackColor(settings.planeColor);
 
-		ey.setFilled(Globalsettings.planesVisible);
-		ey.setLineColor(Globalsettings.gridsVisible ?Color.gray.darker():color);
-		ey.setCurveWidth(Globalsettings.gridsVisible ? 0 : 1);
+		ey.setFilled(settings.planesVisible);
+		ey.setLineColor(settings.gridsVisible ?Color.gray.darker():color);
+		ey.setCurveWidth(settings.gridsVisible ? 0 : 1);
 
 		ElementPoly ez = clip.getClippedPolygonfromPlane(new Plane3D(0, 0, 1,
 				z1));
 		ez.reCalculateNormalandCentre();
 		ez.depth = -(iTransformationMatrix.getTransformedVector(ez.getCentre())
 				.getZ());
-		ez.setFillColor(Globalsettings.planeColor);
-		ez.setBackColor(Globalsettings.planeColor);
+		ez.setFillColor(settings.planeColor);
+		ez.setBackColor(settings.planeColor);
 
-		ez.setFilled(Globalsettings.planesVisible);
+		ez.setFilled(settings.planesVisible);
 		
-		ez.setLineColor(Globalsettings.gridsVisible ?Color.gray.darker():color);
-		ez.setCurveWidth(Globalsettings.gridsVisible ? 0 : 1);
+		ez.setLineColor(settings.gridsVisible ?Color.gray.darker():color);
+		ez.setCurveWidth(settings.gridsVisible ? 0 : 1);
 		planes.add(ex);
 		planes.add(ey);
 		planes.add(ez);
@@ -551,7 +553,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 		drawElements(planes);
 		
 		/*Draw Grids on backPlanes*/
-		if (Globalsettings.gridsVisible) {
+		if (settings.gridsVisible) {
 			double delta;
 			color = Color.gray;
 			Vector3D v1, v2;
@@ -643,7 +645,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 		}
 		
 	/*draw Axis division values*/	
-		if (Globalsettings.rulersVisible) {
+		if (settings.rulersVisible) {
 		
 			vo = new Vector3D(-x1, -y1, -z1);
 			vx = ProjectToScreen(new Vector3D(-x2, -y1, -z1));
@@ -654,25 +656,25 @@ public final class Renderer implements BSPTreeTraverseListener{
 			if ((vx.getY() >= vz.getY()) && (vy.getY() >= vz.getY())) {
 				vo = new Vector3D(-x2, -y2, -z1);
 				drawRulerAxis(vo, new Vector3D(-x2, -y1, -z1),
-						Globalsettings.mapCliptoY(-y2),
-						Globalsettings.mapCliptoY(-y1), div, subdiv,
+						settings.mapCliptoY(-y2),
+						settings.mapCliptoY(-y1), div, subdiv,
 						new Vector3D(-x1, 0, 0));
 				drawRulerAxis(vo, new Vector3D(-x1, -y2, -z1),
-						Globalsettings.mapCliptoX(-x2),
-						Globalsettings.mapCliptoX(-x1), div, subdiv,
+						settings.mapCliptoX(-x2),
+						settings.mapCliptoX(-x1), div, subdiv,
 						new Vector3D(0, -y1, 0));
 				if (ProjectToScreen(new Vector3D(-x1, -y2, 0)).getZ() > ProjectToScreen(
 						new Vector3D(-x2, -y1, 0)).getZ()) {
 					vo = new Vector3D(-x1, -y2, -z1);
 					drawRulerAxis(vo, new Vector3D(-x1, -y2, -z2),
-							Globalsettings.mapCliptoZ(-z1),
-							Globalsettings.mapCliptoZ(-z2), div, subdiv,
+							settings.mapCliptoZ(-z1),
+							settings.mapCliptoZ(-z2), div, subdiv,
 							new Vector3D(0, -y1, 0));
 				} else {
 					vo = new Vector3D(-x2, -y1, -z1);
 					drawRulerAxis(vo, new Vector3D(-x2, -y1, -z2),
-							Globalsettings.mapCliptoZ(-z1),
-							Globalsettings.mapCliptoZ(-z2), div, subdiv,
+							settings.mapCliptoZ(-z1),
+							settings.mapCliptoZ(-z2), div, subdiv,
 							new Vector3D(-x1, 0, 0));
 
 				}
@@ -680,51 +682,51 @@ public final class Renderer implements BSPTreeTraverseListener{
 			} else if ((vx.getY() >= vy.getY()) && (vz.getY() >= vy.getY())) {
 				vo = new Vector3D(-x2, -y1, -z2);
 				drawRulerAxis(vo, new Vector3D(-x1, -y1, -z2),
-						Globalsettings.mapCliptoX(-x2),
-						Globalsettings.mapCliptoX(-x1), div, subdiv,
+						settings.mapCliptoX(-x2),
+						settings.mapCliptoX(-x1), div, subdiv,
 						new Vector3D(0, 0, -z1));
 				drawRulerAxis(vo, new Vector3D(-x2, -y1, -z1),
-						Globalsettings.mapCliptoZ(-z2),
-						Globalsettings.mapCliptoZ(-z1), div, subdiv,
+						settings.mapCliptoZ(-z2),
+						settings.mapCliptoZ(-z1), div, subdiv,
 						new Vector3D(-x1, 0, 0));
 
 				if (ProjectToScreen(new Vector3D(-x1, 0, -z2)).getZ() > ProjectToScreen(
 						new Vector3D(-x2, 0, -z1)).getZ()) {
 					vo = new Vector3D(-x1, -y1, -z2);
 					drawRulerAxis(vo, new Vector3D(-x1, -y2, -z2),
-							Globalsettings.mapCliptoY(-y1),
-							Globalsettings.mapCliptoY(-y2), div, subdiv,
+							settings.mapCliptoY(-y1),
+							settings.mapCliptoY(-y2), div, subdiv,
 							new Vector3D(0, 0, -z1));
 				} else {
 					vo = new Vector3D(-x2, -y1, -z1);
 					drawRulerAxis(vo, new Vector3D(-x2, -y2, -z1),
-							Globalsettings.mapCliptoY(-y1),
-							Globalsettings.mapCliptoY(-y2), div, subdiv,
+							settings.mapCliptoY(-y1),
+							settings.mapCliptoY(-y2), div, subdiv,
 							new Vector3D(-x1, 0, 0));
 				}
 			} else if ((vy.getY() >= vx.getY()) && (vz.getY() >= vx.getY())) {
 				vo = new Vector3D(-x1, -y2, -z2);
 				drawRulerAxis(vo, new Vector3D(-x1, -y1, -z2),
-						Globalsettings.mapCliptoY(-y2),
-						Globalsettings.mapCliptoY(-y1), div, subdiv,
+						settings.mapCliptoY(-y2),
+						settings.mapCliptoY(-y1), div, subdiv,
 						new Vector3D(0, 0, -z1));
 				drawRulerAxis(vo, new Vector3D(-x1, -y2, -z1),
-						Globalsettings.mapCliptoZ(-z2),
-						Globalsettings.mapCliptoZ(-z1), div, subdiv,
+						settings.mapCliptoZ(-z2),
+						settings.mapCliptoZ(-z1), div, subdiv,
 						new Vector3D(0, -y1, 0));
 
 				if (ProjectToScreen(new Vector3D(0, -y1, -z2)).getZ() > ProjectToScreen(
 						new Vector3D(0, -y2, -z1)).getZ()) {
 					vo = new Vector3D(-x1, -y1, -z2);
 					drawRulerAxis(vo, new Vector3D(-x2, -y1, -z2),
-							Globalsettings.mapCliptoX(-x1),
-							Globalsettings.mapCliptoX(-x2), div, subdiv,
+							settings.mapCliptoX(-x1),
+							settings.mapCliptoX(-x2), div, subdiv,
 							new Vector3D(0, 0, -z1));
 				} else {
 					vo = new Vector3D(-x1, -y2, -z1);
 					drawRulerAxis(vo, new Vector3D(-x2, -y2, -z1),
-							Globalsettings.mapCliptoX(-x1),
-							Globalsettings.mapCliptoX(-x2), div, subdiv,
+							settings.mapCliptoX(-x1),
+							settings.mapCliptoX(-x2), div, subdiv,
 							new Vector3D(0, -y1, 0));
 				}
 
@@ -759,10 +761,10 @@ public final class Renderer implements BSPTreeTraverseListener{
 			//Draw values on scale
 			Vector3D v=ProjectToScreen(v1.add((v2.subtract(v1)).scale(i/div)));
 			float value=(float) (min+i*delta);
-		    if (i>0 && Globalsettings.labelsVisible)outFloat(iRasterSettings.iGraphics,(int)v.getX(),(int)v.getY(),value,xalign,yalign);
+		    if (i>0 && settings.labelsVisible)outFloat(iRasterSettings.iGraphics,(int)v.getX(),(int)v.getY(),value,xalign,yalign);
 		   
 		    //Draw ticks
-			if (tickDir!=null && Globalsettings.ticksVisible){
+			if (tickDir!=null && settings.ticksVisible){
 				for (int j=0; j<subdiv;j++){
 					ticklength=(j==0)?0.07:0.04;
 					v=v1.add((v2.subtract(v1)).scale((float)(i*subdiv+j)/(div*subdiv)));
@@ -825,6 +827,8 @@ public final class Renderer implements BSPTreeTraverseListener{
 	 * of bounding box.
 	 */
 	private int t_x, t_y, t_z; // determines ticks density
+
+	private LocalSettings settings;
 	private final void setAxesScale() {
 		float scale_x, scale_y, scale_z, divisor;
 		int longest;
@@ -1437,7 +1441,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	private Color getBlendedLineColor(Element element){
 		Color color;
 		color=element.getLineColor();
-		if (Globalsettings.fogEnabled) {
+		if (settings.fogEnabled) {
 			double blendAmt = getBlendAmt(element.depth);
 			return ColorUtils.blendColors(color,
 					backgroundColor, blendAmt);}
@@ -1469,7 +1473,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 					n = ((ElementPoly) element).normal;
 			}
            
-						if(Globalsettings.fogEnabled){
+						if(settings.fogEnabled){
 			double blendAmt = getBlendAmt(element.depth);
 			iTempCol1= ColorUtils.blendColors(element.getFillColor(),
 					backgroundColor, blendAmt);
@@ -1870,6 +1874,11 @@ public final class Renderer implements BSPTreeTraverseListener{
              else return blendAmt;
          } else return 0;
      }
+
+	public void setSettings(LocalSettings settings) {
+		this.settings = settings;
+		
+	}
 }
 	
 

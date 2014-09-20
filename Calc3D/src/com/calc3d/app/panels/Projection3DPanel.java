@@ -38,6 +38,8 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 
 	private JRadioButton rdbtnRobust;
 	private JRadioButton rdbtnLeastSqe;
+	private JRadioButton rdbtn2D;
+	private JRadioButton rdbtn3D;
 
 
 	public Projection3DPanel() {
@@ -45,24 +47,46 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 		rdbtnRobust = new JRadioButton("Robust");
 		
 		rdbtnLeastSqe = new JRadioButton("Least Square");
+		
+		JLabel lblProjectionType = new JLabel("Projection type:");
+		
+		JLabel lblDimensions = new JLabel("Dimensions:");
+		
+		rdbtn2D = new JRadioButton("2D");
+		rdbtn3D = new JRadioButton("3D");
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(17)
+					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(rdbtnLeastSqe)
-						.addComponent(rdbtnRobust))
-					.addContainerGap(324, Short.MAX_VALUE))
+						.addComponent(lblProjectionType)
+						.addComponent(lblDimensions))
+					.addGap(91)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(rdbtn3D)
+						.addComponent(rdbtn2D)
+						.addComponent(rdbtnRobust)
+						.addComponent(rdbtnLeastSqe))
+					.addContainerGap(163, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(15)
-					.addComponent(rdbtnRobust)
-					.addGap(18)
-					.addComponent(rdbtnLeastSqe)
-					.addContainerGap(221, Short.MAX_VALUE))
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(rdbtnRobust)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(rdbtnLeastSqe))
+						.addComponent(lblProjectionType))
+					.addGap(23)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblDimensions)
+						.addComponent(rdbtn2D))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(rdbtn3D)
+					.addContainerGap(174, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
@@ -71,6 +95,10 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 		rdbtnRobust.setSelected(false);
 		bGroup.add(rdbtnRobust);
 		bGroup.add(rdbtnLeastSqe);
+		
+		ButtonGroup b2 = new ButtonGroup();
+		b2.add(rdbtn2D);
+		b2.add(rdbtn3D);
 	}
 
 
@@ -90,7 +118,7 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 	@Override
 	public DialogConfiguration getConfiguration() {
 		ProjectionConfiguration configuration = new ProjectionConfiguration(rdbtnLeastSqe.isSelected()?ProjectionConfiguration.LEAST_SQR_PROJETION : ProjectionConfiguration.ROBUST_PROJECTION);
-		
+		configuration.setDimensions(rdbtn2D.isSelected() ? 2 : 3);
 		return configuration;
 	}
 }

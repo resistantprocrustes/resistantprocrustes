@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.calc3d.anaglyph.AnaglyphFactory;
+import com.calc3d.app.LocalSettings;
 import com.calc3d.app.SceneManager;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.engine3d.Camera3D;
@@ -60,6 +61,8 @@ public final class Canvas3D extends JPanel implements Printable
 	private boolean isRendering=false;
 
 	private SceneManager sceneManager;
+
+	private LocalSettings settings;
 	/**
 	 * Constructor.
 	 * 
@@ -368,6 +371,19 @@ public final class Canvas3D extends JPanel implements Printable
 
 	public SceneManager getSceneManager() {
 		return sceneManager;
+	}
+
+
+	public void setSettings(LocalSettings settings) {
+		this.settings = settings;
+		sceneManager.setSettings(settings);
+		this.iRenderer.setSettings(settings);
+		
+	}
+
+
+	public LocalSettings getSettings() {
+		return settings;
 	}
 
 }

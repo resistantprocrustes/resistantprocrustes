@@ -50,7 +50,7 @@ public class ProjectionCalculatorAdapter {
 		}
 		
 		ICalcProjection calculator = this.getCalculator();
-	 	ArrayList<Vector3D> resultRaw = calculator.execute(new SimpleMatrix(distArrayMat), SimpleMatrix.random(counter, counter, 0, 1, new Random()));
+	 	ArrayList<Vector3D> resultRaw = calculator.execute(new SimpleMatrix(distArrayMat), SimpleMatrix.random(counter, configuration.getDimensions(), 0, 1, new Random()));
 		
 	 	ComposeSimpleElement result = new ComposeSimpleElement("projection");
 	 	for(int i=0; i<resultRaw.size(); i++){

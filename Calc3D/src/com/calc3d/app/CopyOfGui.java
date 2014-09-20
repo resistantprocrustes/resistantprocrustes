@@ -1360,6 +1360,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         dirty=false;
         
         Vector2D centroid = element.calculateCentroid();
+        Vector3D cent2 = newCanvas.getRenderer().ProjectToScreen(new Vector3D(centroid.getX(), centroid.getY(), 0));
 //		create treetable
         JXTreeTable treeTableElem3d = new JXTreeTable(new Element3DTreeTableModel(list, newCanvas));
         treeTableElem3d.setSize(120, 120);
@@ -1698,6 +1699,8 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 				preferences.setObjectToolbarVisible(Globalsettings.objectToolbarVisible);
 				preferences.setStatusbarVisible(Globalsettings.statusbarVisible);
 		}
+		 LocalSettings settings = new LocalSettings(preferences);
+		 canvas.setSettings(settings);
 	  	Globalsettings.saveSettings(preferences); 
 	    canvas.getSceneManager().setClip(new Clip(Globalsettings.mappedClipBox));
 		canvas.setScene(canvas.getSceneManager().createScene(reCreateScene));
@@ -1931,26 +1934,6 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		
 	}
 	
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	  if (e.getClickCount()==2){
-//		  int i = treeTable.getSelectedRow();
-//		  TreePath path = treeTable.getPathForRow(i);
-//			Element3D node = (Element3D) path.getLastPathComponent();
-//			
-//		  if (i!=1)return;
-	//	  Element3D element=AddObjectDialog.showEdit(this,node);
-//		  if (null==element)return;
-//		  sceneManager.setElement3D(i,element);
-//		  canvas3D.setScene(sceneManager.createScene(false));
-//		  canvas3D.refresh();
-//		  updateTable();
-	  }
-		  
-	}
-
-
 	@Override
 	public void mouseEntered(MouseEvent arg0){ 
 		// TODO Auto-generated method stub
@@ -2132,6 +2115,12 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			}
 		}
 		
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 	 

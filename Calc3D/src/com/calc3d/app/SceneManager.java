@@ -57,6 +57,7 @@ public class SceneManager  {
 
 	/** Elements represetenting axes*/
 	private ElementCollection axis3D, box3D, gridXY;
+	private LocalSettings settings;
 	
 	/**object to store axes info*/
 	private static AxesDefinition axesDefinition;
@@ -884,6 +885,11 @@ public class SceneManager  {
 	 */
 	public void setClip(Clip clips) {
 		this.clip = clips;
+	}
+
+	public void setSettings(LocalSettings settings) {
+		this.settings = settings;
+		
 	}
 	
 }
