@@ -1227,7 +1227,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
 			ProjectionConfiguration configuration = (ProjectionConfiguration) AddObjectDialog.show(this,null, AddObjectDialog.PROJECTION_ELEMENT);
 			ProjectionCalculatorAdapter calculator = new ProjectionCalculatorAdapter(configuration);
-			ComposeSimpleElement projection = calculator.calculate((ComposeSimpleElement) selected.getElementByKey("distances"));
+			ComposeSimpleElement projection = calculator.calculate((ComposeSimpleElement) selected);
 			selected.addElement(projection);
 			this.addElement3D(new Element3DProjection(projection));
 			
