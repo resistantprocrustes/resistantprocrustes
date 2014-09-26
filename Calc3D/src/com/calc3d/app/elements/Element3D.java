@@ -260,5 +260,10 @@ import com.calc3d.math.Vector3D;
 	public Vector2D calculateCentroid() {
 		return new Vector2D(0,0);
 	}
+
+	public void select(boolean b) {
+		
+		
+	}
 	
 }

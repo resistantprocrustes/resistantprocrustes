@@ -21,7 +21,7 @@ public class Element3DPoint extends Element3D {
 	 */
 	private static final long serialVersionUID = -7718288181668445927L;
 	private Vector3D point;
-	private int radius=3;
+	private int radius=5;
 	private String text;
 	public Element3DPoint(double x, double y, double z) {
 		element = new ElementPoint(x, y, z);
@@ -124,6 +124,14 @@ public class Element3DPoint extends Element3D {
 	
 	public Vector3D getMinBound(){
 		return point;
+	}
+	
+	@Override
+	public void select(boolean b){
+		if(b){
+			this.radius += 1;
+		}else
+			this.radius -= 1;
 	}
 }
 

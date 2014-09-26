@@ -98,7 +98,7 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 			ElementPoint npoint = new ElementPoint(tmpPoint); 
 			npoint.setBackColor(this.backColor);
 			npoint.setFillColor(this.fillColor);
-			npoint.setRadius(5);
+			npoint.setRadius(_points.get(i).getRadius());
 			ec.addElement(npoint);
 		}
 		this.elementContainer = true;
@@ -171,6 +171,12 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
         	center[1] += elem.getPoint().getY();
         }
         return new Vector2D(center[0] / _points.size(), center[1]/_points.size());
+	}
+	
+	public void select(boolean b){
+		for(Element3DPoint point : _points){
+			point.select(b);
+		}
 	}
 
 

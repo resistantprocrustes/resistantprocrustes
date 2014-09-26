@@ -1370,6 +1370,8 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         treeTableElem3d.setRootVisible(false);
         treeTableElem3d.setVisible(true);
         
+        treeTableElem3d.addTreeSelectionListener(new customSelectionListener(newCanvas));
+        
         JScrollPane paneScrollPane = new JScrollPane(treeTableElem3d);
         paneScrollPane.setVerticalScrollBarPolicy(
                         ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);

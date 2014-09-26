@@ -158,6 +158,13 @@ public class Element3DCollection extends Element3D implements Collection {
 
 	}
 	
+	@Override
+	public void select(boolean b){
+		for(int i=0; i<elements.size(); i++){
+			elements.get(i).select(b);
+		}
+	}
+	
 	
 	
 }
