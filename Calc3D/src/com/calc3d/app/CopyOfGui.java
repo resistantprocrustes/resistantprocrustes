@@ -98,6 +98,9 @@ import com.calc3d.app.fileload.LoaderFactory;
 import com.calc3d.app.panels.ColorIcon;
 import com.calc3d.app.panels.ReportPnl;
 import com.calc3d.app.panels.StatusBarPanel;
+import com.calc3d.app.reports.DatasetDetails;
+import com.calc3d.app.reports.ProcrustesFitDetalier;
+import com.calc3d.app.reports.ReportGenerator;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
 import com.calc3d.engine3d.Camera3D;
@@ -245,6 +248,8 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	
 	/** The ComboBox for Hidden Surface Removal Modes*/
 	private JComboBox comboHSR;
+	
+	private ReportGenerator reporter;
 	
 	/** Upper toolbar*/
 	JToolBar fileToolbar ;
@@ -1045,9 +1050,9 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	    
 		centerTabPnl = new JTabbedPane();
 		centerTabPnl.add("Graphics", tabsCanvas);
-		centerTabPnl.add("Report", reportPanel);
+		centerTabPnl.add("Reports", reportPanel);
 		
-	    
+	    reporter = new ReportGenerator((ReportPnl)reportPanel);
 		JSplitPane pneSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, centerTabPnl);
 		// setup the layout
 		pneSplit.setOneTouchExpandable(true);
@@ -1210,6 +1215,11 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			Element3DDataSet dataset3D = new Element3DDataSet(result);
 			this.addElement3D(dataset3D);
 			treeTable.updateUI();
+			
+			ProcrustesFitDetalier detalier = new ProcrustesFitDetalier();
+			reporter.writeReport("New procrustes fit analysis generated"+'\n');
+			reporter.writeReport("Type of analysis: "+ (configuration.getType() == AnalysisConfiguration.MIN_SQUARES_FIT ? "Least squares fit" : "Robusts fit")+'\n');
+			reporter.writeReport(detalier.getDetails(result)+'\n'+'\n'+'\n');
 		}else if(command=="distance"){
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
@@ -1271,11 +1281,15 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			  newFile();
 		}
 		else if(command=="load"){
-			  ComposeSimpleElement dataset = (ComposeSimpleElement)loadFromFile();
-			  if(dataset==null)return;
-			  dataset.setIcon(Icons.DATASET);
-			  this.addElement(dataset);
-			  this.addElement3D(new Element3DDataSet(dataset));
+			
+			ComposeSimpleElement dataset = (ComposeSimpleElement)loadFromFile();
+			if(dataset==null)return;
+			dataset.setIcon(Icons.DATASET);
+			this.addElement(dataset);
+			this.addElement3D(new Element3DDataSet(dataset));
+			
+			DatasetDetails detailer = new DatasetDetails();
+			reporter.writeReport(detailer.getDetails(dataset));
 		}else if(command=="save"){
 			  saveToFile(false);
 	    }else if(command=="saveas"){
@@ -1524,11 +1538,15 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	  * @param fileName file to be loaded
 	  */
 	 public Object loadFromFile(String fileName) {
+		 
 	        if (fileName==null) return null;
 	        try {
+	        	reporter.writeReport("Loading file "+fileName+'\n');
 	        	FileLoader loader = LoaderFactory.create(fileName);
 	        	Object loadedFile = loader.load(fileName);
+	        	reporter.writeReport("file loaded"+'\n'+'\n');
 	        	return loadedFile;
+	        	
 			 } catch (Exception e) {
 				  JOptionPane.showMessageDialog(this,e.getMessage()+fileName,"Error",JOptionPane.ERROR_MESSAGE);
 			 }

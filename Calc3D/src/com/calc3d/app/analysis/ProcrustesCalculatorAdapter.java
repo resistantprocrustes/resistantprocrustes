@@ -34,7 +34,6 @@ public class ProcrustesCalculatorAdapter {
 		ArrayList<SimpleMatrix> result = calculator.execute(elements);
 		ComposeSimpleElement dataset = new ComposeSimpleElement(configuration.getName());
 		dataset.addElement(Commons.toPCEntity(result));
-		dataset.addElement(dataset.getName()+"-Concensus", elems.get(elems.size()-2));
 		return dataset;
 		
 		

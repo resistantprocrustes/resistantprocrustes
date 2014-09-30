@@ -25,9 +25,6 @@ public class ReportPnl extends JPanel {
 		add(toolBar, BorderLayout.NORTH);
 		
 		textArea = new JTextArea();
-		textArea.append("lalalalallalalalla");
-		textArea.setEditable(false);
-		textArea.append("lalalalallalalalla");
 		scroll = new JScrollPane(textArea);
 		
 		add(scroll, BorderLayout.CENTER);

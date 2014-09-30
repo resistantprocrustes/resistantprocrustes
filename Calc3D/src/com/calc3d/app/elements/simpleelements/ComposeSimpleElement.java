@@ -50,7 +50,8 @@ public class ComposeSimpleElement extends SimpleElement{
 	}
 	
 	public SimpleElement getContainedElement(int index){
-		return elements.get(index);
+		ArrayList<SimpleElement> elems = new ArrayList<SimpleElement>(elements.values());
+		return elems.get(index);
 	}
 
 	public SimpleElement getElementByKey(String key) {
