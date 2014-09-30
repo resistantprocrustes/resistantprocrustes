@@ -27,7 +27,7 @@ public class ProcrustesCalculatorAdapter {
 		IProcrustesCalculator calculator = getCalculator();
 		ArrayList<SimpleMatrix> elements = new ArrayList<SimpleMatrix>();
 		ArrayList<SampleSimpleElement> elems =(ArrayList<SampleSimpleElement>)configuration.getElements(); 
-		for(int i=0; i<elems.size()-1; i++){
+		for(int i=0; i<elems.size(); i++){
 			SampleSimpleElement entity = elems.get(i);			
 			elements.add(new SimpleMatrix(entity.toMatrix()));
 		}
