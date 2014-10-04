@@ -9,9 +9,11 @@ public abstract class SimpleElement {
 
 	String name;
 	ImageIcon icon;
+	String description;
 
 	public SimpleElement(String name2) {
 		this.name = name2;
+		this.description = name2;
 	}
 
 	public SimpleElement() {}
@@ -30,6 +32,10 @@ public abstract class SimpleElement {
 	
 	public ImageIcon getIcon(){
 		return icon;
+	}
+	
+	public String getDescription(){
+		return this.description;
 	}
 
 }

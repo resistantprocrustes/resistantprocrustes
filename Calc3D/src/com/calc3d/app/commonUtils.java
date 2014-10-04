@@ -19,6 +19,8 @@ import com.calc3d.app.elements.Element3DObject;
 import com.calc3d.app.elements.Element3DPolygon;
 import com.calc3d.app.elements.Element3Dfunction;
 import com.calc3d.app.elements.Element3DImplicit;
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
+import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.calc3d.app.panels.CartesianCurve2DPanel;
 import com.calc3d.app.panels.Curve3DPanel;
 import com.calc3d.app.panels.DistancePanel;
@@ -220,31 +222,21 @@ public class commonUtils {
 	}
 	
 		
-	public static String getobject3DInfoHTML(Element3D e){
+	public static String getobject3DInfoHTML(SimpleElement e){
 		if(e==null)return "";
 		String str;
 		str="<html>";
 		String temp=e.getName();
 		str=str.concat("<b>Name:&nbsp&nbsp</b>");
 		str=str.concat(temp +"<br><br>");
-		temp=getobject3DName(e);
-		str=str.concat("<b>Type:&nbsp&nbsp</b>");
-		str=str.concat(temp +"<br><br>");
 		
-		/*
-		temp=String.valueOf(e.isVisible());
-		str=str.concat("<b>Visible:&nbsp&nbsp</b><br>");
-		str=str.concat(temp +"<br>");
-				
-		temp=e.getFillColor().toString();
-		str=str.concat("<b>FillColor:</b><br>");
-		str=str.concat(temp +"<br><br>");
-		temp=e.getLineColor().toString();
-		str=str.concat("<b>LineColor:</b><br>");
-		str=str.concat(temp +"<br>");
-		*/
-		
-		temp=e.getDefinition();
+//		str=str.concat("<b>Type:&nbsp&nbsp</b>");
+//		str=str.concat(temp +"<br><br>");
+		if(e instanceof ComposeSimpleElement){
+			str = str.concat("<b>Count of elements:&nbsp&nbsp</b>");
+			str = str.concat(((ComposeSimpleElement)e).size()+"<br><br>");
+		}
+		temp=e.getDescription();
 		str=str.concat("<b>Definition:&nbsp&nbsp</b>");
 		str=str.concat(temp +"<br><br>");
         str=str.concat("</html>");

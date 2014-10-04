@@ -1014,6 +1014,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         treeTable.addMouseListener(this);
         treeTable.setRootVisible(true);
         treeTable.setVisible(true);
+        treeTable.addTreeSelectionListener(new LeftTableSelectionListener(editorPane));
         //treeTable.addTreeSelectionListener(new customSelectionListener(this.btnP));
         
         this.btnPreferences = new JButton(Icons.PREFERENCES);

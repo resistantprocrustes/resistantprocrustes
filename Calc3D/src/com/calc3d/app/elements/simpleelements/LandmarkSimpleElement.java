@@ -20,6 +20,12 @@ public class LandmarkSimpleElement extends SimpleElement {
 		return coords;
 	}
 	
+	public String getDescription(){
+		return "x: "+coords[0]+"<br>"+
+			   "y: "+coords[1]+"<br>"+
+			   "z: "+coords[2];
+	}
+	
 	
 
 }
