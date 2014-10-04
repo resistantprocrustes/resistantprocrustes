@@ -1370,6 +1370,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		newCanvas.getSceneManager().addElement(element);
 		preferences = Commons.setPreferences(list);
 		preferences.setLookandFeel(Globalsettings.lookandFeel);
+		preferences.setBackColor(Color.WHITE);
 		applySettings(newCanvas,preferences,true,true);
         updateTable();
         dirty=false;

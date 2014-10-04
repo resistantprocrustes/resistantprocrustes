@@ -14,6 +14,7 @@ import com.calc3d.geometry3d.Element;
 import com.calc3d.geometry3d.ElementCollection;
 import com.calc3d.geometry3d.ElementPoint;
 import com.calc3d.math.Vector3D;
+import com.calc3d.utils.ColorUtils;
 import com.calc3d.utils.IMatrixable;
 
 public class Element3DEntity extends Element3D implements IMatrixable<double[][]>{
@@ -51,10 +52,7 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 	public Element3DEntity(SampleSimpleElement sample) {
 		this(new SimpleMatrix(sample.toMatrix()));
 		this.setName(sample.getName());
-		int R = 128 + (int) (Math.random() * 128);
-		int G = 128 + (int) (Math.random() * 128);
-		int B = 128 + (int) (Math.random() * 128);
-		Color entityColor = new Color(R, G, B); 
+		Color entityColor = ColorUtils.getRandomBackgroundColor(Color.WHITE); 
 		this.setFillColor(entityColor);
 		this.setLineColor(entityColor);
 		_points = new ArrayList<Element3DPoint>();

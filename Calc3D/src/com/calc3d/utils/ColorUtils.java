@@ -162,5 +162,14 @@ public class ColorUtils {
 		hsb[2] = hsb[2] * factor;
 		return new Color(Color.HSBtoRGB(hsb[0], hsb[1], hsb[2] * factor));
 	}
+	
+	public static final Color getRandomBackgroundColor(Color background){
+		Color foreground = ColorUtils.getRandomColor(0, 1);
+		while(ColorUtils.getForegroundColorFromBackgroundColor(foreground) != background){
+			foreground = ColorUtils.getRandomColor(0, 1);
+		}
+		return foreground;
+		
+	}
     
 }
