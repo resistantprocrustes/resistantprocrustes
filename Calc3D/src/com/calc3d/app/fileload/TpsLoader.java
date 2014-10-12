@@ -24,7 +24,7 @@ public class TpsLoader extends DataSetLoader{
 
 	int lmCounter = 0;
 	int lmCount = 0;
-	
+	SampleSimpleElement newSpecimen;
 	@Override
 	public Object load(String filepath){ 
 		BufferedReader br;
@@ -39,7 +39,7 @@ public class TpsLoader extends DataSetLoader{
 				currentLine = currentLine.trim();
 				if(currentLine.startsWith("LM") || currentLine.startsWith("lm")){
 					int numLandmarks = Integer.parseInt(currentLine.split("=")[1]);
-					SampleSimpleElement newSpecimen = new SampleSimpleElement("sample-"+counter);
+					newSpecimen = new SampleSimpleElement("sample-"+counter);
 					entities.addElement(newSpecimen);
 					for(int i=0; i<numLandmarks; i++){
 						String[] landmarkCoords = br.readLine().trim().split("\\s+");
@@ -52,7 +52,10 @@ public class TpsLoader extends DataSetLoader{
 						newSpecimen.addElement(landmark);
 					}
 					counter++;
+				}else if(currentLine.startsWith("ID") || currentLine.startsWith("id")){
+					newSpecimen.setName(currentLine.split("=")[1]);
 				}
+				
 				
 				
 			}

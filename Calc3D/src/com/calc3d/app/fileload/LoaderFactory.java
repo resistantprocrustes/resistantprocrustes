@@ -6,6 +6,13 @@ public class LoaderFactory {
 		if(ext.endsWith(".tps")){
 			return new TpsLoader();
 		}
+		if(ext.endsWith(".nts")){
+			return new NtsLoader();
+		}
+		if(ext.endsWith(".txt")){
+			return new MorphologikaLoader();
+		}
+		
 		return null;
 	};
 	
