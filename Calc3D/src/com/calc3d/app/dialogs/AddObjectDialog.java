@@ -23,6 +23,7 @@ import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.calc3d.app.panels.BottomButtonPanel;
+import com.calc3d.app.panels.Element3DPane;
 import com.calc3d.app.panels.Object3DCreatePanel;
 import com.calc3d.app.panels.Object3DgeneralPanel;
 import com.calc3d.app.panels.SimpleElementCreatePanel;
@@ -69,6 +70,8 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	/** The body using in configuration */
 	private  SimpleElement simpleElement;
 	
+	private Element3DPane pane3D;
+	
 	private JButton btnCancel,btnAdd ;
 	
 	/**
@@ -78,6 +81,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	private AddObjectDialog(Window owner,SimpleElement element, int elementType) {
 		super(owner, "Add new "+ "elem", ModalityType.APPLICATION_MODAL);
 		
+		this.pane3D = new Element3DPane();
 		this.simpleElement = element;
 		this.type = elementType;
 		//if (element.getName()=="")this.object3D.setName(commonUtils.getobject3DName(element));
@@ -101,8 +105,8 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 //		pnlObject.add(lblInfo,BorderLayout.NORTH);
 		tabs.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
 		tabs.addTab(Messages.getString("dialog.body.tab.element"), pnlObject);
-		tabs.addTab(Messages.getString("dialog.body.tab.body"), pnlObjectGeneral);
-		tabs.addTab(Messages.getString("dialog.body.tab.transform"), this.pnlTransform);
+		tabs.addTab(Messages.getString("dialog.body.tab.graphic"), pane3D);
+//		tabs.addTab(Messages.getString("dialog.body.tab.transform"), this.pnlTransform);
 		
 		btnCancel = new JButton(Messages.getString("button.cancel"));
 		btnAdd = new JButton(Messages.getString("button.add"));
