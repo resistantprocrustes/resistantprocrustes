@@ -21,6 +21,8 @@ import com.calc3d.app.Globalsettings;
 import com.calc3d.app.commonUtils;
 import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.elements.Element3D;
+import com.calc3d.app.elements.Element3DProjection;
+import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.calc3d.app.panels.BottomButtonPanel;
 import com.calc3d.app.panels.Element3DPane;
@@ -80,8 +82,9 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	 */
 	private AddObjectDialog(Window owner,SimpleElement element, int elementType) {
 		super(owner, "Add new "+ "elem", ModalityType.APPLICATION_MODAL);
-		
-		this.pane3D = new Element3DPane();
+		//TODO harcodeado
+		//Element3DProjection proj = new Element3DProjection((ComposeSimpleElement)element);
+		this.pane3D = new Element3DPane(/*proj.getContainedElements()*/);
 		this.simpleElement = element;
 		this.type = elementType;
 		//if (element.getName()=="")this.object3D.setName(commonUtils.getobject3DName(element));
