@@ -21,6 +21,8 @@ import com.calc3d.app.Globalsettings;
 import com.calc3d.app.commonUtils;
 import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.elements.Element3D;
+import com.calc3d.app.elements.Element3DCollection;
+import com.calc3d.app.elements.Element3DFactory;
 import com.calc3d.app.elements.Element3DProjection;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
@@ -76,6 +78,8 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 	
 	private JButton btnCancel,btnAdd ;
 	
+	private Element3D element3D;
+	
 	/**
 	 * Full constructor.
 	 * @param owner the dialog owner
@@ -84,9 +88,11 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		super(owner, "Add new "+ "elem", ModalityType.APPLICATION_MODAL);
 		//TODO harcodeado
 		//Element3DProjection proj = new Element3DProjection((ComposeSimpleElement)element);
-		this.pane3D = new Element3DPane(/*proj.getContainedElements()*/);
+		
+		element3D = Element3DFactory.generate(element, elementType);
 		this.simpleElement = element;
 		this.type = elementType;
+		this.pane3D = new Element3DPane((Element3DCollection)element3D);
 		//if (element.getName()=="")this.object3D.setName(commonUtils.getobject3DName(element));
 		
 		JTabbedPane tabs = new JTabbedPane();
@@ -181,6 +187,9 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		if (!dialog.canceled) {
 			// get the body and fixture
 			DialogConfiguration configuration = dialog.pnlObjectCreate.getConfiguration();
+			if(dialog.pnlObjectCreate.isDrawable()){
+				configuration.setTabTitle(dialog.pane3D.getTabTitle());
+			}
 //			dialog.pnlObjectGeneral.UpdateElement(element3D);
 			// apply the transform
 //			AffineTransform3D T;

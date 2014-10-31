@@ -26,11 +26,12 @@ public class ProjectionCalculatorAdapter {
 	public ComposeSimpleElement calculate(
 			ComposeSimpleElement distances) {
 		ArrayList<DistanceSimpleElement> dist = (ArrayList<DistanceSimpleElement>) distances.getAllElements();
+		int distSizes = distances.getElementByKey("projections")==null?dist.size():dist.size()-1;
 		SimpleMatrix distancesMat;
 		int counter = 0;
 		while(true){
 			double sum = counter * (counter-1) / 2;
-			if(sum == dist.size()) break;
+			if(sum == distSizes) break;
 			counter++;
 			
 		}
@@ -58,6 +59,8 @@ public class ProjectionCalculatorAdapter {
 	 		lm.addCoordinate(resultRaw.get(i).toArray());
 	 		result.addElement(lm);
 	 	}
+	 	result.setName(configuration.getName());
+	 	
 		return result;
 	}
 

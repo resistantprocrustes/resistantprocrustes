@@ -17,7 +17,7 @@ import com.calc3d.math.Vector3D;
 import com.calc3d.utils.ColorUtils;
 import com.calc3d.utils.IMatrixable;
 
-public class Element3DEntity extends Element3D implements IMatrixable<double[][]>{
+public class Element3DEntity extends Element3DCollection implements IMatrixable<double[][]>{
 
 	private Element _entityElement;
 	private ArrayList<Element3DPoint> _points;
@@ -26,8 +26,8 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 		_points = new ArrayList<Element3DPoint>();
 	}
 	
-	public Element3DEntity(ArrayList<Element3DPoint> points){
-				_points = points;
+	public Element3DEntity(ArrayList<Element3D> points){
+				elements = points;
 	}
 	
 	
@@ -42,7 +42,10 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 		_points = new ArrayList<Element3DPoint>();
 		for(int i=0; i<simpleMatrix.numRows(); i++){
 			try {
-				_points.add(new Element3DPoint(new Vector3D(simpleMatrix.extractVector(true, i).getMatrix().getData())));
+				Element3DPoint point =new Element3DPoint(new Vector3D(simpleMatrix.extractVector(true, i).getMatrix().getData()));
+				point.setBackColor(entityColor);
+				point.setFillColor(entityColor);
+				_points.add(point);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -61,6 +64,8 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 			try {
 				Element3DPoint point = new Element3DPoint(new Vector3D(lms.get(i).getCoords()));
 				point.setName(lms.get(i).getName());
+				point.setBackColor(entityColor);
+				point.setFillColor(entityColor);
 				_points.add(point);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -94,9 +99,10 @@ public class Element3DEntity extends Element3D implements IMatrixable<double[][]
 			Vector3D p = _points.get(i).getPoint();
 			Vector3D tmpPoint = new Vector3D(Globalsettings.inverseMapX(p.getX()),Globalsettings.inverseMapY(p.getY()),Globalsettings.inverseMapZ(p.getZ()));
 			ElementPoint npoint = new ElementPoint(tmpPoint); 
-			npoint.setBackColor(this.backColor);
-			npoint.setFillColor(this.fillColor);
+			npoint.setBackColor(_points.get(i).getBackColor());
+			npoint.setFillColor(_points.get(i).getFillColor());
 			npoint.setRadius(_points.get(i).getRadius());
+			npoint.setText(_points.get(i).getText()==null?"":_points.get(i).getText());
 			ec.addElement(npoint);
 		}
 		this.elementContainer = true;

@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCurve;
 import com.calc3d.app.elements.Element3DEntity;
+import com.calc3d.app.elements.Element3DFactory;
 import com.calc3d.app.elements.Element3DLine;
 import com.calc3d.app.elements.Element3DLineSegment;
 import com.calc3d.app.elements.Element3DParametricSurface;
@@ -251,10 +252,10 @@ public class commonUtils {
 		else return false;
 	}
 	public static SimpleElementCreatePanel getSimpleelementPanel(int type) {
-		if(type==0){
+		if(type==Element3DFactory.DISTANCE_ELEMENT){
 			return new DistancePanel();
 		}
-		if(type==SimpleElementCreatePanel.PROJECTION_PANEL){
+		if(type==Element3DFactory.PROJECTION_ELEMENT){
 			return new Projection3DPanel();
 		}
 		return null;

@@ -40,6 +40,8 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 	private JRadioButton rdbtnLeastSqe;
 	private JRadioButton rdbtn2D;
 	private JRadioButton rdbtn3D;
+	private JLabel lblName;
+	private JTextField txtName;
 
 
 	public Projection3DPanel() {
@@ -54,6 +56,12 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 		
 		rdbtn2D = new JRadioButton("2D");
 		rdbtn3D = new JRadioButton("3D");
+		
+		lblName = new JLabel("Name");
+		
+		txtName = new JTextField();
+		txtName.setText("name");
+		txtName.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -61,19 +69,25 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblProjectionType)
-						.addComponent(lblDimensions))
+						.addComponent(lblDimensions)
+						.addComponent(lblName))
 					.addGap(91)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rdbtn3D)
 						.addComponent(rdbtn2D)
 						.addComponent(rdbtnRobust)
 						.addComponent(rdbtnLeastSqe))
-					.addContainerGap(163, Short.MAX_VALUE))
+					.addContainerGap(141, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
+					.addGap(35)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblName)
+						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(rdbtnRobust)
@@ -86,7 +100,7 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 						.addComponent(rdbtn2D))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rdbtn3D)
-					.addContainerGap(174, Short.MAX_VALUE))
+					.addContainerGap(108, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
@@ -105,8 +119,8 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 
 	@Override
 	public boolean isDrawable() {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return true;
 	}
 
 	@Override
@@ -119,6 +133,7 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 	public DialogConfiguration getConfiguration() {
 		ProjectionConfiguration configuration = new ProjectionConfiguration(rdbtnLeastSqe.isSelected()?ProjectionConfiguration.LEAST_SQR_PROJETION : ProjectionConfiguration.ROBUST_PROJECTION);
 		configuration.setDimensions(rdbtn2D.isSelected() ? 2 : 3);
+		configuration.setName(this.txtName.getText());
 		return configuration;
 	}
 }

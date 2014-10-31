@@ -69,11 +69,14 @@ import com.calc3d.app.analysis.ProjectionCalculatorAdapter;
 import com.calc3d.app.analysis.ProjectionConfiguration;
 import com.calc3d.app.dialogs.AboutDialog;
 import com.calc3d.app.dialogs.AddObjectDialog;
+import com.calc3d.app.dialogs.EditElement3DDialog;
 import com.calc3d.app.dialogs.HelpDialog;
 import com.calc3d.app.dialogs.NewProcrustesAnalysisDialog;
 import com.calc3d.app.elements.Element3D;
+import com.calc3d.app.elements.Element3DCollection;
 import com.calc3d.app.elements.Element3DCurve;
 import com.calc3d.app.elements.Element3DDataSet;
+import com.calc3d.app.elements.Element3DFactory;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.elements.Element3DLine;
 import com.calc3d.app.elements.Element3DObject;
@@ -104,6 +107,7 @@ import com.calc3d.app.reports.ReportGenerator;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
 import com.calc3d.engine3d.Camera3D;
+import com.calc3d.engine3d.Scene3D;
 import com.calc3d.geometry3d.Clip;
 import com.calc3d.geometry3d.ElementPoly;
 import com.calc3d.math.Vector3D;
@@ -1011,7 +1015,6 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         treeTable.setPreferredScrollableViewportSize(new Dimension(120, 120));
         treeTable.setTreeCellRenderer(new TreeCellRenderer());
         treeTable.setAutoscrolls(true);
-        treeTable.addMouseListener(this);
         treeTable.setRootVisible(true);
         treeTable.setVisible(true);
         treeTable.addTreeSelectionListener(new LeftTableSelectionListener(editorPane));
@@ -1214,7 +1217,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			result.setIcon(Icons.DATASET);
 			selected.addElement(result);
 			Element3DDataSet dataset3D = new Element3DDataSet(result);
-			this.addElement3D(dataset3D);
+			this.addElement3D(dataset3D, null);
 			treeTable.updateUI();
 			
 			ProcrustesFitDetalier detalier = new ProcrustesFitDetalier();
@@ -1225,7 +1228,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
 			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
-			DistanceConfiguration configuration = (DistanceConfiguration) AddObjectDialog.show(this, null, AddObjectDialog.DISTANCE_ELEMENT); 			
+			DistanceConfiguration configuration = (DistanceConfiguration) AddObjectDialog.show(this,null, Element3DFactory.DISTANCE_ELEMENT); 			
 			DistanceCalculatorAdapter calc = new DistanceCalculatorAdapter(configuration);
 			ArrayList<SampleSimpleElement> specimens = (ArrayList<SampleSimpleElement>) ((ComposeSimpleElement)selected.getElementByKey("specimens")).getAllElements();
 			ComposeSimpleElement distances  = calc.calculate(specimens);
@@ -1236,11 +1239,16 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
 			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
-			ProjectionConfiguration configuration = (ProjectionConfiguration) AddObjectDialog.show(this,null, AddObjectDialog.PROJECTION_ELEMENT);
+			ProjectionConfiguration configuration = (ProjectionConfiguration) AddObjectDialog.show(this,null, Element3DFactory.PROJECTION_ELEMENT);
 			ProjectionCalculatorAdapter calculator = new ProjectionCalculatorAdapter(configuration);
 			ComposeSimpleElement projection = calculator.calculate((ComposeSimpleElement) selected);
-			selected.addElement(projection);
-			this.addElement3D(new Element3DProjection(projection));
+			ComposeSimpleElement projections = (ComposeSimpleElement) selected.getElementByKey("projections");
+			if(projections==null){
+				projections = new ComposeSimpleElement("projections");
+			}
+			projections.addElement(projection);
+			selected.addElement(projections);
+			this.addElement3D(new Element3DProjection(projection), configuration.getTabTitle());
 			
 		}else if(command=="remove"){
 			  if (table.getSelectedRowCount()>0){ 
@@ -1287,7 +1295,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			if(dataset==null)return;
 			dataset.setIcon(Icons.DATASET);
 			this.addElement(dataset);
-			this.addElement3D(new Element3DDataSet(dataset));
+			this.addElement3D(new Element3DDataSet(dataset), null);
 			
 			DatasetDetails detailer = new DatasetDetails();
 			reporter.writeReport(detailer.getDetails(dataset));
@@ -1361,7 +1369,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	
 	}
 	
-	private void addElement3D(Element3D element) {
+	private void addElement3D(Element3D element, String tabTitle) {
 		ArrayList<Element3D> list = new ArrayList<Element3D>();
 		list.add(element);
     	Preferences preferences;
@@ -1402,7 +1410,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		pneSplit.setOneTouchExpandable(true);
 
 		
-        tabsManager.newTab(pneSplit, "title");		
+        tabsManager.newTab(pneSplit, tabTitle==null?"new tab" : tabTitle);		
 	}
 
 
@@ -2003,7 +2011,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		}
 	}
  
-	class Element3DTreeTableModel extends AbstractTreeTableModel{
+	class Element3DTreeTableModel extends AbstractTreeTableModel {
 
 		private Canvas3D canvas;
 		
@@ -2011,7 +2019,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
                 "Element3D", 
                 "Show"};
 		
-		ArrayList<Element3D> rootElements;
+		public ArrayList<Element3D> rootElements;
 		
 		public Element3DTreeTableModel(ArrayList<Element3D> elems, Canvas3D canvas){
 			super(new Object());
@@ -2136,14 +2144,27 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
         	    System.out.println("Visibility of:" + elem.getName() +"="+(Boolean)val);
 			}
 		}
+
 		
 		
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount()==2){
+			JXTreeTable table = tabsManager.getCurrentTreeTable();
+			if(table == null ) return;
+			int i = table.getSelectedRow();
+			Element3D selectedNode = (Element3D) table.getPathForRow(i).getLastPathComponent();
+			Element3DTreeTableModel model = (Element3DTreeTableModel) table.getTreeTableModel();
+			Element3DCollection root = (Element3DCollection) model.rootElements.get(0);
+			String title = EditElement3DDialog.show(this, root, null, tabsManager.getCurrentTitle());
+			tabsManager.setCurrentTitle(title);
+			Canvas3D current = tabsManager.getCurrentCanvas();
+			Scene3D scene = current.getSceneManager().createScene(true);
+			current.setScene(scene);
+			current.refresh();	
+		}
 	}
 	 
 }
