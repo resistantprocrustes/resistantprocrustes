@@ -80,16 +80,12 @@ public class Robusto implements IProcrustesCalculator{
 		SimpleMatrix conteo = MatrixConstructor.create(0, numRows +1, numEntities);
 		SimpleMatrix conteomed = MatrixConstructor.create(0, 1, numEntities);
 
-//while (z<=20)&(medland(Y-W,1)>tol)
 		while(z<=20 && CommonUtils.medland(Y.minus(W), 1) > tol){
 			System.out.println("Iteracion: "+ z);
     		for(int k=0; k<numEntities; k++){    
-    			//System.out.println("k="+k+"-it: "+z);
-    			//System.out.println("Aux iniciando for: ");
     			if(k==24 && z==4){
     				int a =0;
     			}
-//    			Aux.get(0).print();
 
     			E = CommonUtils.escala(Aux.get(k), Y);
     			double ro = CommonUtils.medianarep(E);
@@ -100,9 +96,6 @@ public class Robusto implements IProcrustesCalculator{
     			Object[] solArray = CommonUtils.rot3D(Aux.get(k), Y);
     			tita = (double)solArray[1];
     			eje = (SimpleMatrix)solArray[0];
-    			System.out.println("k="+k+"-it: "+z);
-//    			System.out.println("####################");
-    			System.out.println(eje+"  --  "+ tita);
     			SimpleMatrix auxMatRot = CommonUtils.matrizRot3D(eje, tita);
     				H.set(k, auxMatRot);
     			auxMatRot.print();
@@ -113,8 +106,6 @@ public class Robusto implements IProcrustesCalculator{
     			t = CustomMatrixUtils.median(T);
     			SimpleMatrix AuxWithOnes = MatrixConstructor.create(1, numRows, 1).mult(t);
     			Aux.get(k).set(Aux.get(k).plus(AuxWithOnes));
-    			//System.out.println("Aux medio for: ");
-    			//Aux.get(0).print();
     			for(int i=0; i<numRows; i++){
 //        
     				auxres.set(i, k, 
@@ -126,8 +117,7 @@ public class Robusto implements IProcrustesCalculator{
     				else 
     					conteo.set(i, k, 0);
     			}
-//    			System.out.println("Aux fin for: ");
-//    			Aux.get(0).print();
+
     			auxresme.set(0, k, CustomMatrixUtils.median(
     					auxres.extractVector(false, k).getMatrix().getData()
     					)
@@ -135,18 +125,12 @@ public class Robusto implements IProcrustesCalculator{
     		}
     		
     		for(int k=0; k<numEntities; k++){
-//       		if auxresme(1,k)<=resme(1,k)
     			if (auxresme.get(0, k)<=resme.get(0, k)){
-//           		X(:,:,k)=Aux(:,:,k);  % actualizo sí mejoró
-//           		conteomed(1,k)=1;
     				X.set(k, Aux.get(k));
     				conteomed.set(0, k, 1);
     			}
-//       		else conteomed(1,k)=0;
     			else
     				conteomed.set(0, k, 0);
-//       end; % del if
-//   end;
     		}
     		SimpleMatrix auxConteoRow = MatrixConstructor.create(0, 1, numEntities);
     		conteo.insertIntoThis(numRows, 0, auxConteoRow);

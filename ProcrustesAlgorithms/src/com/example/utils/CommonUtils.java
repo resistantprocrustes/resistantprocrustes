@@ -248,6 +248,7 @@ public class CommonUtils {
 		int rows = r.numRows(),
 				cols = r.numCols();
 		double[][] mat = new double[rows][cols];
+		
 		for(int i=0; i<rows; i++){
 			for(int j=0; j<cols; j++){
 				mat[i][j] = r.get(i,j);
@@ -258,11 +259,17 @@ public class CommonUtils {
 
 		try{
 			double[] eigenReals = eigen.getRealEigenvalues();
-			for(int i=0; i<eigenReals.length; i++){
-				if(eigen.getImagEigenvalue(i)==0 && eigenReals[i]==1 && eigenReals[i]>0.5){
-					double[] vals = eigen.getV().getColumn(i);
+			RealMatrix D = eigen.getD();
+			
+			for(int i=0; i<D.getRowDimension(); i++){
+				int t=D.getRowDimension()-i-1;
+				double[] imag =eigen.getImagEigenvalues(); 
+				if(imag[t]==0 && D.getEntry(t, t)>0.5){
+					double[][] dataV = eigen.getVT().getData();
+					double[] vals = dataV[t];
 					aux.setRow(0, 0, vals[0], vals[1], vals[2]);
 					break;
+					
 				
 				}
 			}
@@ -277,6 +284,7 @@ public class CommonUtils {
 			System.err.println(e);
 			System.err.println(r);
         }
+		System.out.println(aux);
 		return aux;
 	}
 
@@ -378,9 +386,9 @@ public class CommonUtils {
 //		   for k=1:3     
 			for(int k=0; k<3; k++){
 //		       v(1,k)=median(E(i,k,:)); % en cada fila de "ejes" está el eje mediano respecto a j
-				double[] auxVals = new double[E.size()];
-				for(int t=0; t<E.size(); t++)
-					auxVals[t] = E.get(t).get(i, k);
+				double[] auxVals = new double[f-1];
+				for(int t=0; t<f-1; t++)
+					auxVals[t] = E.get(i).get(t, k);
 				v.set(0, k, 
 						CustomMatrixUtils.median(auxVals));
 //		   end;
@@ -393,12 +401,14 @@ public class CommonUtils {
 				}
 				h++;
 				for(int k=0; k<3; k++){
-					double[] auxVals = new double[E.size()];
-					for(int t=0; t<E.size(); t++)
-						auxVals[t] = E.get(t).get(i, k);
-					v.set(0, k, 
-							CustomMatrixUtils.median(auxVals));
-				}
+//				       v(1,k)=median(E(i,k,:)); % en cada fila de "ejes" está el eje mediano respecto a j
+						double[] auxVals = new double[f-1];
+						for(int t=0; t<f-1; t++)
+							auxVals[t] = E.get(i).get(t, k);
+						v.set(0, k, 
+								CustomMatrixUtils.median(auxVals));
+//				   end;
+					}
 			}
 		
 //		ejes(i,:)00=v/norm(v,'fro');
