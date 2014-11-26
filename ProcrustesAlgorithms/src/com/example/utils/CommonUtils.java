@@ -260,13 +260,12 @@ public class CommonUtils {
 		try{
 			double[] eigenReals = eigen.getRealEigenvalues();
 			RealMatrix D = eigen.getD();
-			
+			double[][] V = eigen.getV().getData();
 			for(int i=0; i<D.getRowDimension(); i++){
 				int t=D.getRowDimension()-i-1;
 				double[] imag =eigen.getImagEigenvalues(); 
-				if(imag[t]==0 && D.getEntry(t, t)>0.5){
-					double[][] dataV = eigen.getVT().getData();
-					double[] vals = dataV[t];
+				if(imag[t]==0 && D.getEntry(t, t)==1){
+					double[] vals  =  eigen.getV().getColumn(t);
 					aux.setRow(0, 0, vals[0], vals[1], vals[2]);
 					break;
 					

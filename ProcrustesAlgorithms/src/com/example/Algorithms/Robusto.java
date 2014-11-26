@@ -101,6 +101,13 @@ public class Robusto implements IProcrustesCalculator{
     			auxMatRot.print();
     			Aux.set(k, Aux.get(k)
     					.mult(H.get(k)));
+    			SimpleMatrix prueba = Aux.get(k);
+    			for(int i=0; i<prueba.numRows(); i++){
+    				if(prueba.get(i, 2) != 0.0){
+    					System.out.println(prueba);
+    				}
+    			}
+    			System.out.println(Aux.get(k));
     			T = Y.minus(Aux.get(k));
     			SimpleMatrix t = MatrixConstructor.create(0, 1, numCols);
     			t = CustomMatrixUtils.median(T);
