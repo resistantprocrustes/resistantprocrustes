@@ -26,6 +26,10 @@ public class LandmarkSimpleElement extends SimpleElement {
 			   "z: "+coords[2];
 	}
 	
+	public String toString(){
+		return coords[0]+"\t"+coords[1]+"\t"+coords[2];
+	}
+	
 	
 
 }

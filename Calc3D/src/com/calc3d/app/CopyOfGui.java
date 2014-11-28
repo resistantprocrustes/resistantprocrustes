@@ -102,7 +102,9 @@ import com.calc3d.app.panels.ColorIcon;
 import com.calc3d.app.panels.ReportPnl;
 import com.calc3d.app.panels.StatusBarPanel;
 import com.calc3d.app.reports.DatasetDetails;
+import com.calc3d.app.reports.DistancesDetailer;
 import com.calc3d.app.reports.ProcrustesFitDetalier;
+import com.calc3d.app.reports.ProjectionDetailer;
 import com.calc3d.app.reports.ReportGenerator;
 import com.calc3d.app.resources.Icons;
 import com.calc3d.app.resources.Messages;
@@ -1201,10 +1203,6 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			  Globalsettings.perspectiveEnabled=!canvas3D.getRenderer().isPerspectiveEnabled();
 		      canvas3D.getRenderer().setPerspectiveEnabled(!canvas3D.getRenderer().isPerspectiveEnabled());
 		      this.tglPerspective.setSelected(canvas3D.getRenderer().isPerspectiveEnabled());
-//		}else if(command=="stereoscope"){
-//			  Globalsettings.steroscopyEnabled=!canvas3D.getRenderer().isStereoscopyEnabled();
-//			  canvas3D.getRenderer().setStereoscopyEnabled(!canvas3D.getRenderer().isStereoscopyEnabled());
-//			  this.tgl3D.setSelected(Globalsettings.steroscopyEnabled);
 		}else if(command=="CMAnalysis"){
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
@@ -1234,7 +1232,12 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			ComposeSimpleElement distances  = calc.calculate(specimens);
 			selected.addElement(distances);
 			treeTable.updateUI();
-
+			
+			DistancesDetailer detailer = new DistancesDetailer();
+			reporter.writeReport("Matrix of distances generated: \n");
+			reporter.writeReport("Type of analysis: "+ (configuration.getType() == DistanceConfiguration.MIN_SQR_DISTANCE ? "Least squares distance" : "Robusts distance")+'\n');
+			reporter.writeReport(detailer.getDetails(distances));
+			
 		}else if(command=="addProjection"){
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
@@ -1250,6 +1253,10 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			selected.addElement(projections);
 			this.addElement3D(new Element3DProjection(projection), configuration.getTabTitle());
 			
+			ProjectionDetailer detailer = new ProjectionDetailer();
+			reporter.writeReport("Projections: \n");
+			reporter.writeReport("Type of Projection: "+ (configuration.getType() == ProjectionConfiguration.LEAST_SQR_PROJETION ? "Least squares projection" : "Robusts projection")+'\n');
+			reporter.writeReport(detailer.getDetails(projection));
 		}else if(command=="remove"){
 			  if (table.getSelectedRowCount()>0){ 
 				if (JOptionPane.showConfirmDialog(this,"Are you sure you wan to delete the selected elements from list")== 0 ){	

@@ -19,6 +19,14 @@ public class DistanceSimpleElement extends SimpleElement {
 		return distance;
 	}
 	
+	public SampleSimpleElement getElementA(){
+		return element1;
+	}
+	
+	public SampleSimpleElement getElementB(){
+		return element2;
+	}
+	
 	
 		
 
