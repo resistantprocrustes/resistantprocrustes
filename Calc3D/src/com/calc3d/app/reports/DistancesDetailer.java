@@ -44,7 +44,7 @@ public class DistancesDetailer implements DataDetailer{
 		report += names;
 		report += "Distances Matrix: \n";
 		report += new SimpleMatrix(distArrayMat).toString();
-		return report;
+		return report+"\n\n\n";
 	}
 
 	private int getCountOfElements(int size) {

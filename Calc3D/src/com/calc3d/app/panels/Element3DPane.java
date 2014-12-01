@@ -11,6 +11,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import com.calc3d.app.dialogs.ColorDialog;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DCollection;
+import com.calc3d.app.elements.Element3DMesh;
 import com.calc3d.app.elements.Element3DPoint;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
@@ -270,6 +271,7 @@ public class Element3DPane extends JPanel implements ActionListener, Element3DPa
 			this.lmComboBox.addItem(elem.getName());
 		}
 	}
+
 
 	
 	@Override

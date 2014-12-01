@@ -13,9 +13,9 @@ public class ProjectionDetailer implements DataDetailer{
 		String report="";
 		ComposeSimpleElement projections = (ComposeSimpleElement) data;
 		for(LandmarkSimpleElement lm : (ArrayList<LandmarkSimpleElement>)projections.getAllElements()){
-			report += lm.toString()+'\n';
+			report +=lm.getName()+"    "+ lm.toString()+'\n';
 		}
-		return report;
+		return report+"\n\n\n";
 	}
 
 }
