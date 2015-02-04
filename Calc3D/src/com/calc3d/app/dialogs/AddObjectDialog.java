@@ -187,10 +187,7 @@ public class AddObjectDialog extends JDialog implements ActionListener {
 		if (!dialog.canceled) {
 			// get the body and fixture
 			DialogConfiguration configuration = dialog.pnlObjectCreate.getConfiguration();
-			if(dialog.pnlObjectCreate.isDrawable()){
-				configuration.setTabTitle(dialog.pane3D.getTabTitle());
-			}
-//			dialog.pnlObjectGeneral.UpdateElement(element3D);
+			//			dialog.pnlObjectGeneral.UpdateElement(element3D);
 			// apply the transform
 //			AffineTransform3D T;
 //			T=AffineTransform3D.getTranslateInstance(Globalsettings.inverseMapX(dialog.pnlTransform.getTranslation().getX()),

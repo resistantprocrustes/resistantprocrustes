@@ -142,11 +142,11 @@ public class Commons {
 		return list;
 	}
 
-	public static ComposeSimpleElement toPCEntity(ArrayList<SimpleMatrix> result) {
+	public static ComposeSimpleElement toPCEntity(ArrayList<SimpleMatrix> result, ArrayList<SampleSimpleElement> elems) {
 		ComposeSimpleElement specimens = new ComposeSimpleElement("specimens");
 		for(int i=0; i<result.size()-1;i++){
 			SimpleMatrix m = result.get(i);
-			specimens.addElement(new SampleSimpleElement("sample-"+i, m));
+			specimens.addElement(new SampleSimpleElement(elems.get(i).getName(), m));
 		}
 		if(result.size()!= 0){
 			SimpleMatrix consensus = result.get(result.size()-1);

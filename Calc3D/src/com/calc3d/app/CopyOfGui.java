@@ -17,8 +17,10 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
@@ -60,6 +62,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.ejml.simple.SimpleMatrix;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
+import org.procrustes3d.serialize.xml.ProjectSerializer;
 
 import com.calc3d.app.analysis.AnalysisConfiguration;
 import com.calc3d.app.analysis.DialogConfiguration;
@@ -381,19 +384,19 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		this.mnuSave.setIcon(Icons.SAVE);
 		this.mnuSave.setActionCommand("save");
 		this.mnuSave.addActionListener(this);
-		this.mnuSave.setEnabled(false);
+		this.mnuSave.setEnabled(true);
 		
 		this.mnuSaveAs = new JMenuItem(Messages.getString("menu.file.saveas"));
 		this.mnuSaveAs.setIcon(Icons.SAVEAS);
 		this.mnuSaveAs.setActionCommand("saveas");
 		this.mnuSaveAs.addActionListener(this);
-		this.mnuSaveAs.setEnabled(false);
+		this.mnuSaveAs.setEnabled(true);
 		
 		this.mnuOpen = new JMenuItem(Messages.getString("menu.file.open"));
 		this.mnuOpen.setIcon(Icons.OPEN);
 		this.mnuOpen.setActionCommand("open");
 		this.mnuOpen.addActionListener(this);
-		this.mnuOpen.setEnabled(false);
+//		this.mnuOpen.setEnabled(false);
 		
 		this.mnuExport = new JMenuItem(Messages.getString("menu.file.export"));
 		this.mnuExport.setIcon(Icons.EXPORT);
@@ -750,7 +753,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		this.btnLoad.setToolTipText("Add Dataset");
 		
 		this.btnCMAnalisys = new JButton(Icons.CM);
-		btnCMAnalisys.setToolTipText("Procrustes Analysis");
+		btnCMAnalisys.setToolTipText(Messages.getString("toolbar.file.procrustesAnalysis"));
 		this.btnCMAnalisys.addActionListener(this);
 		this.btnCMAnalisys.setActionCommand("CMAnalysis");
 		
@@ -765,7 +768,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 		this.btnOpen.addActionListener(this);
 		this.btnOpen.setActionCommand("open");
 		this.btnOpen.setToolTipText(Messages.getString("toolbar.file.open"));
-		this.btnOpen.setEnabled(false);
+//		this.btnOpen.setEnabled(false);
 		
 		this.btnSave = new JButton(Icons.SAVE);
 		this.btnSave.addActionListener(this);
@@ -1223,11 +1226,12 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			int i=this.treeTable.getSelectedRow();
 			TreePath path = treeTable.getPathForRow(i);
 			ComposeSimpleElement selected = (ComposeSimpleElement) path.getLastPathComponent();
-			AnalysisConfiguration configuration = NewProcrustesAnalysisDialog.show(this, selected);
+			AnalysisConfiguration configuration = (AnalysisConfiguration) AddObjectDialog.show(this,selected, Element3DFactory.PROCRUSTES_ELEMENT);
 			if(configuration == null)return;
 			ProcrustesCalculatorAdapter calculator = new ProcrustesCalculatorAdapter();
 			calculator.setConfiguration(configuration);
-			ComposeSimpleElement result = calculator.execute();
+			ArrayList<SampleSimpleElement> specimens = (ArrayList<SampleSimpleElement>) ((ComposeSimpleElement)selected.getElementByKey("specimens")).getAllElements();
+			ComposeSimpleElement result = calculator.calculate(specimens);
 			result.setIcon(Icons.DATASET);
 			selected.addElement(result);
 			Element3DDataSet dataset3D = new Element3DDataSet(result);
@@ -1319,10 +1323,13 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			dataset.setIcon(Icons.DATASET);
 			this.addElement(dataset);
 			this.addElement3D(new Element3DDataSet(dataset));
-			
+			this.tabsManager.setCurrentTitle(dataset.getName());
 			DatasetDetails detailer = new DatasetDetails();
 			reporter.writeReport(detailer.getDetails(dataset));
-		}else if(command=="save"){
+		}else if(command=="open"){
+			loadProjectFromFile();
+		}
+		else if(command=="save"){
 			  saveToFile(false);
 	    }else if(command=="saveas"){
 			  saveToFile(true);
@@ -1443,14 +1450,16 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	    Canvas3D newCanvas = this.createCanvas();
 		newCanvas.addSceneManager(new SceneManager());
 		newCanvas.getSceneManager().addElement(element3D);
+		newCanvas.getSceneManager().setAxisVisible(true);
 		configuration.setGraphPreferences(Commons.setPreferences(list));
 		preferences = configuration.getGraphPreferences();
 		preferences.setLookandFeel(Globalsettings.lookandFeel);
 		preferences.setBackColor(Color.WHITE);
+		newCanvas.getSceneManager().setSettings(new LocalSettings(preferences));
 		applySettings(newCanvas,preferences,true,true);
         updateTable();
         dirty=false;
-        
+        newCanvas.setSettings(new LocalSettings(configuration.getGraphPreferences()));       
         Vector2D centroid = element3D.calculateCentroid();
         Vector3D cent2 = newCanvas.getRenderer().ProjectToScreen(new Vector3D(centroid.getX(), centroid.getY(), 0));
 //		create treetable
@@ -1564,13 +1573,15 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
      */
     private void newFile() {
     	if (!isDirty("Do you want to save before creating a new file?")) {
-             sceneManager.getElement3DList().clear();
-             canvas3D.setScene(sceneManager.createScene(true));
-             canvas3D.refresh();
-             updateTable();
-             dirty=false;
-             lastFileName=null;
-             setLastFileName(null);
+
+//    		
+//             sceneManager.getElement3DList().clear();
+//             canvas3D.setScene(sceneManager.createScene(true));
+//             canvas3D.refresh();
+//             updateTable();
+//             dirty=false;
+//             lastFileName=null;
+//             setLastFileName(null);
     	}
     }
     
@@ -1631,6 +1642,50 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	        return null;
 	 }
 	 
+	 /**
+		 * Shows load dialog and loads file if dialogue is not canceled
+		 */
+		 private void loadProjectFromFile() {
+		        loadProjectFromFile(getFileName(false,"p3d","Open new file..."));
+		 }
+		    
+		 /**
+		  * Loads file if exits and valid
+		  * @param fileName file to be loaded
+		  */
+		 public void loadProjectFromFile(String fileName) {
+		        if (fileName==null) return;
+		        try {
+		    		  ObjectInputStream is = new ObjectInputStream(new FileInputStream(fileName));
+		    		  project = (ProjectSimpleElement) is.readObject();
+		    		  ((TreeTableModel) treeTable.getTreeTableModel()).setRoot(project);
+		    		  int countOfTabs = is.read();
+		   		      for(int i=0; i<countOfTabs; i++){
+		   		    	ArrayList<Element3D> elems = (ArrayList<Element3D>) is.readObject();
+		   		    	DialogConfiguration conf = new DialogConfiguration();
+		   		    	conf = (DialogConfiguration) is.readObject();
+		   		    	
+		   		    	this.addElement3D(elems.get(0), conf);
+		   		    	 // os.writeObject(tabsManager.getCanvasAt(i).getSceneManager().getElement3DList());
+		   		      }
+		    		  
+//		    		  ArrayList<Element3D> list=(ArrayList<Element3D>) is.readObject();
+//		    		  sceneManager.getElement3DList().clear();
+//		    		  sceneManager.getElement3DList().addAll(list);
+//		    		  Preferences preferences=(Preferences) is.readObject();
+//		    		  preferences.setLookandFeel(Globalsettings.lookandFeel);
+//		    		  applySettings(preferences,true,true);
+		    		  //canvas3D.setScene(sceneManager.createScene(true));
+		 	          //canvas3D.refresh();
+		 	          updateTable();
+		 	          setLastFileName(fileName);
+		 	          dirty=false;
+				 } catch (Exception e) {
+					 
+					 e.printStackTrace();
+					  JOptionPane.showMessageDialog(this,e.getMessage()+fileName,"Error",JOptionPane.ERROR_MESSAGE);
+				 }
+		 }
 	 
 	 /**
 	 * Shows save dialog optionally (for save as ... or when file is being saved for firsttime), and saves, returns true if succesful
@@ -1639,18 +1694,31 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 	 */
 	 private boolean saveToFile(boolean askName) {
         String fileName;
-        if (sceneManager.getElementCount()<1)return false;
+        //if (sceneManager.getElementCount()<1)return false;
         if (askName || lastFileName==null) fileName=getFileName(true,".c3d","Save file as ...");
         else fileName=lastFileName;
         if (fileName==null) return false;
         
    	    try {
    		      ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fileName));
-	    	  os.writeObject(sceneManager.getElement3DList());
-	    	  os.writeObject(Globalsettings.getSettings());
+   		      os.writeObject(project);
+   		      int countTabs = tabsManager.getCountOfTabs();
+   		      
+   		      os.write(countTabs);
+   		      for(int i=0; i<countTabs; i++){
+   		    	  os.writeObject(tabsManager.getCanvasAt(i).getSceneManager().getElement3DList());
+   		    	  DialogConfiguration conf = new DialogConfiguration();
+   		    	  conf.setTabTitle(tabsManager.getTitleAt(i));
+   		    	  conf.setGraphPreferences(tabsManager.getCanvasAt(i).getSettings().getSettings());
+   		    	  os.writeObject(conf);
+   		      }
+//	    	  os.writeObject(sceneManager.getElement3DList());
+//	    	  os.writeObject(Globalsettings.getSettings());
+//   		      ProjectSerializer.serialize(this.project, os);
 	    	  dirty=false;
 	    	  setLastFileName(fileName);
 	 	} catch (IOException e) {
+	 		e.printStackTrace();
 			  JOptionPane.showMessageDialog(this,"Could not save to file "+fileName,"Warning",JOptionPane.WARNING_MESSAGE);
 		      return false;  
 		}
@@ -1947,6 +2015,11 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener{
 			super(elem);
 		}
 		
+		public void setRoot(ProjectSimpleElement project) {
+			this.root = project;
+			
+		}
+
 		public void addData(ArrayList<SimpleElement> list) {
 			ProjectSimpleElement root = (ProjectSimpleElement)this.getRoot();
 			root.addAllElement(list);

@@ -4,7 +4,9 @@ public class LandmarkSimpleElement extends SimpleElement {
 	
 	public static String NAME_PREFIX = "lm-";
 	private double[] coords; 
-	
+	public LandmarkSimpleElement(){
+		super();
+	}
 	public LandmarkSimpleElement(String name){
 		super(name);
 		coords = new double[]{0,0,0};

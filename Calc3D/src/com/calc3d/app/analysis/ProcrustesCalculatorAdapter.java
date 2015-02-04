@@ -7,13 +7,14 @@ import org.ejml.simple.SimpleMatrix;
 import com.calc3d.app.elements.dataset.DataSet;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SampleSimpleElement;
+import com.calc3d.app.elements.simpleelements.SimpleElement;
 import com.example.Algorithms.CM;
 import com.example.Algorithms.IProcrustesCalculator;
 import com.example.Algorithms.Robusto;
 import com.example.loaders.PCEntity;
 import com.procrustes.Utils.Commons;
 
-public class ProcrustesCalculatorAdapter {
+public class ProcrustesCalculatorAdapter  {
 
 	AnalysisConfiguration configuration;
 	public ProcrustesCalculatorAdapter() {
@@ -23,17 +24,17 @@ public class ProcrustesCalculatorAdapter {
 		this.configuration = configuration2;
 	}
 
-	public ComposeSimpleElement execute() {
+	public ComposeSimpleElement calculate(ArrayList<SampleSimpleElement> elems) {
 		IProcrustesCalculator calculator = getCalculator();
-		ArrayList<SimpleMatrix> elements = new ArrayList<SimpleMatrix>();
-		ArrayList<SampleSimpleElement> elems =(ArrayList<SampleSimpleElement>)configuration.getElements(); 
+		ArrayList<SimpleMatrix> elements = new ArrayList<SimpleMatrix>(); 
 		for(int i=0; i<elems.size(); i++){
 			SampleSimpleElement entity = elems.get(i);			
 			elements.add(new SimpleMatrix(entity.toMatrix()));
 		}
 		ArrayList<SimpleMatrix> result = calculator.execute(elements);
 		ComposeSimpleElement dataset = new ComposeSimpleElement(configuration.getName());
-		dataset.addElement(Commons.toPCEntity(result));
+
+		dataset.addElement(Commons.toPCEntity(result,elems));
 		return dataset;
 		
 		

@@ -1,11 +1,13 @@
 package com.calc3d.app.elements.simpleelements;
 
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import com.calc3d.app.elements.Element3D;
 
-public abstract class SimpleElement {
+public abstract class SimpleElement implements Serializable{
 
 	String name;
 	ImageIcon icon;

@@ -1,10 +1,12 @@
 package com.calc3d.app.analysis;
 
+import java.io.Serializable;
+
 import com.calc3d.app.Globalsettings;
 import com.calc3d.app.Preferences;
 import com.calc3d.app.elements.Element3D;
 
-public class DialogConfiguration {
+public class DialogConfiguration implements Serializable{
 
 	String tabTitle;
 	Preferences graphPreferences = Globalsettings.getSettings(); 

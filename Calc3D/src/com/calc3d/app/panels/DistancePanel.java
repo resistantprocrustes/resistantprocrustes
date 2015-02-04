@@ -8,6 +8,7 @@ import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.analysis.DistanceConfiguration;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
+import com.calc3d.app.resources.Messages;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -19,13 +20,13 @@ public class DistancePanel extends JPanel implements SimpleElementCreatePanel{
 	public JRadioButton minSqeRdBtn;
 	
 	public DistancePanel() {
-		this.robRdBtn = new JRadioButton("Robust Distance");
-		this.robRdBtn.setSelected(true);
-		this.minSqeRdBtn = new JRadioButton("Minimus Square Distance");
-		this.minSqeRdBtn.setSelected(false);
+		this.robRdBtn = new JRadioButton(Messages.getString("dialog.distance.rd"));
+		this.robRdBtn.setSelected(false);
+		this.minSqeRdBtn = new JRadioButton(Messages.getString("dialog.distance.pd"));
+		this.minSqeRdBtn.setSelected(true);
 		ButtonGroup btnGroup = new ButtonGroup();
-		btnGroup.add(robRdBtn);
 		btnGroup.add(minSqeRdBtn);
+		btnGroup.add(robRdBtn);
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -34,16 +35,16 @@ public class DistancePanel extends JPanel implements SimpleElementCreatePanel{
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(minSqeRdBtn)
 						.addComponent(robRdBtn))
-					.addContainerGap(289, Short.MAX_VALUE))
+					.addContainerGap(167, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(15)
-					.addComponent(robRdBtn)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(22)
 					.addComponent(minSqeRdBtn)
-					.addContainerGap(236, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(robRdBtn)
+					.addContainerGap(223, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		

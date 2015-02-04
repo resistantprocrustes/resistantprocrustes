@@ -22,6 +22,7 @@ import com.calc3d.app.elements.Element3Dfunction;
 import com.calc3d.app.elements.Element3DImplicit;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
+import com.calc3d.app.panels.AnalysisPane;
 import com.calc3d.app.panels.CartesianCurve2DPanel;
 import com.calc3d.app.panels.Curve3DPanel;
 import com.calc3d.app.panels.DistancePanel;
@@ -257,6 +258,9 @@ public class commonUtils {
 		}
 		if(type==Element3DFactory.PROJECTION_ELEMENT){
 			return new Projection3DPanel();
+		}
+		if(type==Element3DFactory.PROCRUSTES_ELEMENT){
+			return new AnalysisPane();
 		}
 		return null;
 	}

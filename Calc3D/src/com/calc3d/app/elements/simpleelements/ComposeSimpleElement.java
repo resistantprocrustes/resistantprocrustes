@@ -49,6 +49,14 @@ public class ComposeSimpleElement extends SimpleElement{
 		
 	}
 	
+	public LinkedHashMap<String, SimpleElement> getElements(){
+		return elements;
+	}
+	
+	public void setElements(LinkedHashMap<String, SimpleElement> elements1){
+		this.elements=elements1;
+	}
+	
 	public SimpleElement getContainedElement(int index){
 		ArrayList<SimpleElement> elems = new ArrayList<SimpleElement>(elements.values());
 		return elems.get(index);

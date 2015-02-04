@@ -12,13 +12,11 @@ import com.example.loaders.PCEntity;
  * @author Lucas
  *
  */
-/**
- * @author Lucas
- *
- */
+
 public class AnalysisConfiguration extends DialogConfiguration{
 	public static int MIN_SQUARES_FIT = 0;
 	public static int ROBUST_FIT = 1;
+	public static int counter = 0;
 	
 	private int type;
 	private ArrayList<? extends SimpleElement> elements;
@@ -31,12 +29,14 @@ public class AnalysisConfiguration extends DialogConfiguration{
 		super();
 		this.type = type;
 		this.elements = elements;
+		counter++;
 	}
 	/**
 	 * 
 	 */
 	public AnalysisConfiguration() {
 		super();
+		counter++;
 	}
 	
 	

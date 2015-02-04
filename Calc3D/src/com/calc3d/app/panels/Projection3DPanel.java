@@ -6,6 +6,7 @@ import com.calc3d.app.analysis.DialogConfiguration;
 import com.calc3d.app.analysis.ProjectionConfiguration;
 import com.calc3d.app.elements.Element3D;
 import com.calc3d.app.elements.Element3DProjection;
+import com.calc3d.app.resources.Messages;
 
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -31,6 +32,7 @@ import java.awt.GridLayout;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JTextField;
+
 import net.miginfocom.swing.MigLayout;
 
 public class Projection3DPanel extends JPanel implements SimpleElementCreatePanel {
@@ -46,9 +48,9 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 
 	public Projection3DPanel() {
 		
-		rdbtnRobust = new JRadioButton("Robust");
+		rdbtnRobust = new JRadioButton(Messages.getString("dialog.projection.rmds"));
 		
-		rdbtnLeastSqe = new JRadioButton("Least Square");
+		rdbtnLeastSqe = new JRadioButton(Messages.getString("dialog.projection.fmds"));
 		
 		JLabel lblProjectionType = new JLabel("Projection type:");
 		
@@ -69,16 +71,18 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblProjectionType)
-						.addComponent(lblDimensions)
-						.addComponent(lblName))
-					.addGap(91)
+						.addComponent(lblName)
+						.addComponent(lblDimensions))
+					.addGap(81)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rdbtn3D)
 						.addComponent(rdbtn2D)
-						.addComponent(rdbtnRobust)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(rdbtnRobust)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addComponent(rdbtnLeastSqe))
-					.addContainerGap(141, Short.MAX_VALUE))
+					.addContainerGap(81, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -88,19 +92,19 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 						.addComponent(lblName)
 						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(rdbtnRobust)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(rdbtnLeastSqe))
-						.addComponent(lblProjectionType))
-					.addGap(23)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblProjectionType)
+						.addComponent(rdbtnLeastSqe))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(rdbtnRobust)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblDimensions)
-						.addComponent(rdbtn2D))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(rdbtn3D)
-					.addContainerGap(108, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(rdbtn2D)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(rdbtn3D)))
+					.addContainerGap(95, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 		
@@ -132,6 +136,11 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 	@Override
 	public DialogConfiguration getConfiguration() {
 		ProjectionConfiguration configuration = new ProjectionConfiguration(rdbtnLeastSqe.isSelected()?ProjectionConfiguration.LEAST_SQR_PROJETION : ProjectionConfiguration.ROBUST_PROJECTION);
+		
+		int type = this.rdbtnLeastSqe.isSelected() ? ProjectionConfiguration.LEAST_SQR_PROJETION : ProjectionConfiguration.ROBUST_PROJECTION;
+		String nName = type==ProjectionConfiguration.LEAST_SQR_PROJETION?Messages.getString("tab.name.prefix.fmds"):Messages.getString("tab.name.prefix.rmds");
+		configuration.setTabTitle(nName+"-"+this.txtName.getText());
+		
 		configuration.setDimensions(rdbtn2D.isSelected() ? 2 : 3);
 		configuration.setName(this.txtName.getText());
 		return configuration;

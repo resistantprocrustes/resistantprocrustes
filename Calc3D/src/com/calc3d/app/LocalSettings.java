@@ -59,11 +59,12 @@ public  boolean xyGridVisible=false;
 public  Box3D axesBox=new Box3D(-5,5,-5,5,-5,5);
 public  int axisTicks=5;
 public  int axisWidth=2;
-public  Color axisColor=Color.white;//new Color(132,145,135).brighter();
-public  Color planeColor=Color.white;//new Color(190,240,220);
+public  Color axisColor=Color.black;//new Color(132,145,135).brighter();
+public  Color planeColor=Color.black;//new Color(190,240,220);
 public  Color gridColor=planeColor.darker();
 
 public  double fov=50;
+private boolean mouseInteractionAviable;
 
 public LocalSettings(Preferences preferences) {
 	this();
@@ -187,6 +188,7 @@ public  void saveSettings(Preferences preferences){
 	light1Enabled=preferences.isLight1Enabled();
 	light2Enabled=preferences.isLight2Enabled();
 	light3Enabled=preferences.isLight3Enabled();
+	this.mouseInteractionAviable = preferences.getMouseInteractionAviable();
 	recalculateClip();
 }
 

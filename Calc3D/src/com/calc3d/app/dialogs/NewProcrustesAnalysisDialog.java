@@ -25,6 +25,7 @@ import com.calc3d.app.analysis.AnalysisConfiguration;
 import com.calc3d.app.elements.dataset.DataSet;
 import com.calc3d.app.elements.simpleelements.ComposeSimpleElement;
 import com.calc3d.app.elements.simpleelements.SimpleElement;
+import com.calc3d.app.resources.Messages;
 import com.example.loaders.PCEntity;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -55,19 +56,18 @@ public class NewProcrustesAnalysisDialog extends JDialog implements ActionListen
 	
 	public NewProcrustesAnalysisDialog(Window owner) {
 		super(owner, "Add new ", ModalityType.APPLICATION_MODAL);
-		this.setSize(300, 300);
+		this.setSize(425, 300);
 		configurationPnl = new JPanel();
 		lblName = new JLabel("Name");
 		
 		getContentPane().add(configurationPnl, BorderLayout.CENTER);
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		rdbtnMinimusSquareFit = new JRadioButton("Minimus Square Fit");
+		rdbtnMinimusSquareFit = new JRadioButton(Messages.getString("dialog.addpcanalysis.glsp"));
 		rdbtnMinimusSquareFit.setSelected(true);
 		rdbtnMinimusSquareFit.setHorizontalAlignment(SwingConstants.CENTER);
-		rdbtnRobustFit = new JRadioButton("Robust Fit");
+		rdbtnRobustFit = new JRadioButton(Messages.getString("dialog.addpcanalysis.grp"));
 		GroupLayout gl_configurationPnl = new GroupLayout(configurationPnl);
-		
 		gl_configurationPnl.setHorizontalGroup(
 			gl_configurationPnl.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_configurationPnl.createSequentialGroup()
@@ -78,8 +78,8 @@ public class NewProcrustesAnalysisDialog extends JDialog implements ActionListen
 						.addGroup(gl_configurationPnl.createSequentialGroup()
 							.addComponent(lblName)
 							.addGap(46)
-							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(220, Short.MAX_VALUE))
+							.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_configurationPnl.setVerticalGroup(
 			gl_configurationPnl.createParallelGroup(Alignment.LEADING)
@@ -92,7 +92,7 @@ public class NewProcrustesAnalysisDialog extends JDialog implements ActionListen
 					.addComponent(rdbtnMinimusSquareFit)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(rdbtnRobustFit)
-					.addContainerGap(131, Short.MAX_VALUE))
+					.addContainerGap(112, Short.MAX_VALUE))
 		);
 		ButtonGroup btnGroup = new ButtonGroup();
 		btnGroup.add(rdbtnMinimusSquareFit);
@@ -121,8 +121,11 @@ public class NewProcrustesAnalysisDialog extends JDialog implements ActionListen
 	private AnalysisConfiguration generateConfiguration(ComposeSimpleElement dataset) {
 		AnalysisConfiguration configuration = new AnalysisConfiguration();
 		configuration.setElements((ArrayList<SimpleElement>) ((ComposeSimpleElement)dataset.getElementByKey("specimens")).getAllElements());
-		configuration.setName(textField_2.getText());
+		
 		int type = this.rdbtnMinimusSquareFit.isSelected() ? AnalysisConfiguration.MIN_SQUARES_FIT : AnalysisConfiguration.ROBUST_FIT;
+		String nName = type==AnalysisConfiguration.MIN_SQUARES_FIT?"GLSP":"GRP";
+		configuration.setTabTitle(nName+"-"+textField_2.getText());
+		configuration.setName(textField_2.getText());
 		configuration.setType(type);
 		return configuration;
 		
