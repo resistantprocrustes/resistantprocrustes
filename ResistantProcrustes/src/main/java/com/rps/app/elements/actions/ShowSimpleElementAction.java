@@ -4,7 +4,7 @@ import com.rps.app.CopyOfGui;
 import com.rps.app.TabsManager;
 import com.rps.app.elements.simpleelements.SimpleElement;
 
-public class ShowSimpleElementAction extends SimpleElementAction {
+public class ShowSimpleElementAction extends SimpleElementAction{
 
 	public ShowSimpleElementAction(String name, String actionCommand,
 			CopyOfGui gui, SimpleElement element) {

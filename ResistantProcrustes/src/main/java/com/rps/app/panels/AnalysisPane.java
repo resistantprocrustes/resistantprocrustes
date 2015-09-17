@@ -43,7 +43,7 @@ public class AnalysisPane extends JPanel implements SimpleElementCreatePanel, Ac
 	
 	public AnalysisPane() {
 		
-		lblName = new JLabel(Messages.getString("dialog.addpcanalysis.tabname"));
+		lblName = new JLabel(Messages.getString("dialog.addpcanalysis.name"));
 		
 		textField_2 = new PrefixTextField("");
 		textField_2.setEnabled(false);

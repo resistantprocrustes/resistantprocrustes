@@ -3,6 +3,7 @@ package com.rps.app.dialogs;
 import java.awt.Window;
 import java.io.IOException;
 
+import javax.print.DocFlavor.URL;
 import javax.swing.JDialog;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
@@ -39,8 +40,8 @@ public class AboutDialog extends JDialog {
        btnOk = new javax.swing.JButton();
 
        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-
-       lblApp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/calc3d/app/resources/TheseusProcrustes.jpg"))); // NOI18N
+       java.net.URL url = this.getClass().getResource("/com/rps/app/resources/TheseusProcrustes.jpg");
+       lblApp.setIcon(new javax.swing.ImageIcon(url)); // NOI18N
 
        editorPane.setFocusable(false);
        jScrollPane2.setViewportView(editorPane);
@@ -48,7 +49,9 @@ public class AboutDialog extends JDialog {
       // jScrollPane2.setBorder(new EmptyBorder(0,5,0,0));
        
        try {
-    	   editorPane.setPage(this.getClass().getResource("/com/calc3d/app/resources/about.html"));
+
+    	   editorPane.setPage(this.getClass().getResource("/com/rps/app/resources/about.html"));
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

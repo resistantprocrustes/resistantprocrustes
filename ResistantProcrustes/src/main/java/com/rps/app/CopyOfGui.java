@@ -988,7 +988,7 @@ public class CopyOfGui extends JFrame implements ActionListener,  MouseListener,
 //		Logger.setReportWindowHandler(new ReportWindowHandler( ( (ReportPnl)reportPanel).getTextArea() ));
 //		
 //		com.rps.log.Logger.getLogger("info").info("entro");
-//	    reporter = new ReportGenerator((ReportPnl)reportPanel);
+	    reporter = new ReportGenerator((ReportPnl)reportPanel);
 		JSplitPane pneSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPane, centerTabPnl);
 		// setup the layout
 		pneSplit.setOneTouchExpandable(true);
