@@ -1562,7 +1562,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			try {
 				// Set your page url in this string. For eg, I m using URL for
 				// Google Search engine
-				String url = "http://lucasasecas.github.io/Procrustes3D/";
+				String url = "http://resistantprocrustes.github.io/resistantprocrustes/";
 				java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			} catch (java.io.IOException e) {
 				System.out.println(e.getMessage());
@@ -1576,7 +1576,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			try {
 				// Set your page url in this string. For eg, I m using URL for
 				// Google Search engine
-				String url = "https://github.com/lucasasecas/Procrustes3D";
+				String url = "https://github.com/resistantprocrustes/resistantprocrustes";
 				java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 			} catch (java.io.IOException e) {
 				System.out.println(e.getMessage());
