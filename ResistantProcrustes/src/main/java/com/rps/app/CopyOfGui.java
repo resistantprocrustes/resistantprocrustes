@@ -617,7 +617,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		this.mnuHelp = new JMenu(Messages.getString("menu.help"));
 
-		this.mnuContent = new JMenuItem(Messages.getString("menu.help.content"));
+		this.mnuContent = new JMenuItem(Messages.getString("menu.help.userguide"));
 		mnuContent.setIcon(Icons.CONTENT);
 		mnuContent.setActionCommand("content");
 		mnuContent.addActionListener(this);
@@ -1551,9 +1551,13 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 						.getClipBox().equals(Globalsettings.getClipBox()));
 			}
 		} else if (command == "content") {
-			HelpDialog helpDialog = new HelpDialog(this, "About RPS",
-					"about.html");
-			helpDialog.show();
+			String url = "https://sites.google.com/site/resistantprocrustes/home/download";
+			try {
+				java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else if (command == "about") {
 			AboutDialog aboutDialog = new AboutDialog(this);
 			aboutDialog.show();
