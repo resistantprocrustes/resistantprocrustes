@@ -19,7 +19,7 @@ public class AboutDialog extends JDialog {
     * Creates new form AboutDialogs
     */
    public AboutDialog(Window owner) {
-	   super(owner, "About Calc3D", ModalityType.APPLICATION_MODAL);
+	   super(owner, "About RPS", ModalityType.APPLICATION_MODAL);
 	   this.setResizable(false);
        initComponents();  
        this.setLocationRelativeTo(null);
