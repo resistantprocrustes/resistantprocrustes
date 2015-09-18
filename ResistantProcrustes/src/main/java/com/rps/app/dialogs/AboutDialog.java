@@ -72,7 +72,7 @@ public class AboutDialog extends JDialog {
        				.addGroup(layout.createSequentialGroup()
        					.addComponent(lblApp, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
        					.addPreferredGap(ComponentPlacement.RELATED)
-       					.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 500, GroupLayout.PREFERRED_SIZE))
+       					.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 400, GroupLayout.PREFERRED_SIZE))
        				.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
        			.addContainerGap())
        );
