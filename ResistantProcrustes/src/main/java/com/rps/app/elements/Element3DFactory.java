@@ -46,7 +46,7 @@ public class Element3DFactory {
 			return Messages.getString("common.element.distance")+"s";
 		}
 		if(elementType == PROCRUSTES_ELEMENT){
-			return Messages.getString("common.element.procrustesanalysis")+"s";
+			return Messages.getString("common.element.procrustesanalysis");
 		}
 		if(elementType == DATASET_ELEMENT){
 			return Messages.getString("common.element.dataset")+"s";
