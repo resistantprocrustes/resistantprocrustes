@@ -70,9 +70,9 @@ public class AboutDialog extends JDialog {
        			.addContainerGap()
        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
        				.addGroup(layout.createSequentialGroup()
-       					.addComponent(lblApp, GroupLayout.PREFERRED_SIZE, 213, GroupLayout.PREFERRED_SIZE)
+       					.addComponent(lblApp, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
        					.addPreferredGap(ComponentPlacement.RELATED)
-       					.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE))
+       					.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 500, GroupLayout.PREFERRED_SIZE))
        				.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
        			.addContainerGap())
        );
@@ -88,8 +88,7 @@ public class AboutDialog extends JDialog {
        			.addContainerGap())
        );
        getContentPane().setLayout(layout);
-      // editorPane.setMinimumSize(getSize());
-      // editorPane.setPreferredSize(getSize());
+       
        
        pack();
    }// </editor-fold>

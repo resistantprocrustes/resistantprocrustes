@@ -1039,7 +1039,6 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 		// canvas3D.getRenderer().setBackgroundColor(Globalsettings.backgroundColor);
 		// bgColorIcon.setBackground(canvas3D.getRenderer().getBackgroundColor());
 		bgColorIcon.setActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				Canvas3D canvas3D = tabsManager.getCurrentCanvas();
 				SceneManager sceneManager = canvas3D.getSceneManager();
@@ -1060,7 +1059,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 		// let the methods in this class handle closing the window
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
-			@Override
+		
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
@@ -1109,7 +1108,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 		}
 	}
 
-	@Override
+
 	public void actionPerformed(ActionEvent arg0) {
 		String command = arg0.getActionCommand();
 		if (command.startsWith("laf+")) {
@@ -2308,7 +2307,6 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		// show the GUI on the EDT
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
 			public void run() {
 				new CopyOfGui();
 			}
@@ -2354,17 +2352,15 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			root.addElement(elem);
 		}
 
-		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
-		@Override
+	
 		public String getColumnName(int column) {
 			return columnNames[column];
 		}
 
-		@Override
 		public Object getValueAt(Object node, int col) {
 			if (!(node instanceof SimpleElement)) {
 				return "";
@@ -2376,7 +2372,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		}
 
-		@Override
+	
 		public boolean isLeaf(Object node) {
 			if (!(node instanceof ComposeSimpleElement) && node != root) {
 				return true;
@@ -2385,14 +2381,14 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		}
 
-		@Override
+	
 		public Class getColumnClass(int c) {
 			if (c == 1)
 				return Boolean.class;
 			return getValueAt(0, c).getClass();
 		}
 
-		@Override
+	
 		public Object getChild(Object parent, int index) {
 
 			if (parent instanceof SimpleElement) {
@@ -2403,7 +2399,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			return ((ProjectSimpleElement) root).getAllElements().get(index);
 		}
 
-		@Override
+	
 		public int getChildCount(Object parent) {
 			if (parent instanceof ComposeSimpleElement) {
 				ComposeSimpleElement element = (ComposeSimpleElement) parent;
@@ -2412,7 +2408,6 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			return ((ProjectSimpleElement) root).getAllElements().size();
 		}
 
-		@Override
 		public int getIndexOfChild(Object parent, Object child) {
 			ComposeSimpleElement container = (ComposeSimpleElement) parent;
 			SimpleElement containded = (SimpleElement) child;
@@ -2455,24 +2450,24 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 	}
 
-	@Override
+
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+
 	public void mousePressed(MouseEvent arg0) {
 
 	}
 
-	@Override
+
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		TreeTableModel model = (TreeTableModel) treeTable.getTreeTableModel();
@@ -2494,7 +2489,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 	class TreeCellRenderer extends DefaultTreeCellRenderer {
 
-		@Override
+	
 		public Component getTreeCellRendererComponent(JTree tree, Object value,
 				boolean selected, boolean expanded, boolean leaf, int row,
 				boolean hasFocus) {
@@ -2536,17 +2531,17 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			rootElements.add(elem);
 		}
 
-		@Override
+	
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
-		@Override
+	
 		public String getColumnName(int column) {
 			return columnNames[column];
 		}
 
-		@Override
+	
 		public Object getValueAt(Object node, int col) {
 			if (!(node instanceof Element3D)) {
 				return "";
@@ -2566,7 +2561,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 		/*
 		 * Don't need to implement this method unless your table's editable.
 		 */
-		@Override
+	
 		public boolean isCellEditable(Object node, int col) {
 			// Note that the data/cell address is constant,
 			// no matter where the cell appears onscreen.
@@ -2577,7 +2572,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			}
 		}
 
-		@Override
+	
 		public boolean isLeaf(Object node) {
 			if (node instanceof Element3D) {
 				Element3D elem = (Element3D) node;
@@ -2589,14 +2584,14 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		}
 
-		@Override
+	
 		public Class getColumnClass(int c) {
 			if (c == 1)
 				return Boolean.class;
 			return getValueAt(0, c).getClass();
 		}
 
-		@Override
+	
 		public Object getChild(Object parent, int index) {
 
 			if (parent instanceof Element3D) {
@@ -2606,7 +2601,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			return rootElements.get(index);
 		}
 
-		@Override
+	
 		public int getChildCount(Object parent) {
 			if (parent instanceof Element3D) {
 				Element3D element = (Element3D) parent;
@@ -2615,7 +2610,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 			return rootElements.size();
 		}
 
-		@Override
+	
 		public int getIndexOfChild(Object parent, Object child) {
 			Element3D container = (Element3D) parent;
 			Element3D containded = (Element3D) child;
@@ -2623,7 +2618,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 
 		}
 
-		@Override
+	
 		public void setValueAt(Object value, Object node, int col) {
 			if (col == 1 && node instanceof Element3D) {
 				Element3D elem = (Element3D) node;
@@ -2646,7 +2641,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 //>>>>>>> developer
 	}
 
-	@Override
+
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			// start extract treetable from panel
@@ -2776,7 +2771,7 @@ public class CopyOfGui extends JFrame implements ActionListener, MouseListener,
 		return newCanvas;
 	}
 
-	@Override
+
 	public void stateChanged(ChangeEvent e) {
 		Canvas3D canvas3d = this.tabsManager.getCurrentCanvas();
 		if (canvas3d != null) {
