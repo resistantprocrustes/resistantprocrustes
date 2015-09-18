@@ -12,9 +12,12 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -32,7 +35,7 @@ import com.rps.geometry3d.Object3D;
 import com.rps.geometry3d.bsp.BSPTree;
 import com.rps.geometry3d.bsp.BSPTreeBuilder;
 import com.rps.geometry3d.bsp.BSPTreeTraverser;
-//
+import com.calc3d.log.Logger;
 import com.rps.math.Vector3D;
 import com.rps.utils.ColorUtils;
 
@@ -42,7 +45,7 @@ import com.rps.utils.ColorUtils;
  */
 public final class Canvas3D extends JPanel implements Printable 
 {
-//	//private static Logger LOG = Logger.getLogger(Canvas3D.class.getName());
+	private static Logger LOG = Logger.getLogger(Canvas3D.class.getName());
 	
 	private static final long serialVersionUID = -6195462797470825673L;
 	
@@ -281,20 +284,20 @@ public final class Canvas3D extends JPanel implements Printable
 
 		
 	
-	
+	@Override
 	protected void paintComponent(Graphics g)
 	{
 		//check if everything is ready to go
 		if (null == iRenderer || null == iCamera || null == iScene) {
 			super.paintComponent(g);
-//			LOG.error("Either Camera, Scene or Renderer is not associated with canvas" );
+			LOG.error("Either Camera, Scene or Renderer is not associated with canvas" );
 			return;
 		}
 		//check if image is ready
 		if (!(null!=dbImage))
 		{
 			super.paintComponent(g);
-//			LOG.error("paintComponent: Renderer is not initialised or is not Ready to render the scene");
+			LOG.error("paintComponent: Renderer is not initialised or is not Ready to render the scene");
 			return;
 		}
 		else {
@@ -391,10 +394,18 @@ public final class Canvas3D extends JPanel implements Printable
 		g.drawRect(1, 1, width - 3, height - 3);
 		g.setColor(ColorUtils.blendColors(Color.WHITE, bg, .5));
 		g.drawRect(0, 0, width - 1, height - 1);
-		ImageIO.write(img, "png", new File(fileName));
+		Iterator<ImageWriter> writer = ImageIO.getImageWritersByFormatName("svg");
+		if(writer.hasNext()){
+			ImageWriter imageWriter = (ImageWriter) writer.next();
+		    File file = new File(fileName);
+		    ImageOutputStream ios = ImageIO.createImageOutputStream(file);
+		    imageWriter.setOutput(ios);
+		    imageWriter.write(img);
+		}
+		
 	}
 
-	
+	@Override
 	public int print(Graphics g, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
 		if (pageIndex > 0) { /* We have only one page, and 'page' is zero-based */
@@ -456,4 +467,3 @@ public final class Canvas3D extends JPanel implements Printable
 	}
 
 }
-

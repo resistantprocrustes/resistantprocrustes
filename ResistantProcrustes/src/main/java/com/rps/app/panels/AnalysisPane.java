@@ -43,7 +43,7 @@ public class AnalysisPane extends JPanel implements SimpleElementCreatePanel, Ac
 	
 	public AnalysisPane() {
 		
-		lblName = new JLabel(Messages.getString("dialog.addpcanalysis.name"));
+		lblName = new JLabel(Messages.getString("dialog.addpcanalysis.tabname"));
 		
 		textField_2 = new PrefixTextField("");
 		textField_2.setEnabled(false);
@@ -104,23 +104,23 @@ public class AnalysisPane extends JPanel implements SimpleElementCreatePanel, Ac
 		textField_2.setText(name);
 	}
 	
-	
+	@Override
 	public boolean isDrawable() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+	@Override
 	public boolean isValidInput() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+	@Override
 	public DialogConfiguration getConfiguration() {
 		AnalysisConfiguration configuration = new AnalysisConfiguration();
 		//configuration.setElements((ArrayList<SimpleElement>) ((ComposeSimpleElement)dataset.getElementByKey("specimens")).getAllElements());
 		
 		int type = this.rdbtnMinimusSquareFit.isSelected() ? AnalysisConfiguration.MIN_SQUARES_FIT : AnalysisConfiguration.ROBUST_FIT;
-		String nName = type==AnalysisConfiguration.MIN_SQUARES_FIT?"GLSP":"GRP";
+		String nName = type==AnalysisConfiguration.MIN_SQUARES_FIT?"GlsP":"GrP";
 		System.out.println(textField_2.getFullText());
 		configuration.setTabTitle(textField_2.getFullText());
 		configuration.setName(textField_2.getFullText());
@@ -131,18 +131,18 @@ public class AnalysisPane extends JPanel implements SimpleElementCreatePanel, Ac
 	
 	
 
-	
+	@Override
 	public void actionPerformed(ActionEvent ev) {
 		String command = ev.getActionCommand();
 		switch(command){
 		case "rdb1":
 			textField_2.setEnabled(true);
-			textField_2.setPrefix("GLSP");
+			textField_2.setPrefix("GlsP");
 			break;
 		
 		case "rdb2":
 			textField_2.setEnabled(true);
-			textField_2.setPrefix("GRP");
+			textField_2.setPrefix("GrP");
 			break;
 		
 		}

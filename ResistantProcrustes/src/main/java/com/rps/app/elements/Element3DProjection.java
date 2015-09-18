@@ -25,11 +25,12 @@ public class Element3DProjection extends Element3DCollection {
 	
 	public Element3DProjection(ComposeSimpleElement projection) {
 		ArrayList<LandmarkSimpleElement> elems = (ArrayList<LandmarkSimpleElement>) projection.getAllElements();
+		this.setName(projection.getName());
 		for(int i=0; i<elems.size(); i++){
 			LandmarkSimpleElement elem = elems.get(i);
 			double[] coords = elem.getCoords();
 			Element3DPoint point = new Element3DPoint(new Vector3D(coords[0]*0.001, coords[1]*0.001, coords[2]*0.001));
-			point.setName(elem.getName()+"_Projection");
+			point.setName(elem.getName());
 			point.setText(elem.getName());
 			this.add(point);
 		}
@@ -39,7 +40,7 @@ public class Element3DProjection extends Element3DCollection {
 		typeOp = op;
 	}
 
-	
+	@Override
 	public String getDefinition() {
 		// TODO Auto-generated method stub
 		return null;
@@ -49,7 +50,7 @@ public class Element3DProjection extends Element3DCollection {
 		return typeOp;
 	}
 	
-	
+	@Override
 	public Vector3D getMaxBound(){
 		double maxX, maxY, maxZ;
 		maxX = maxY = maxZ = 0;
@@ -62,7 +63,7 @@ public class Element3DProjection extends Element3DCollection {
 		return new Vector3D(maxX, maxY, maxZ);
 	}
 	
-	
+	@Override
 	public Vector3D getMinBound(){
 		double minX, minY, minZ;
 		minX = minY = minZ = 0;
@@ -92,7 +93,7 @@ public class Element3DProjection extends Element3DCollection {
 		
 	}
 	
-	
+	@Override
 	public ArrayList<Element3D> getContainedElements(){
 		return elements;
 	}

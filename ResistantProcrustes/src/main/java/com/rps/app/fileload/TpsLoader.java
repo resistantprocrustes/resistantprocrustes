@@ -25,11 +25,12 @@ public class TpsLoader extends DataSetLoader{
 	int lmCounter = 0;
 	int lmCount = 0;
 	SampleSimpleElement newSpecimen;
-	
+	@Override
 	public Object load(String filepath){ 
 		BufferedReader br;
 		ComposeSimpleElement doc = new ComposeSimpleElement();
-		ComposeSimpleElement entities = new ComposeSimpleElement("specimens");
+		ComposeSimpleElement entities = new ComposeSimpleElement("Specimens");
+		boolean is3D = false;
 		try{
 			String currentLine;
 			br = new BufferedReader(new FileReader(filepath));
@@ -39,15 +40,17 @@ public class TpsLoader extends DataSetLoader{
 				currentLine = currentLine.trim();
 				if(currentLine.startsWith("LM") || currentLine.startsWith("lm")){
 					int numLandmarks = Integer.parseInt(currentLine.split("=")[1]);
-					newSpecimen = new SampleSimpleElement("Specimen-"+counter);
+					newSpecimen = new SampleSimpleElement("Specimen_"+counter);
 					entities.addElement(newSpecimen);
 					for(int i=0; i<numLandmarks; i++){
 						String[] landmarkCoords = br.readLine().trim().split("\\s+");
-						LandmarkSimpleElement landmark = new LandmarkSimpleElement("lm-"+i);
+						LandmarkSimpleElement landmark = new LandmarkSimpleElement("LM_"+i);
+						
 						double[] dCoords = new double[landmarkCoords.length];
 						for(int j=0; j<landmarkCoords.length; j++){
 							dCoords[j] = Double.parseDouble(landmarkCoords[j]);
 						}
+						is3D = is3D || (landmarkCoords.length==3 && dCoords[2] != 0);
 						landmark.addCoordinate(dCoords);
 						newSpecimen.addElement(landmark);
 					}
@@ -70,6 +73,7 @@ public class TpsLoader extends DataSetLoader{
 		catch(Exception e){
 			System.err.println(e.getMessage());
 		}
+		doc.setDimension(is3D?3:2);
 		return doc;
 	}
 	

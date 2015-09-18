@@ -94,8 +94,8 @@ public class Commons {
 		return list;
 	}
 
-	public static Preferences setPreferences(ArrayList<Element3D> list) {
-		Preferences preferences = Globalsettings.getSettings();
+	public static Preferences setPreferences(ArrayList<Element3D> list, Preferences preferences) {
+//		Preferences preferences = Globalsettings.getSettings();
 		double maxX, maxY, maxZ, minX, minY, minZ;
 		maxX = maxY = maxZ = Double.NEGATIVE_INFINITY;
 		minX = minY = minZ = Double.POSITIVE_INFINITY;
@@ -155,7 +155,7 @@ public class Commons {
 	}
 
 	public static ComposeSimpleElement toPCEntity(ArrayList<SimpleMatrix> result, ArrayList<SampleSimpleElement> elems) {
-		ComposeSimpleElement specimens = new ComposeSimpleElement("specimens");
+		ComposeSimpleElement specimens = new ComposeSimpleElement("Specimens");
 		for(int i=0; i<result.size()-1;i++){
 			SimpleMatrix m = result.get(i);
 			specimens.addElement(new SampleSimpleElement(elems.get(i).getName(), m));

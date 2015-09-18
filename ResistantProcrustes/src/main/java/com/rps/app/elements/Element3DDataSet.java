@@ -29,11 +29,11 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 	
 	public Element3DDataSet(ComposeSimpleElement dataset) {
 		this.dataset = dataset;
-		ComposeSimpleElement specimens = ((ComposeSimpleElement) dataset.getElementByKey("specimens"));
+		ComposeSimpleElement specimens = ((ComposeSimpleElement) dataset.getElementByKey("Specimens"));
 		if(specimens==null) return;
 		ArrayList<SampleSimpleElement> specimensList = (ArrayList<SampleSimpleElement>) specimens.getAllElements();
 		Element3DCollection specimens3D = new Element3DCollection();
-		specimens3D.setName("specimens");
+		specimens3D.setName("Specimens");
 		for(int i=0; i<specimens.size(); i++){
 			SampleSimpleElement sample = specimensList.get(i);
 			Element3DEntity specimen3D = new Element3DEntity(sample);
@@ -41,15 +41,16 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 		}
 		this.add(specimens3D);
 		String name = dataset.getName(); 
+		this.setDimension3D(dataset.is3D());
 		this.setName(name);
 	}
 
-	
+	@Override
 	public String getDefinition() {
 		return "Dataset";
 	}
 	
-	
+	@Override
 	public Vector3D getMaxBound(){
 		Vector3D maxbound = new Vector3D(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY);
 		for(int i=0; i<elements.size(); i++){
@@ -63,7 +64,7 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 		return maxbound;
 	}
 	
-	
+	@Override
 	public Vector3D getMinBound(){
 		Vector3D minbound = new Vector3D(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY);
 		for(int i=0; i<elements.size(); i++){
@@ -74,7 +75,7 @@ public class Element3DDataSet extends Element3DCollection implements IMatrixable
 		return minbound;
 	}
 	
-	
+	@Override
 	public double[][] toMatrix() {
 		
 		return null;

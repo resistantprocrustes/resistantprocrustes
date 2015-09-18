@@ -38,7 +38,7 @@ import com.rps.geometry3d.ElementString;
 import com.rps.geometry3d.Object3D;
 import com.rps.geometry3d.Plane3D;
 import com.rps.geometry3d.bsp.BSPTreeTraverseListener;
-//
+import com.calc3d.log.Logger;
 import com.rps.math.AffineTransform3D;
 import com.rps.math.Constants;
 import com.rps.math.MathUtils;
@@ -46,8 +46,8 @@ import com.rps.math.Vector3D;
 import com.rps.utils.ColorUtils;
 
 public final class Renderer implements BSPTreeTraverseListener{
-//	private final static Logger LOG = Logger
-//			.getLogger(Renderer.class.getName());
+	private final static Logger LOG = Logger
+			.getLogger(Renderer.class.getName());
 
 	// ;;;;;;;;;;;;;;;
 	private boolean isBoxed = true, isMesh = true, isScaleBox = true,
@@ -197,7 +197,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 			iRasterSettings.iGraphics.setFont(new Font("Serif",Font.PLAIN,10));
 		//	drawBox();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error rendering frame", e);
 		}
 	}
 
@@ -301,7 +301,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	}
 	
 	public void processold(Scene3D scene) {
-//		LOG.trace("Processing mesh: " + scene);
+		LOG.trace("Processing mesh: " + scene);
 		// arrays for depth sort;
 		//if ( scene==null)return;
 		ArrayList<Element> elements=new ArrayList<Element>();
@@ -329,7 +329,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	
     }
 	public void processTranslation(float ax, float ay, float az) {
-//		LOG.trace("processTranslation: x=" + ax + ", y=" + ay + ", z=" + az);
+		LOG.trace("processTranslation: x=" + ax + ", y=" + ay + ", z=" + az);
 
 		/* construct a translation matrix
 		   iTempMat1.setIdentity();
@@ -343,7 +343,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	}
 
 	public void processRotation(float ax, float ay, float az) {
-//		LOG.trace("processRotation: ax=" + ax + ", ay=" + ay + ", az=" + az);
+		LOG.trace("processRotation: ax=" + ax + ", ay=" + ay + ", az=" + az);
 		/*
 		 * // X rotation iTempMat1.setIdentity(); iTempMat1.val[1][1] =
 		 * (float)Math.cos(ax); iTempMat1.val[1][2] = -(float)Math.sin(ax);
@@ -380,7 +380,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	 */
 	public void enableBackfaceCulling(boolean val) {
 		backfaceCullingEnabled = val;
-//		//LOG.info("Backface culling enabled: " + val);
+		LOG.info("Backface culling enabled: " + val);
 	}
 
 	/**
@@ -400,7 +400,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	 */
 	public void enableWireframeMode(boolean val) {
 		iRasterSettings.iWireframeModeEnabled = val;
-		//LOG.info("Wireframe mode enabled: " + val);
+		LOG.info("Wireframe mode enabled: " + val);
 	}
 
 	/**
@@ -421,7 +421,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	public void enableZBuffer(boolean val) {
 		iRasterSettings.iZBufferEnabled = val;
 		zBuffer=val;
-		//LOG.info("Z-buffer enabled: " + val);
+		LOG.info("Z-buffer enabled: " + val);
 	}
 
 	/**
@@ -998,7 +998,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 		if (element.isFilled())iRasterSettings.iGraphics.fill(ellipse);
 		iRasterSettings.iGraphics.setPaint(element.getLineColor());//ColorUtils.blendColors(element.curveColor,iBgColor,iLight.getBlendAmt(element.depth)));
 		iRasterSettings.iGraphics.draw(ellipse);
-		iRasterSettings.iGraphics.drawString(element.getText(), (int)v.getX(),  (int)v.getY()-1);
+		iRasterSettings.iGraphics.drawString(element.getText(), (int)v.getX(),  (int)v.getY()-4);
 	}
 
 	private void drawElementCurve(ElementCurve element) {
@@ -1554,7 +1554,7 @@ public final class Renderer implements BSPTreeTraverseListener{
 	}
 
 	
-	
+	@Override
 	public void visitElements(List<Element> elements) {
 		for (Element element: elements ) {
 			//if (element.getCentre()==null)System.out.println("Invalid centre");
@@ -1890,4 +1890,3 @@ public final class Renderer implements BSPTreeTraverseListener{
 
 }
 	
-

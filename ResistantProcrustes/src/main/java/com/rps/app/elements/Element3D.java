@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-          
+
 import com.rps.app.LocalSettings;
 import com.rps.geometry3d.Clip;
 import com.rps.geometry3d.Element;
@@ -27,6 +27,8 @@ import com.rps.math.Vector3D;
 	 * 
 	 */
 	private static final long serialVersionUID = -2177499520844129649L;
+	
+	private boolean dimention3D = false;
 
 	/** True if Object is visible */
 	private boolean visible = true;
@@ -275,6 +277,14 @@ import com.rps.math.Vector3D;
 	}
 	public LocalSettings getSettings() {
 		return settings;
+	}
+	
+	public void setDimension3D(boolean value){
+		this.dimention3D = value;
+	}
+	
+	public boolean is3D(){
+		return dimention3D;
 	}
 	
 }
