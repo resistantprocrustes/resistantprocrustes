@@ -59,7 +59,7 @@ public class Projection3DPanel extends JPanel implements SimpleElementCreatePane
 		
 		JLabel lblProjectionType = new JLabel("Ordination type:");
 		
-		JLabel lblDimensions = new JLabel("Dimension:");
+		JLabel lblDimensions = new JLabel("Dimensions:");
 		
 		rdbtn2D = new JRadioButton("2D");
 		rdbtn2D.addActionListener(this);
